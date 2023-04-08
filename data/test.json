@@ -16,46 +16,30 @@
         "Bess, You Is My Woman Now",
         "Epilogue"
       ],
-      "url": null,
+      "url": "https://i.discogs.com/lkKjrW5iScvsYo78RNoiAVWilvKQryqgo1q33nXE2AA/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTg0Nzg3/MjQtMTYyMTAzNTMw/MC01MjQ4LmpwZWc.jpeg",
       "credits": [
         {
           "name": "David Wong",
-          "anv": "",
-          "join": "",
           "role": "Bass",
-          "tracks": "",
           "id": 1865504,
-          "resource_url": "https://api.discogs.com/artists/1865504",
           "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
         },
         {
           "name": "Rodney Green",
-          "anv": "",
-          "join": "",
           "role": "Drums",
-          "tracks": "",
           "id": 461878,
-          "resource_url": "https://api.discogs.com/artists/461878",
           "thumbnail_url": "https://i.discogs.com/UFIgRTPXPcShYraLxrIO5YxPsIxJD7EnepXK48v6CxI/rs:fit/g:sm/q:40/h:320/w:240/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTQ2MTg3/OC0xNDA3OTQyNDU2/LTQ0MDMuanBlZw.jpeg"
         },
         {
           "name": "Aaron Diehl",
-          "anv": "",
-          "join": "",
           "role": "Piano",
-          "tracks": "",
           "id": 3427131,
-          "resource_url": "https://api.discogs.com/artists/3427131",
           "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
         },
         {
           "name": "Warren Wolf",
-          "anv": "",
-          "join": "",
           "role": "Vibraphone",
-          "tracks": "1-4, 6-7, 10",
           "id": 660029,
-          "resource_url": "https://api.discogs.com/artists/660029",
           "thumbnail_url": "https://i.discogs.com/ik7xV7pTOWc5yjFpTYYw1N0hJy3bT1ME-KubGJRn7WE/rs:fit/g:sm/q:40/h:302/w:200/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTY2MDAy/OS0xMTk2MDI4ODYw/LmpwZWc.jpeg"
         }
       ],
@@ -74,96 +58,54 @@
         "Broadway Boogie Woogie",
         "Space, Time, Continuum"
       ],
-      "url": null,
+      "url": "https://i.discogs.com/nvrtPvihPOxvHZjHTtsRRSEM9xj9bbnY8gWrhXYBsIA/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTc4NzMz/NTYtMTQ1ODAyMTQ5/NC0yNDk1LmpwZWc.jpeg",
       "credits": [
         {
           "name": "Joe Temperley",
-          "anv": "",
-          "join": "",
           "role": "Baritone Saxophone",
-          "tracks": "2",
           "id": 349582,
-          "resource_url": "https://api.discogs.com/artists/349582",
           "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
         },
         {
           "name": "David Wong",
-          "anv": "",
-          "join": "",
           "role": "Bass",
-          "tracks": "",
           "id": 1865504,
-          "resource_url": "https://api.discogs.com/artists/1865504",
           "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
         },
         {
           "name": "Quincy Davis",
-          "anv": "",
-          "join": "",
           "role": "Drums",
-          "tracks": "",
           "id": 3406582,
-          "resource_url": "https://api.discogs.com/artists/3406582",
           "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
         },
         {
           "name": "Charenee Wade",
-          "anv": "",
-          "join": "",
           "role": "Lead Vocals",
-          "tracks": "",
           "id": 2778300,
-          "resource_url": "https://api.discogs.com/artists/2778300",
           "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
         },
         {
           "name": "Aaron Diehl",
-          "anv": "",
-          "join": "",
           "role": "Piano",
-          "tracks": "",
           "id": 3427131,
-          "resource_url": "https://api.discogs.com/artists/3427131",
           "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
         },
         {
-          "name": "Al Pryor",
-          "anv": "",
-          "join": "",
-          "role": "Producer",
-          "tracks": "",
-          "id": 669562,
-          "resource_url": "https://api.discogs.com/artists/669562",
-          "thumbnail_url": ""
-        },
-        {
           "name": "Benny Golson",
-          "anv": "",
-          "join": "",
           "role": "Tenor Saxophone",
-          "tracks": "4,8",
           "id": 185752,
-          "resource_url": "https://api.discogs.com/artists/185752",
           "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
         },
         {
           "name": "Stephen Riley",
-          "anv": "",
-          "join": "",
           "role": "Tenor Saxophone",
-          "tracks": "3,5",
           "id": 1597346,
-          "resource_url": "https://api.discogs.com/artists/1597346",
           "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
         },
         {
           "name": "Bruce Harris (5)",
-          "anv": "",
-          "join": "",
           "role": "Trumpet",
-          "tracks": "",
           "id": 3966577,
-          "resource_url": "https://api.discogs.com/artists/3966577",
           "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
         }
       ],
@@ -172,146 +114,67 @@
   ],
   "collaborations": [
     {
-      "name": "The Bespoke Man's Narrative",
-      "year": "2014",
+      "name": "Dreams and Daggers",
+      "year": "2017",
+      "albumArtist": "Cécile McLorin Salvant",
       "tracks": [
-        "Prologue",
-        "Generation Y",
-        "Blue Nude",
-        "Moonlight In Vermont",
-        "Single Petal Of A Rose",
-        "The Cylinder",
-        "Stop And Go",
-        "Le Tombeau De Couperin (III. Forlane)",
-        "Bess, You Is My Woman Now",
-        "Epilogue"
+        "And Yet",
+        "Devil May Care",
+        "Mad About the Boy",
+        "Sam Jones' Blues",
+        "More",
+        "Never Will I Marry",
+        "Somehow I Never Could Believe",
+        "If a Girl Isn't Pretty",
+        "Red Instead",
+        "Runnin' Wild",
+        "The Best Thing for You (Would Be Me)",
+        "You're My Thrill",
+        "I Didn't Know What Time It Was",
+        "Tell Me What They're Saying Can't Be True",
+        "Nothing Like You",
+        "You've Got to Give Me Some",
+        "The Worm",
+        "My Man's Gone Now",
+        "Let's Face the Music and Dance",
+        "Si J'etais Blanche",
+        "Fascination",
+        "Wild Women Don't Have the Blues",
+        "You're Getting to Be a Habit with Me"
       ],
+      "url": "https://i.discogs.com/wwKMi5PKQ6Cr7TcWk1qBb3EeYJX9IMjRlpA90zQzT_8/rs:fit/g:sm/q:90/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTEwOTYy/ODM5LTE1MDcyOTk5/MzgtMTY4MC5tcG8.jpeg",
       "credits": [
         {
-          "name": "David Wong",
-          "anv": "",
-          "join": "",
-          "role": "Bass",
-          "tracks": "",
-          "id": 1865504,
-          "resource_url": "https://api.discogs.com/artists/1865504",
-          "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
+          "name": "Karlos Rodriguez",
+          "role": "Cello",
+          "id": 6366618,
+          "thumbnail_url": "https://i.discogs.com/O3pUQ_Dt1u2im3Q9RPVnjpX0-8-5M0QQ0ILT5dOPsls/rs:fit/g:sm/q:40/h:396/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTYzNjY2/MTgtMTUyOTkxMTk5/OC05NzE1LmpwZWc.jpeg"
         },
         {
-          "name": "Rodney Green",
-          "anv": "",
-          "join": "",
-          "role": "Drums",
-          "tracks": "",
-          "id": 461878,
-          "resource_url": "https://api.discogs.com/artists/461878",
-          "thumbnail_url": "https://i.discogs.com/UFIgRTPXPcShYraLxrIO5YxPsIxJD7EnepXK48v6CxI/rs:fit/g:sm/q:40/h:320/w:240/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTQ2MTg3/OC0xNDA3OTQyNDU2/LTQ0MDMuanBlZw.jpeg"
+          "name": "Paul Laraia",
+          "role": "Viola",
+          "id": 2439770,
+          "thumbnail_url": "https://i.discogs.com/zdfmQZDUkn7xlSIQi8NKc_htzpGIdZXV_r0XnU4JQyw/rs:fit/g:sm/q:40/h:631/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI0Mzk3/NzAtMTUyOTkxMTk2/NC0zNTcyLnBuZw.jpeg"
         },
         {
-          "name": "Warren Wolf",
-          "anv": "",
-          "join": "",
-          "role": "Vibraphone",
-          "tracks": "1-4, 6-7, 10",
-          "id": 660029,
-          "resource_url": "https://api.discogs.com/artists/660029",
-          "thumbnail_url": "https://i.discogs.com/ik7xV7pTOWc5yjFpTYYw1N0hJy3bT1ME-KubGJRn7WE/rs:fit/g:sm/q:40/h:302/w:200/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTY2MDAy/OS0xMTk2MDI4ODYw/LmpwZWc.jpeg"
+          "name": "Karla Donehew-Perez",
+          "role": "Violin",
+          "id": 6366619,
+          "thumbnail_url": "https://i.discogs.com/_GmRja1wDUI5TXVF0m8izV2meA4h9g6Epgcl6AYErNg/rs:fit/g:sm/q:40/h:450/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTYzNjY2/MTktMTUyOTkxMTky/Ny05MzQ5LmpwZWc.jpeg"
+        },
+        {
+          "name": "Suliman Tekalli",
+          "role": "Violin",
+          "id": 6366620,
+          "thumbnail_url": "https://i.discogs.com/Hos-H4Vh9W8adWo9xzdWbu-_t2jmgVMaap-LQuepKrE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTYzNjY2/MjAtMTUyMTE2NjQx/Ny0zNzM4LmpwZWc.jpeg"
         }
       ],
-      "collaborators": [],
-      "discogsID": 8478724
-    },
-    {
-      "name": "Space, Time, Continuum",
-      "year": "2015",
-      "tracks": [
-        "Uranus",
-        "The Steadfast Titan",
-        "Flux Capacitor",
-        "Organic Consequence",
-        "Kat's Dance",
-        "Santa Maria",
-        "Broadway Boogie Woogie",
-        "Space, Time, Continuum"
-      ],
-      "credits": [
-        {
-          "name": "Joe Temperley",
-          "anv": "",
-          "join": "",
-          "role": "Baritone Saxophone",
-          "tracks": "2",
-          "id": 349582,
-          "resource_url": "https://api.discogs.com/artists/349582",
-          "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-        },
-        {
-          "name": "David Wong",
-          "anv": "",
-          "join": "",
-          "role": "Bass",
-          "tracks": "",
-          "id": 1865504,
-          "resource_url": "https://api.discogs.com/artists/1865504",
-          "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-        },
-        {
-          "name": "Quincy Davis",
-          "anv": "",
-          "join": "",
-          "role": "Drums",
-          "tracks": "",
-          "id": 3406582,
-          "resource_url": "https://api.discogs.com/artists/3406582",
-          "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-        },
-        {
-          "name": "Charenee Wade",
-          "anv": "",
-          "join": "",
-          "role": "Lead Vocals",
-          "tracks": "",
-          "id": 2778300,
-          "resource_url": "https://api.discogs.com/artists/2778300",
-          "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-        },
-        {
-          "name": "Benny Golson",
-          "anv": "",
-          "join": "",
-          "role": "Tenor Saxophone",
-          "tracks": "4,8",
-          "id": 185752,
-          "resource_url": "https://api.discogs.com/artists/185752",
-          "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-        },
-        {
-          "name": "Stephen Riley",
-          "anv": "",
-          "join": "",
-          "role": "Tenor Saxophone",
-          "tracks": "3,5",
-          "id": 1597346,
-          "resource_url": "https://api.discogs.com/artists/1597346",
-          "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-        },
-        {
-          "name": "Bruce Harris (5)",
-          "anv": "",
-          "join": "",
-          "role": "Trumpet",
-          "tracks": "",
-          "id": 3966577,
-          "resource_url": "https://api.discogs.com/artists/3966577",
-          "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-        }
-      ],
-      "collaborators": [],
-      "discogsID": 7873356
+      "discogsID": 10962839
     },
     {
       "name": "Woman Child",
       "year": "2013",
+      "albumArtist": "Cécile McLorin Salvant",
       "tracks": [
         "St. Louis Gal",
         "I Didn't Know What Time It Was",
@@ -326,1324 +189,34 @@
         "What a Little Moonlight Can Do",
         "Deep Dark Blue"
       ],
+      "url": "https://i.discogs.com/UbFOOIFppmb8VuEetYVHm00_R3P1mO_1U9rjp7CEh08/rs:fit/g:sm/q:90/h:593/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTUwMTg3/MzQtMTQwNTI4Nzc4/OS02MDM1LmpwZWc.jpeg",
       "credits": [
         {
           "name": "Rodney Whitaker",
-          "anv": "",
-          "join": "",
           "role": "Double Bass",
-          "tracks": "",
           "id": 345719,
-          "resource_url": "https://api.discogs.com/artists/345719",
           "thumbnail_url": "https://i.discogs.com/_JiYzBdJgErx2RVReOdeIQfGoLjNlzjklf8HkgxdMOc/rs:fit/g:sm/q:40/h:273/w:420/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0NTcx/OS0xMTk2MDAyNjc1/LmpwZWc.jpeg"
         },
         {
           "name": "Herlin Riley",
-          "anv": "",
-          "join": "",
           "role": "Drums",
-          "tracks": "",
           "id": 253762,
-          "resource_url": "https://api.discogs.com/artists/253762",
           "thumbnail_url": "https://i.discogs.com/cT5UBlo7TbgF-yeJteXhqYNFagHBKaEEw-CZJbu-3aY/rs:fit/g:sm/q:40/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI1Mzc2/Mi0xNjU0ODc4NTc5/LTI1NjIuanBlZw.jpeg"
         },
         {
           "name": "Cécile McLorin Salvant",
-          "anv": "",
-          "join": "",
           "role": "Piano",
-          "tracks": "D1",
           "id": 3427132,
-          "resource_url": "https://api.discogs.com/artists/3427132",
           "thumbnail_url": "https://i.discogs.com/TompoekE0QlMW73msUhaRfvv1D8QQUWZYIVux3uZ2JY/rs:fit/g:sm/q:40/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzItMTM3NzA0NTk0/Ni0zMDQzLmpwZWc.jpeg"
         },
         {
           "name": "Cécile McLorin Salvant",
-          "anv": "",
-          "join": "",
           "role": "Vocals",
-          "tracks": "",
           "id": 3427132,
-          "resource_url": "https://api.discogs.com/artists/3427132",
           "thumbnail_url": "https://i.discogs.com/TompoekE0QlMW73msUhaRfvv1D8QQUWZYIVux3uZ2JY/rs:fit/g:sm/q:40/h:600/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzItMTM3NzA0NTk0/Ni0zMDQzLmpwZWc.jpeg"
-        }
-      ],
-      "collaborators": [],
-      "discogsID": 5018734
-    }
-  ],
-  "contributions": [
-    {
-      "name": "The Bespoke Man's Narrative",
-      "year": "2014",
-      "tracks": [
-        "Prologue",
-        "Generation Y",
-        "Blue Nude",
-        "Moonlight In Vermont",
-        "Single Petal Of A Rose",
-        "The Cylinder",
-        "Stop And Go",
-        "Le Tombeau De Couperin (III. Forlane)",
-        "Bess, You Is My Woman Now",
-        "Epilogue"
-      ],
-      "credits": [
-        {
-          "name": "Aaron Diehl",
-          "anv": "",
-          "join": "",
-          "role": "Piano",
-          "tracks": "",
-          "id": 3427131,
-          "resource_url": "https://api.discogs.com/artists/3427131",
-          "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-        }
-      ],
-      "collaborators": [
-        {
-          "name": "David Wong",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "The Bespoke Man's Narrative",
-              "year": "2014",
-              "tracks": [
-                "Prologue",
-                "Generation Y",
-                "Blue Nude",
-                "Moonlight In Vermont",
-                "Single Petal Of A Rose",
-                "The Cylinder",
-                "Stop And Go",
-                "Le Tombeau De Couperin (III. Forlane)",
-                "Bess, You Is My Woman Now",
-                "Epilogue"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Rodney Green",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 461878,
-                  "resource_url": "https://api.discogs.com/artists/461878",
-                  "thumbnail_url": "https://i.discogs.com/UFIgRTPXPcShYraLxrIO5YxPsIxJD7EnepXK48v6CxI/rs:fit/g:sm/q:40/h:320/w:240/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTQ2MTg3/OC0xNDA3OTQyNDU2/LTQ0MDMuanBlZw.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Warren Wolf",
-                  "anv": "",
-                  "join": "",
-                  "role": "Vibraphone",
-                  "tracks": "1-4, 6-7, 10",
-                  "id": 660029,
-                  "resource_url": "https://api.discogs.com/artists/660029",
-                  "thumbnail_url": "https://i.discogs.com/ik7xV7pTOWc5yjFpTYYw1N0hJy3bT1ME-KubGJRn7WE/rs:fit/g:sm/q:40/h:302/w:200/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTY2MDAy/OS0xMTk2MDI4ODYw/LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 8478724
-            },
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Rodney Green",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "The Bespoke Man's Narrative",
-              "year": "2014",
-              "tracks": [
-                "Prologue",
-                "Generation Y",
-                "Blue Nude",
-                "Moonlight In Vermont",
-                "Single Petal Of A Rose",
-                "The Cylinder",
-                "Stop And Go",
-                "Le Tombeau De Couperin (III. Forlane)",
-                "Bess, You Is My Woman Now",
-                "Epilogue"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Rodney Green",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 461878,
-                  "resource_url": "https://api.discogs.com/artists/461878",
-                  "thumbnail_url": "https://i.discogs.com/UFIgRTPXPcShYraLxrIO5YxPsIxJD7EnepXK48v6CxI/rs:fit/g:sm/q:40/h:320/w:240/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTQ2MTg3/OC0xNDA3OTQyNDU2/LTQ0MDMuanBlZw.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Warren Wolf",
-                  "anv": "",
-                  "join": "",
-                  "role": "Vibraphone",
-                  "tracks": "1-4, 6-7, 10",
-                  "id": 660029,
-                  "resource_url": "https://api.discogs.com/artists/660029",
-                  "thumbnail_url": "https://i.discogs.com/ik7xV7pTOWc5yjFpTYYw1N0hJy3bT1ME-KubGJRn7WE/rs:fit/g:sm/q:40/h:302/w:200/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTY2MDAy/OS0xMTk2MDI4ODYw/LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 8478724
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Warren Wolf",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "The Bespoke Man's Narrative",
-              "year": "2014",
-              "tracks": [
-                "Prologue",
-                "Generation Y",
-                "Blue Nude",
-                "Moonlight In Vermont",
-                "Single Petal Of A Rose",
-                "The Cylinder",
-                "Stop And Go",
-                "Le Tombeau De Couperin (III. Forlane)",
-                "Bess, You Is My Woman Now",
-                "Epilogue"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Rodney Green",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 461878,
-                  "resource_url": "https://api.discogs.com/artists/461878",
-                  "thumbnail_url": "https://i.discogs.com/UFIgRTPXPcShYraLxrIO5YxPsIxJD7EnepXK48v6CxI/rs:fit/g:sm/q:40/h:320/w:240/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTQ2MTg3/OC0xNDA3OTQyNDU2/LTQ0MDMuanBlZw.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Warren Wolf",
-                  "anv": "",
-                  "join": "",
-                  "role": "Vibraphone",
-                  "tracks": "1-4, 6-7, 10",
-                  "id": 660029,
-                  "resource_url": "https://api.discogs.com/artists/660029",
-                  "thumbnail_url": "https://i.discogs.com/ik7xV7pTOWc5yjFpTYYw1N0hJy3bT1ME-KubGJRn7WE/rs:fit/g:sm/q:40/h:302/w:200/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTY2MDAy/OS0xMTk2MDI4ODYw/LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 8478724
-            }
-          ],
-          "amountOfCollaborations": 1
-        }
-      ],
-      "discogsID": 8478724
-    },
-    {
-      "name": "Space, Time, Continuum",
-      "year": "2015",
-      "tracks": [
-        "Uranus",
-        "The Steadfast Titan",
-        "Flux Capacitor",
-        "Organic Consequence",
-        "Kat's Dance",
-        "Santa Maria",
-        "Broadway Boogie Woogie",
-        "Space, Time, Continuum"
-      ],
-      "credits": [
-        {
-          "name": "Aaron Diehl",
-          "anv": "",
-          "join": "",
-          "role": "Piano",
-          "tracks": "",
-          "id": 3427131,
-          "resource_url": "https://api.discogs.com/artists/3427131",
-          "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-        }
-      ],
-      "collaborators": [
-        {
-          "name": "Joe Temperley",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "David Wong",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "The Bespoke Man's Narrative",
-              "year": "2014",
-              "tracks": [
-                "Prologue",
-                "Generation Y",
-                "Blue Nude",
-                "Moonlight In Vermont",
-                "Single Petal Of A Rose",
-                "The Cylinder",
-                "Stop And Go",
-                "Le Tombeau De Couperin (III. Forlane)",
-                "Bess, You Is My Woman Now",
-                "Epilogue"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Rodney Green",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 461878,
-                  "resource_url": "https://api.discogs.com/artists/461878",
-                  "thumbnail_url": "https://i.discogs.com/UFIgRTPXPcShYraLxrIO5YxPsIxJD7EnepXK48v6CxI/rs:fit/g:sm/q:40/h:320/w:240/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTQ2MTg3/OC0xNDA3OTQyNDU2/LTQ0MDMuanBlZw.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Warren Wolf",
-                  "anv": "",
-                  "join": "",
-                  "role": "Vibraphone",
-                  "tracks": "1-4, 6-7, 10",
-                  "id": 660029,
-                  "resource_url": "https://api.discogs.com/artists/660029",
-                  "thumbnail_url": "https://i.discogs.com/ik7xV7pTOWc5yjFpTYYw1N0hJy3bT1ME-KubGJRn7WE/rs:fit/g:sm/q:40/h:302/w:200/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTY2MDAy/OS0xMTk2MDI4ODYw/LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 8478724
-            },
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Quincy Davis",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Charenee Wade",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Benny Golson",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Stephen Riley",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Bruce Harris (5)",
-          "albumsTheyHaveWorkedOnTogether": [
-            {
-              "name": "Space, Time, Continuum",
-              "year": "2015",
-              "tracks": [
-                "Uranus",
-                "The Steadfast Titan",
-                "Flux Capacitor",
-                "Organic Consequence",
-                "Kat's Dance",
-                "Santa Maria",
-                "Broadway Boogie Woogie",
-                "Space, Time, Continuum"
-              ],
-              "url": null,
-              "credits": [
-                {
-                  "name": "Joe Temperley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Baritone Saxophone",
-                  "tracks": "2",
-                  "id": 349582,
-                  "resource_url": "https://api.discogs.com/artists/349582",
-                  "thumbnail_url": "https://i.discogs.com/fspijdkm2112uX-apX8UPmDflRpigCJ157-L7mH_z-E/rs:fit/g:sm/q:40/h:576/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0OTU4/Mi0xNDY3NTg4NTgx/LTEyMzAuanBlZw.jpeg"
-                },
-                {
-                  "name": "David Wong",
-                  "anv": "",
-                  "join": "",
-                  "role": "Bass",
-                  "tracks": "",
-                  "id": 1865504,
-                  "resource_url": "https://api.discogs.com/artists/1865504",
-                  "thumbnail_url": "https://i.discogs.com/OvrsWatGEdFUBV4K5hAUaMA1gpf6AYt0-pYexPxN6LE/rs:fit/g:sm/q:40/h:640/w:381/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NjU1/MDQtMTQxODIwMDE4/Ni05ODc3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Quincy Davis",
-                  "anv": "",
-                  "join": "",
-                  "role": "Drums",
-                  "tracks": "",
-                  "id": 3406582,
-                  "resource_url": "https://api.discogs.com/artists/3406582",
-                  "thumbnail_url": "https://i.discogs.com/sRChHy1DHEOM-ODNVze2rDAgZfnkQxMmAVC7qfc4RRA/rs:fit/g:sm/q:40/h:300/w:300/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0MDY1/ODItMTQwODM1OTU5/MC04MTcxLmpwZWc.jpeg"
-                },
-                {
-                  "name": "Charenee Wade",
-                  "anv": "",
-                  "join": "",
-                  "role": "Lead Vocals",
-                  "tracks": "",
-                  "id": 2778300,
-                  "resource_url": "https://api.discogs.com/artists/2778300",
-                  "thumbnail_url": "https://i.discogs.com/qFpiDde7IgXZAbJEGwKT0JQGkSId5iqbVnLadf2ScqE/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTI3Nzgz/MDAtMTU5ODgxNjE0/Mi02NzM3LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Aaron Diehl",
-                  "anv": "",
-                  "join": "",
-                  "role": "Piano",
-                  "tracks": "",
-                  "id": 3427131,
-                  "resource_url": "https://api.discogs.com/artists/3427131",
-                  "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-                },
-                {
-                  "name": "Al Pryor",
-                  "anv": "",
-                  "join": "",
-                  "role": "Producer",
-                  "tracks": "",
-                  "id": 669562,
-                  "resource_url": "https://api.discogs.com/artists/669562",
-                  "thumbnail_url": ""
-                },
-                {
-                  "name": "Benny Golson",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "4,8",
-                  "id": 185752,
-                  "resource_url": "https://api.discogs.com/artists/185752",
-                  "thumbnail_url": "https://i.discogs.com/ad0z4a6DRRbUJbNX42A2BBu8UuitFHHR8QlnjMjmi80/rs:fit/g:sm/q:40/h:602/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE4NTc1/Mi0xMzIyNzExMzUw/LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Stephen Riley",
-                  "anv": "",
-                  "join": "",
-                  "role": "Tenor Saxophone",
-                  "tracks": "3,5",
-                  "id": 1597346,
-                  "resource_url": "https://api.discogs.com/artists/1597346",
-                  "thumbnail_url": "https://i.discogs.com/28JLmF3GDcJiAZryV9FTLn8c0XyQPbTW-U1xzZFJ6qs/rs:fit/g:sm/q:40/h:358/w:282/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTE1OTcz/NDYtMTQ1OTIxMDgx/NC00MjA5LmpwZWc.jpeg"
-                },
-                {
-                  "name": "Bruce Harris (5)",
-                  "anv": "",
-                  "join": "",
-                  "role": "Trumpet",
-                  "tracks": "",
-                  "id": 3966577,
-                  "resource_url": "https://api.discogs.com/artists/3966577",
-                  "thumbnail_url": "https://i.discogs.com/fedxC0uV4Eh32PyP3gm-WQ4q_F-AAj22TidJlPvUSa8/rs:fit/g:sm/q:40/h:900/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM5NjY1/NzctMTU3NTI3MjM0/NC0zMTA4LmpwZWc.jpeg"
-                }
-              ],
-              "discogsID": 7873356
-            }
-          ],
-          "amountOfCollaborations": 1
-        }
-      ],
-      "discogsID": 7873356
-    },
-    {
-      "name": "Woman Child",
-      "year": "2013",
-      "tracks": [
-        "St. Louis Gal",
-        "I Didn't Know What Time It Was",
-        "Nobody",
-        "Woman Child",
-        "Le Front Caché Sur Tes Genoux",
-        "There's a Lull in My Life (Prelude)",
-        "You Bring Out the Savage in Me",
-        "Baby Have Pity on Me",
-        "John Henry",
-        "Jitterbug Waltz",
-        "What a Little Moonlight Can Do",
-        "Deep Dark Blue"
-      ],
-      "credits": [
-        {
-          "name": "Aaron Diehl",
-          "anv": "",
-          "join": "",
-          "role": "Piano",
-          "tracks": "",
-          "id": 3427131,
-          "resource_url": "https://api.discogs.com/artists/3427131",
-          "thumbnail_url": "https://i.discogs.com/paVDPoXhKPSnpbWhhGFYixsRt8UdQMgYDWAiTAjVLxY/rs:fit/g:sm/q:40/h:400/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTM0Mjcx/MzEtMTQ5ODQ5NzE4/My0xNDU3LnBuZw.jpeg"
-        }
-      ],
-      "collaborators": [
-        {
-          "name": "Rodney Whitaker",
-          "albumsTheyHaveWorkedOnTogether": [],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Herlin Riley",
-          "albumsTheyHaveWorkedOnTogether": [],
-          "amountOfCollaborations": 1
-        },
-        {
-          "name": "Cécile McLorin Salvant",
-          "albumsTheyHaveWorkedOnTogether": [],
-          "amountOfCollaborations": 2
         }
       ],
       "discogsID": 5018734
     }
   ]
-},
+}

@@ -1,54 +1,54 @@
-import { roles } from './roles.js';
-interface Credit {
+import { roles } from './roles';
+
+export type Credit = {
   name: string;
   role: string;
-  id: string;
+  id: number;
   thumbnail_url: string;
 }
 
-interface Album {
+export type Album = {
   album: string;
   artist: string;
   year: number;
   tracklist: string[];
-  discoData: {
-      credits: {
-          name: string;
-          role: string;
-          id: string;
-          thumbnail_url: string;
-      }[];
-      image: {
-          resource_url: string;
-      };
+  discoData?: {
+    credits?: {
+      name: string;
+      role: string;
       id: number;
-  };
+      thumbnail_url: string;
+    }[];
+    image?: {
+      resource_url: string;
+    };
+    id?: number;
+  }
 }
 
-interface Collaborator {
+export type Artist = {
   name: string;
-  albumsTheyHaveWorkedOnTogether: Album[];
-  amountOfCollaborations: number;
+  albums: {
+    name: string;
+    year: number;
+    tracks: string[];
+    url: string | null;
+    credits: Credit[];
+    discogsID?: number;
+  }[];
+  collaborations: {
+    name: string;
+    year: number;
+    albumArtist: string;
+    tracks: string[];
+    url: string | null;
+    credits: Credit[];
+    discogsID?: number;
+  }[];
 }
 
-interface FormattedAlbum {
-  name: string;
-  year: number;
-  albumArtist: string;
-  tracks: string[];
-  url: string | null;
-  credits: Credit[];
-  collaborators: Collaborator[];
-  discogsID: number;
-}
 
-interface FormattedArtistData {
-  name: string;
-  albums: FormattedAlbum[];
-}
-
-
-export function formatData(data: Album[]) {
+export function formatData(data: Album[]): Artist[] {
   // 1. Get a list of unique artists
   const uniqueArtists = [...new Set(data.map(album => album.artist))];
 
@@ -106,23 +106,6 @@ export function formatData(data: Album[]) {
         }
       });
 
-      // // get unique collaborators
-      // const collaboratorNames = [...new Set(formattedCredits.map(credit => credit.name))]; // is this necessary for graph data
-
-      // // loop through each collaborator and store their credits
-      // const collabs = collaboratorNames.map(collab => {
-      //   const collabCredits = credits?.filter(credit => credit.name === collab);
-
-      //   // get the albums that the collaborator has worked on with the artist
-      //   return {
-      //     name: collab,
-      //     albumsTheyHaveWorkedOnTogether: albumData.filter(alb => {
-      //       return alb.credits?.some(credit => credit.name === collab);
-      //     }),
-      //     amountOfCollaborations: collabCredits.length
-      //   }
-      // });
-
       // return the album data with the collaborators and their credits
       return {
         name: album.album,
@@ -131,50 +114,9 @@ export function formatData(data: Album[]) {
         tracks: album.tracklist,
         url: album.discoData?.image?.resource_url ?? null, 
         credits: formattedCredits,
-        discogsID: album.discoData.id
+        discogsID: album.discoData?.id
       }
     });
-
-    // 4. Next, for our current artist, we want to get a list of all the albums they have played on that are not their own
-  //   const collaborations = {};
-  //   collabAlbums.forEach(album => {
-  //     const collabs = album.discoData.credits.filter(credit => credit.name !== artist && roles.includes(credit.role));
-  //     collabs.forEach(collab => {
-  //       if (collaborations[collab.name] === undefined) {
-  //         collaborations[collab.name] = 1;
-  //       } else {
-  //         collaborations[collab.name]++;
-  //       }
-  //     });
-  //   });
-
-  //   // Remove any collaborators that are only credited once
-  //   const popularCollaborators = Object.entries(collaborations)
-  //     .filter(entry => entry[1] > 1)
-  //     .map(entry => entry[0]);
-
-  //   // Filter out only the roles in the 'roles' array
-  //   const filteredCollaborators = collabData.map(album => {
-  //     const filteredCollabs = album.collaborators.map(collab => {
-  //       if (collab.credits && collab.credits.length > 0 && roles.includes(collab.credits[0].role) && popularCollaborators.includes(collab.name)) {
-  //         // your code here
-  //         return collab;
-  //       } else {
-  //         return null;
-  //       }
-  //     }).filter(collab => collab !== null);
-  //     return {
-  //       name: album.name,
-  //       year: album.year,
-  //       tracks: album.tracks,
-  //       url: album.resource_url,
-  //       credits: album.credits,
-  //       collaborators: filteredCollabs,
-  //       discogsID: album.discogsID
-  //     }
-  //   });
-  //   // Remove any albums with no collaborators
-  //   const finalData = filteredCollaborators.filter(album => album.collaborators.length > 0);
 
     return {
       name: artist,

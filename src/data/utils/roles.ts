@@ -4,8 +4,8 @@ export const roles = [
   'Composer',
   'Conductor',
   'Arranger',
-  'Composed By',
-  'Conducted By',
+  // 'Composed By',
+  // 'Conducted By',
   'Arranged By',
   'Leader',
 
