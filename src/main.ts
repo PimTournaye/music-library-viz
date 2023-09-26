@@ -3,6 +3,9 @@ import type { Album, Artist } from "./data/utils/formatData";
 
 const jsonUrl = "../data/graphData.json";
 
+console.log("Hello from main.ts!");
+
+
 const margin = { top: 10, right: 30, bottom: 30, left: 40 };
 const width = 10000 - margin.left - margin.right;
 const height = 10000 - margin.top - margin.bottom;
@@ -19,7 +22,7 @@ const svg = d3
 // Read our data from the json file
 d3.json<Artist[]>(jsonUrl).then((data) => {
 	if (!data) return;
-	const nodes: { id: string }[] = [];
+	const nodes: { id: string, x: number, y: number }[] = [];
 	const links: {
 		source: { id: string };
 		target: { id: string };
@@ -41,7 +44,7 @@ d3.json<Artist[]>(jsonUrl).then((data) => {
 
 	// Create the nodes array from the set of artist names
 	allArtistNames.forEach((name) => {
-		nodes.push({ id: name });
+		nodes.push({ id: name, x: 0, y: 0 });
 	});
 
 	// Iterate over each artist in the data
@@ -127,18 +130,15 @@ d3.json<Artist[]>(jsonUrl).then((data) => {
 
 	// Add the nodes
 	const node = svg
-		.append("g")
-		.attr("stroke", "#fff")
-		.attr("stroke-width", 1.5)
-		.selectAll("circle")
-		.data(nodes)
-		.enter()
-		.append("circle")
-		.attr("r", 5)
-		.attr("fill", "steelblue");
-
-	// Add the labels
-	const label = svg
+		// .append("g")
+		// .attr("stroke", "#fff")
+		// .attr("stroke-width", 1.5)
+		// .selectAll("circle")
+		// .data(nodes)
+		// .enter()
+		// .append("circle")
+		// .attr("r", 5)
+		// .attr("fill", "steelblue");
 		.append("g")
 		.attr("class", "labels")
 		.selectAll("text")
@@ -149,6 +149,22 @@ d3.json<Artist[]>(jsonUrl).then((data) => {
 		.attr("font-family", "sans-serif")
 		.attr("font-size", 10)
 		.attr("fill", "black");
+
+	// Add the labels on hover
+	const label = svg
+		.append("g")
+		.attr("class", "labels")
+		.selectAll("text")
+		.data(nodes)
+		.enter()
+		.append("text")
+		.attr("class", "label")
+		.text((d) => d.id)
+		.attr("fill", "black")
+		.attr("font-family", "sans-serif")
+		.attr("font-size", "10px")
+		.attr("text-anchor", "middle")
+		.attr("visibility", "hidden");
 
 	// // Add the tick instructions:
 	simulation.on("tick", () => {
