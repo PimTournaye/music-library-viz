@@ -2,8 +2,8 @@ const jsonUrl = "../data/graphData.json";
 import * as d3 from "d3";
 
 const margin = { top: 40, right: 30, bottom: 30, left: 40 };
-const width = window.innerWidth - margin.left - margin.right;
-const height = window.innerHeight - margin.top - margin.bottom;
+const width = window.innerWidth;
+const height = window.innerHeight;
 // const width = 800 - margin.left - margin.right;
 // const height = 800 - margin.top - margin.bottom;
 
@@ -106,16 +106,15 @@ data.forEach((artist) => {
 });
 
 // filter out links with value less than 2
-const filteredLinks = links.filter((d) => d.value > 1);
-
-if (DEBUG) console.log(links);
+// const filteredLinks = links.filter((d) => d.value > 1);
+links.filter((d) => d.value > 1);
 
 
 // Create simulation
 const simulation = d3.forceSimulation(nodes)
-  .force("link", d3.forceLink(filteredLinks).id(d => d.id)
-    .distance(30) // check this out and play with it later
-    .strength(0.1)
+  .force("link", d3.forceLink(links).id(d => d.id)
+    .distance(100) // check this out and play with it later
+    .strength(1)
   )
   .force("charge", d3.forceManyBody()
     .strength(-100)
@@ -127,7 +126,7 @@ const link = svg.append("g")
   .attr("stroke", "#999")
   .attr("stroke-opacity", 0.6)
   .selectAll("line")
-  .data(filteredLinks)
+  .data(links)
   .join("line")
   .attr("stroke-width", d => Math.sqrt(d.value));
 
@@ -153,6 +152,18 @@ const zoom = d3.zoom()
 zoomRect.call(zoom)
   .call(zoom.transform, d3.zoomIdentity.translate(0, 0));
 
+// Add labels 
+const labels = svg.append("g")
+  .attr("opacity", 0);
+
+labels.selectAll("text")
+  .data(nodes)
+  .enter()
+  .append("text")
+  .text(d => d.id)
+  .attr("text-anchor", "middle")
+  .attr("font-size", 12)
+  .attr("fill", "white");
 
 simulation.on("tick", () => {
   link
@@ -164,7 +175,37 @@ simulation.on("tick", () => {
   node
     .attr("cx", d => d.x)
     .attr("cy", d => d.y);
+
+    const tX = width / 2 - d3.mean(nodes, d => d.x);
+    const tY = height / 2 - d3.mean(nodes, d => d.y);  
+  
+    transform = transform.translate(tX, tY);
+
+
+  // labels
+  //   .attr("x", d => d.x)
+  //   .attr("y", d => d.y)
 });
+
+const centerX = width / 2;
+const centerY = height / 2;
+
+simulation
+  .force("x", d3.forceX(centerX)) 
+  .force("y", d3.forceY(centerY));
+
+node.on("mouseover", d => {
+  // Find corresponding label
+  const label = labels.select(`text[id="${d.id}"]`);
+
+  label
+    .text(`${d.id} (collaborator1, collaborator2)`)
+    .attr("opacity", 1);
+})
+  .on("mouseout", d => {
+    const label = labels.select(`text[id="${d.id}"]`);
+    label.attr("opacity", 0);
+  });
 
 function zoomed(event) {
   transform = event.transform;
@@ -172,5 +213,8 @@ function zoomed(event) {
   link.attr("transform", transform);
 }
 
+
+if (DEBUG) console.log(links);
+if (DEBUG) console.log(nodes);
 
 

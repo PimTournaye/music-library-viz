@@ -5,11 +5,25 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <div id="app">
       <div id="viz"></div>
     </div>
-    <script type="module" src="src/viz.js"></script>
+    <script type="module" src="src/sigma-viz.ts"></script>
+    <!-- <script type="module" src="src/d3-viz.js"></script> -->
   </body>
 </html>
+
+<style>
+  html,
+  body,
+  #viz {
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+</style>
