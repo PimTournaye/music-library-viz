@@ -1,0 +1,217 @@
+{
+  "data": {
+    "id": 733276,
+    "main_release": 6216889,
+    "most_recent_release": 6216889,
+    "resource_url": "https://api.discogs.com/masters/733276",
+    "uri": "https://www.discogs.com/master/733276-Ambrose-Akinmusire-The-Imagined-Savior-Is-Far-Easier-To-Paint",
+    "versions_url": "https://api.discogs.com/masters/733276/versions",
+    "main_release_url": "https://api.discogs.com/releases/6216889",
+    "most_recent_release_url": "https://api.discogs.com/releases/6216889",
+    "num_for_sale": 15,
+    "lowest_price": 5.32,
+    "images": [
+      {
+        "type": "primary",
+        "uri": "https://i.discogs.com/DeZ5bUr-HdU_i7r4Q8IVcyagGRXzmevc_MzH1S5IN00/rs:fit/g:sm/q:90/h:607/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+        "resource_url": "https://i.discogs.com/DeZ5bUr-HdU_i7r4Q8IVcyagGRXzmevc_MzH1S5IN00/rs:fit/g:sm/q:90/h:607/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+        "uri150": "https://i.discogs.com/XWG9iNMQbEoWWKVWB9WA5KAgM_5ubwely8baedj3Ms0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+        "width": 600,
+        "height": 607
+      },
+      {
+        "type": "secondary",
+        "uri": "https://i.discogs.com/vTbgswsrpnKL9DXJOjt7GiBtC7_nSp9OeMqPJqIltUM/rs:fit/g:sm/q:90/h:473/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTUyODcyOTA4/Ny02NjMxLmpwZWc.jpeg",
+        "resource_url": "https://i.discogs.com/vTbgswsrpnKL9DXJOjt7GiBtC7_nSp9OeMqPJqIltUM/rs:fit/g:sm/q:90/h:473/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTUyODcyOTA4/Ny02NjMxLmpwZWc.jpeg",
+        "uri150": "https://i.discogs.com/YHjo7U8F08Rd1_MNNJuItfCoU4L0Tqg5XGcyVl0nICc/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTUyODcyOTA4/Ny02NjMxLmpwZWc.jpeg",
+        "width": 600,
+        "height": 473
+      },
+      {
+        "type": "secondary",
+        "uri": "https://i.discogs.com/j5kc9ZeoXRqwm07-yNVu1hLQQS_Xyl5BtQYT5JKofVM/rs:fit/g:sm/q:90/h:575/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS0zNTMwLmpwZWc.jpeg",
+        "resource_url": "https://i.discogs.com/j5kc9ZeoXRqwm07-yNVu1hLQQS_Xyl5BtQYT5JKofVM/rs:fit/g:sm/q:90/h:575/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS0zNTMwLmpwZWc.jpeg",
+        "uri150": "https://i.discogs.com/dSUBiHi3e5oWKvam1eKZi1zKqziaLHyUC2XMoZ_N4c0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS0zNTMwLmpwZWc.jpeg",
+        "width": 600,
+        "height": 575
+      },
+      {
+        "type": "secondary",
+        "uri": "https://i.discogs.com/faoLDwGcXIn10s1POjv1pP3YXIauRdYtsmlV2eecMAk/rs:fit/g:sm/q:90/h:605/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTQxNDMwMjY1/Ni0zNTA1LmpwZWc.jpeg",
+        "resource_url": "https://i.discogs.com/faoLDwGcXIn10s1POjv1pP3YXIauRdYtsmlV2eecMAk/rs:fit/g:sm/q:90/h:605/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTQxNDMwMjY1/Ni0zNTA1LmpwZWc.jpeg",
+        "uri150": "https://i.discogs.com/u2BC07EbqHbeRtA9uduPhEdID5Fb01VEFn1uag0bXYo/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTQxNDMwMjY1/Ni0zNTA1LmpwZWc.jpeg",
+        "width": 600,
+        "height": 605
+      }
+    ],
+    "genres": [
+      "Jazz"
+    ],
+    "styles": [
+      "Avant-garde Jazz"
+    ],
+    "year": 2014,
+    "tracklist": [
+      {
+        "position": "1",
+        "type_": "track",
+        "title": "Marie Christie",
+        "duration": "3:15"
+      },
+      {
+        "position": "2",
+        "type_": "track",
+        "title": "As We Fight (Willie Penrose)",
+        "duration": "8:24"
+      },
+      {
+        "position": "3",
+        "type_": "track",
+        "title": "Our Basement (Ed)",
+        "extraartists": [
+          {
+            "name": "Becca Stevens",
+            "anv": "",
+            "join": "",
+            "role": "Featuring",
+            "tracks": "",
+            "id": 1152200,
+            "resource_url": "https://api.discogs.com/artists/1152200"
+          }
+        ],
+        "duration": "8:26"
+      },
+      {
+        "position": "4",
+        "type_": "track",
+        "title": "Vartha",
+        "duration": "7:46"
+      },
+      {
+        "position": "5",
+        "type_": "track",
+        "title": "Memo (G. Learson)",
+        "duration": "5:50"
+      },
+      {
+        "position": "6",
+        "type_": "track",
+        "title": "The Beauty Of Dissolving Portraits",
+        "duration": "4:13"
+      },
+      {
+        "position": "7",
+        "type_": "track",
+        "title": "Asiam (Joan)",
+        "extraartists": [
+          {
+            "name": "Theo Bleckmann",
+            "anv": "",
+            "join": "",
+            "role": "Featuring",
+            "tracks": "",
+            "id": 316500,
+            "resource_url": "https://api.discogs.com/artists/316500"
+          }
+        ],
+        "duration": "6:02"
+      },
+      {
+        "position": "8",
+        "type_": "track",
+        "title": "Bubbles (John William Sublett)",
+        "duration": "3:52"
+      },
+      {
+        "position": "9",
+        "type_": "track",
+        "title": "Ceaseless Inexhaustible Child (Cyntoia Brown)",
+        "extraartists": [
+          {
+            "name": "Cold Specks",
+            "anv": "",
+            "join": "",
+            "role": "Featuring",
+            "tracks": "",
+            "id": 2490507,
+            "resource_url": "https://api.discogs.com/artists/2490507"
+          }
+        ],
+        "duration": "6:12"
+      },
+      {
+        "position": "10",
+        "type_": "track",
+        "title": "Rollcall For Those Absent",
+        "duration": "3:38"
+      },
+      {
+        "position": "11",
+        "type_": "track",
+        "title": "J.E. Nilmah (Ecclesiastes 6:10)",
+        "duration": "5:11"
+      },
+      {
+        "position": "12",
+        "type_": "track",
+        "title": "Inflatedbyspinning",
+        "duration": "3:02"
+      },
+      {
+        "position": "13",
+        "type_": "track",
+        "title": "Richard (Conduit)",
+        "duration": "16:28"
+      }
+    ],
+    "artists": [
+      {
+        "name": "Ambrose Akinmusire",
+        "anv": "",
+        "join": "",
+        "role": "",
+        "tracks": "",
+        "id": 325243,
+        "resource_url": "https://api.discogs.com/artists/325243",
+        "thumbnail_url": "https://i.discogs.com/W5HIGZyGCFeOrErQ9bkoMBcvY76By8mCCLUQr-MfylU/rs:fit/g:sm/q:40/h:309/w:355/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTMyNTI0/My0xMzI1NTgzNjA2/LmpwZWc.jpeg"
+      }
+    ],
+    "title": "The Imagined Savior Is Far Easier To Paint",
+    "data_quality": "Correct",
+    "videos": [
+      {
+        "uri": "https://www.youtube.com/watch?v=-bDh81YVU7I",
+        "title": "Ambrose Akinmusire   Ceaseless Inexhaustible Child Cyntoia Brown Feat Cold Specks",
+        "description": "Ambrose Akinmusire en concert Mercredi 16 novembre, 20h30 à La Passerelle, scènenationale de Saint-Brieuc",
+        "duration": 373,
+        "embed": true
+      },
+      {
+        "uri": "https://www.youtube.com/watch?v=39OSgZ3bQBw",
+        "title": "Ambrose Akinmusire As We Fight",
+        "description": "From his last album, the imagined savior is far easier to paint, released on Blue Note.",
+        "duration": 385,
+        "embed": true
+      },
+      {
+        "uri": "https://www.youtube.com/watch?v=0dPfgVHpqhk",
+        "title": "Ambrose Akinmusire - Ceaseless Inexhaustible Child Cyntoia Brown Feat Cold Specks",
+        "description": "Great song from Ambrose Akinmusire 2014 album: Imagined Savior Is Far Easier To Paint\n\nAllmusic: http://www.allmusic.com/album/the-imagined-savior-is-far-easier-to-paint-mw0002605918\nAmazon Link: http://www.amazon.com/imagined-savior-far-easier-paint/dp/B",
+        "duration": 373,
+        "embed": true
+      },
+      {
+        "uri": "https://www.youtube.com/watch?v=1Y8-z9rXcZA",
+        "title": "Ambrose Akinmusire  Our Basement",
+        "description": "From his new album, the imagined savior is far easier to paint, released on Blue Note.",
+        "duration": 387,
+        "embed": true
+      }
+    ]
+  },
+  "rateLimit": {
+    "limit": 60,
+    "used": 1,
+    "remaining": 59
+  }
+}

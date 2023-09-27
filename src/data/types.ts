@@ -24,4 +24,24 @@ export interface Credit {
 export interface minimalAlbum {
   album:         string; 
   albumArtist:   string; 
+  artist:        string;
+}
+
+export interface AlbumData {
+  album:         string;
+  albumArtist:   string;
+  year:          number;
+  genres:        string[];
+  collaborators: Collaborator[];
+  albumArt:      string;
+}
+
+export interface Collaborator {
+  name:         string;
+  anv:          string | undefined;
+  join:         string | undefined;
+  role:         string;
+  tracks:       string | undefined;
+  id:           number | undefined;
+  resource_url: string | undefined;
 }

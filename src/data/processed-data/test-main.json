@@ -1,0 +1,602 @@
+{
+  "id": 6216889,
+  "status": "Accepted",
+  "year": 2014,
+  "resource_url": "https://api.discogs.com/releases/6216889",
+  "uri": "https://www.discogs.com/release/6216889-Ambrose-Akinmusire-The-Imagined-Savior-Is-Far-Easier-To-Paint",
+  "artists": [
+    {
+      "name": "Ambrose Akinmusire",
+      "anv": "",
+      "join": "",
+      "role": "",
+      "tracks": "",
+      "id": 325243,
+      "resource_url": "https://api.discogs.com/artists/325243",
+      "thumbnail_url": "https://i.discogs.com/W5HIGZyGCFeOrErQ9bkoMBcvY76By8mCCLUQr-MfylU/rs:fit/g:sm/q:40/h:309/w:355/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9BLTMyNTI0/My0xMzI1NTgzNjA2/LmpwZWc.jpeg"
+    }
+  ],
+  "artists_sort": "Ambrose Akinmusire",
+  "labels": [
+    {
+      "name": "Blue Note",
+      "catno": "B001972602",
+      "entity_type": "1",
+      "entity_type_name": "Label",
+      "id": 281,
+      "resource_url": "https://api.discogs.com/labels/281",
+      "thumbnail_url": "https://i.discogs.com/r5IHFsoyN3XopyO9jMnC37iFtWhgFzuNqkmjy3_vok4/rs:fit/g:sm/q:40/h:598/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9MLTI4MS0x/NTAyNjQwNjY3LTQ4/MzMucG5n.jpeg"
+    }
+  ],
+  "series": [],
+  "companies": [
+    {
+      "name": "Brooklyn Recording",
+      "catno": "",
+      "entity_type": "23",
+      "entity_type_name": "Recorded At",
+      "id": 271201,
+      "resource_url": "https://api.discogs.com/labels/271201",
+      "thumbnail_url": "https://i.discogs.com/vAbef5lQhvfATodo7GVwgeSIsOIsLbI3itQ3jot-Aks/rs:fit/g:sm/q:40/h:40/w:400/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9MLTI3MTIw/MS0xMzkwNjUzNTAx/LTk0ODEuanBlZw.jpeg"
+    }
+  ],
+  "formats": [
+    {
+      "name": "CD",
+      "qty": "1",
+      "descriptions": [
+        "Album"
+      ]
+    }
+  ],
+  "data_quality": "Needs Vote",
+  "community": {
+    "have": 69,
+    "want": 31,
+    "rating": {
+      "count": 9,
+      "average": 4
+    },
+    "submitter": {
+      "username": "disneyfacts",
+      "resource_url": "https://api.discogs.com/users/disneyfacts"
+    },
+    "contributors": [
+      {
+        "username": "disneyfacts",
+        "resource_url": "https://api.discogs.com/users/disneyfacts"
+      },
+      {
+        "username": "donghee.jang.1023",
+        "resource_url": "https://api.discogs.com/users/donghee.jang.1023"
+      },
+      {
+        "username": "jblemusicos",
+        "resource_url": "https://api.discogs.com/users/jblemusicos"
+      },
+      {
+        "username": "rxcory",
+        "resource_url": "https://api.discogs.com/users/rxcory"
+      },
+      {
+        "username": "nfnshdbzznzz",
+        "resource_url": "https://api.discogs.com/users/nfnshdbzznzz"
+      },
+      {
+        "username": "borderes",
+        "resource_url": "https://api.discogs.com/users/borderes"
+      }
+    ],
+    "data_quality": "Needs Vote",
+    "status": "Accepted"
+  },
+  "format_quantity": 1,
+  "date_added": "2014-10-22T00:18:55-07:00",
+  "date_changed": "2023-06-30T05:33:35-07:00",
+  "num_for_sale": 3,
+  "lowest_price": 9.5,
+  "master_id": 733276,
+  "master_url": "https://api.discogs.com/masters/733276",
+  "title": "The Imagined Savior Is Far Easier To Paint",
+  "country": "US",
+  "released": "2014-03-10",
+  "released_formatted": "10 Mar 2014",
+  "identifiers": [
+    {
+      "type": "Barcode",
+      "value": "6 02537 63573 3"
+    },
+    {
+      "type": "Matrix / Runout",
+      "value": "DIDX-1045683 1 A01"
+    },
+    {
+      "type": "Mastering SID Code",
+      "value": "IFPI L327"
+    },
+    {
+      "type": "Mould SID Code",
+      "value": "IFPI 50F4"
+    },
+    {
+      "type": "Other",
+      "value": "FBI Anti-Piracy Warning"
+    }
+  ],
+  "videos": [
+    {
+      "uri": "https://www.youtube.com/watch?v=-bDh81YVU7I",
+      "title": "Ambrose Akinmusire   Ceaseless Inexhaustible Child Cyntoia Brown Feat Cold Specks",
+      "description": "Ambrose Akinmusire en concert Mercredi 16 novembre, 20h30 à La Passerelle, scènenationale de Saint-Brieuc",
+      "duration": 373,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=39OSgZ3bQBw",
+      "title": "Ambrose Akinmusire As We Fight",
+      "description": "From his last album, the imagined savior is far easier to paint, released on Blue Note.",
+      "duration": 385,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=0dPfgVHpqhk",
+      "title": "Ambrose Akinmusire - Ceaseless Inexhaustible Child Cyntoia Brown Feat Cold Specks",
+      "description": "Great song from Ambrose Akinmusire 2014 album: Imagined Savior Is Far Easier To Paint\n\nAllmusic: http://www.allmusic.com/album/the-imagined-savior-is-far-easier-to-paint-mw0002605918\nAmazon Link: http://www.amazon.com/imagined-savior-far-easier-paint/dp/B",
+      "duration": 373,
+      "embed": true
+    },
+    {
+      "uri": "https://www.youtube.com/watch?v=1Y8-z9rXcZA",
+      "title": "Ambrose Akinmusire  Our Basement",
+      "description": "From his new album, the imagined savior is far easier to paint, released on Blue Note.",
+      "duration": 387,
+      "embed": true
+    }
+  ],
+  "genres": [
+    "Jazz"
+  ],
+  "styles": [
+    "Avant-garde Jazz"
+  ],
+  "tracklist": [
+    {
+      "position": "1",
+      "type_": "track",
+      "title": "Marie Christie",
+      "duration": "3:15"
+    },
+    {
+      "position": "2",
+      "type_": "track",
+      "title": "As We Fight (Willie Penrose)",
+      "duration": "8:24"
+    },
+    {
+      "position": "3",
+      "type_": "track",
+      "title": "Our Basement (Ed)",
+      "extraartists": [
+        {
+          "name": "Becca Stevens",
+          "anv": "",
+          "join": "",
+          "role": "Featuring",
+          "tracks": "",
+          "id": 1152200,
+          "resource_url": "https://api.discogs.com/artists/1152200"
+        }
+      ],
+      "duration": "8:26"
+    },
+    {
+      "position": "4",
+      "type_": "track",
+      "title": "Vartha",
+      "duration": "7:46"
+    },
+    {
+      "position": "5",
+      "type_": "track",
+      "title": "Memo (G. Learson)",
+      "duration": "5:50"
+    },
+    {
+      "position": "6",
+      "type_": "track",
+      "title": "The Beauty Of Dissolving Portraits",
+      "duration": "4:13"
+    },
+    {
+      "position": "7",
+      "type_": "track",
+      "title": "Asiam (Joan)",
+      "extraartists": [
+        {
+          "name": "Theo Bleckmann",
+          "anv": "",
+          "join": "",
+          "role": "Featuring",
+          "tracks": "",
+          "id": 316500,
+          "resource_url": "https://api.discogs.com/artists/316500"
+        }
+      ],
+      "duration": "6:02"
+    },
+    {
+      "position": "8",
+      "type_": "track",
+      "title": "Bubbles (John William Sublett)",
+      "duration": "3:52"
+    },
+    {
+      "position": "9",
+      "type_": "track",
+      "title": "Ceaseless Inexhaustible Child (Cyntoia Brown)",
+      "extraartists": [
+        {
+          "name": "Cold Specks",
+          "anv": "",
+          "join": "",
+          "role": "Featuring",
+          "tracks": "",
+          "id": 2490507,
+          "resource_url": "https://api.discogs.com/artists/2490507"
+        }
+      ],
+      "duration": "6:12"
+    },
+    {
+      "position": "10",
+      "type_": "track",
+      "title": "Rollcall For Those Absent",
+      "duration": "3:38"
+    },
+    {
+      "position": "11",
+      "type_": "track",
+      "title": "J.E. Nilmah (Ecclesiastes 6:10)",
+      "duration": "5:11"
+    },
+    {
+      "position": "12",
+      "type_": "track",
+      "title": "Inflatedbyspinning",
+      "duration": "3:02"
+    },
+    {
+      "position": "13",
+      "type_": "track",
+      "title": "Richard (Conduit)",
+      "duration": "16:28"
+    }
+  ],
+  "extraartists": [
+    {
+      "name": "Don Was",
+      "anv": "",
+      "join": "",
+      "role": "A&R",
+      "tracks": "",
+      "id": 62920,
+      "resource_url": "https://api.discogs.com/artists/62920"
+    },
+    {
+      "name": "Harish Raghavan",
+      "anv": "",
+      "join": "",
+      "role": "Bass",
+      "tracks": "2, 4 to 9, 11, 12",
+      "id": 3816727,
+      "resource_url": "https://api.discogs.com/artists/3816727"
+    },
+    {
+      "name": "Maria Jeffers",
+      "anv": "",
+      "join": "",
+      "role": "Cello",
+      "tracks": "3, 6, 12",
+      "id": 778068,
+      "resource_url": "https://api.discogs.com/artists/778068"
+    },
+    {
+      "name": "Ambrose Akinmusire",
+      "anv": "",
+      "join": "",
+      "role": "Composed By",
+      "tracks": "1, 2, 4 to 12",
+      "id": 325243,
+      "resource_url": "https://api.discogs.com/artists/325243"
+    },
+    {
+      "name": "Becca Stevens",
+      "anv": "",
+      "join": "",
+      "role": "Composed By",
+      "tracks": "3",
+      "id": 1152200,
+      "resource_url": "https://api.discogs.com/artists/1152200"
+    },
+    {
+      "name": "Lawrence Azerrad",
+      "anv": "",
+      "join": "",
+      "role": "Design",
+      "tracks": "",
+      "id": 1834921,
+      "resource_url": "https://api.discogs.com/artists/1834921"
+    },
+    {
+      "name": "Justin Brown (4)",
+      "anv": "",
+      "join": "",
+      "role": "Drums",
+      "tracks": "2 to 5, 7 to 9, 11",
+      "id": 1159648,
+      "resource_url": "https://api.discogs.com/artists/1159648"
+    },
+    {
+      "name": "Theo Bleckmann",
+      "anv": "",
+      "join": "",
+      "role": "Effects",
+      "tracks": "7",
+      "id": 316500,
+      "resource_url": "https://api.discogs.com/artists/316500"
+    },
+    {
+      "name": "Elena Pinderhughes",
+      "anv": "",
+      "join": "",
+      "role": "Flute",
+      "tracks": "6, 12",
+      "id": 3466752,
+      "resource_url": "https://api.discogs.com/artists/3466752"
+    },
+    {
+      "name": "Charles Altura",
+      "anv": "",
+      "join": "",
+      "role": "Guitar",
+      "tracks": "2, 4, 5, 8, 9, 11",
+      "id": 1161529,
+      "resource_url": "https://api.discogs.com/artists/1161529"
+    },
+    {
+      "name": "Ambrose Akinmusire",
+      "anv": "",
+      "join": "",
+      "role": "Keyboards",
+      "tracks": "10",
+      "id": 325243,
+      "resource_url": "https://api.discogs.com/artists/325243"
+    },
+    {
+      "name": "Cold Specks",
+      "anv": "",
+      "join": "",
+      "role": "Lyrics By",
+      "tracks": "9",
+      "id": 2490507,
+      "resource_url": "https://api.discogs.com/artists/2490507"
+    },
+    {
+      "name": "Theo Bleckmann",
+      "anv": "T. Bleckmann",
+      "join": "",
+      "role": "Lyrics By",
+      "tracks": "7",
+      "id": 316500,
+      "resource_url": "https://api.discogs.com/artists/316500"
+    },
+    {
+      "name": "David Darlington",
+      "anv": "Dave Darlington",
+      "join": "",
+      "role": "Mastered By",
+      "tracks": "",
+      "id": 510758,
+      "resource_url": "https://api.discogs.com/artists/510758"
+    },
+    {
+      "name": "Sam Harris (8)",
+      "anv": "",
+      "join": "",
+      "role": "Mellotron",
+      "tracks": "10",
+      "id": 2827534,
+      "resource_url": "https://api.discogs.com/artists/2827534"
+    },
+    {
+      "name": "David Darlington",
+      "anv": "Dave Darlington",
+      "join": "",
+      "role": "Mixed By",
+      "tracks": "",
+      "id": 510758,
+      "resource_url": "https://api.discogs.com/artists/510758"
+    },
+    {
+      "name": "Ambrose Akinmusire",
+      "anv": "",
+      "join": "",
+      "role": "Percussion",
+      "tracks": "9",
+      "id": 325243,
+      "resource_url": "https://api.discogs.com/artists/325243"
+    },
+    {
+      "name": "Autumn DeWilde",
+      "anv": "Autumn De Wilde",
+      "join": "",
+      "role": "Photography By",
+      "tracks": "",
+      "id": 545845,
+      "resource_url": "https://api.discogs.com/artists/545845"
+    },
+    {
+      "name": "Sam Harris (8)",
+      "anv": "",
+      "join": "",
+      "role": "Piano",
+      "tracks": "1 to 5, 7 to 9, 11",
+      "id": 2827534,
+      "resource_url": "https://api.discogs.com/artists/2827534"
+    },
+    {
+      "name": "Ambrose Akinmusire",
+      "anv": "",
+      "join": "",
+      "role": "Producer",
+      "tracks": "",
+      "id": 325243,
+      "resource_url": "https://api.discogs.com/artists/325243"
+    },
+    {
+      "name": "Muna Blake",
+      "anv": "",
+      "join": "",
+      "role": "Read By",
+      "tracks": "10",
+      "id": 3816725,
+      "resource_url": "https://api.discogs.com/artists/3816725"
+    },
+    {
+      "name": "Andy Taub",
+      "anv": "",
+      "join": "",
+      "role": "Recorded By",
+      "tracks": "1 to 8, 10 to 12",
+      "id": 487427,
+      "resource_url": "https://api.discogs.com/artists/487427"
+    },
+    {
+      "name": "Jack Clow",
+      "anv": "",
+      "join": "",
+      "role": "Recorded By",
+      "tracks": "9",
+      "id": 2692943,
+      "resource_url": "https://api.discogs.com/artists/2692943"
+    },
+    {
+      "name": "Jim Anderson",
+      "anv": "",
+      "join": "",
+      "role": "Recorded By",
+      "tracks": "9",
+      "id": 282077,
+      "resource_url": "https://api.discogs.com/artists/282077"
+    },
+    {
+      "name": "Walter Smith III",
+      "anv": "Walter Smith",
+      "join": "",
+      "role": "Tenor Saxophone",
+      "tracks": "2, 5, 7, 8",
+      "id": 1778471,
+      "resource_url": "https://api.discogs.com/artists/1778471"
+    },
+    {
+      "name": "Ambrose Akinmusire",
+      "anv": "",
+      "join": "",
+      "role": "Trumpet",
+      "tracks": "1 to 9, 11",
+      "id": 325243,
+      "resource_url": "https://api.discogs.com/artists/325243"
+    },
+    {
+      "name": "Kallie Ciechomski",
+      "anv": "",
+      "join": "",
+      "role": "Viola",
+      "tracks": "3, 6, 12",
+      "id": 3816726,
+      "resource_url": "https://api.discogs.com/artists/3816726"
+    },
+    {
+      "name": "Brooke Quiggins Saulnier",
+      "anv": "",
+      "join": "",
+      "role": "Violin",
+      "tracks": "3, 6, 12",
+      "id": 3816728,
+      "resource_url": "https://api.discogs.com/artists/3816728"
+    },
+    {
+      "name": "Maria Im",
+      "anv": "",
+      "join": "",
+      "role": "Violin",
+      "tracks": "3, 6, 12",
+      "id": 3177975,
+      "resource_url": "https://api.discogs.com/artists/3177975"
+    },
+    {
+      "name": "Becca Stevens",
+      "anv": "",
+      "join": "",
+      "role": "Vocals",
+      "tracks": "3",
+      "id": 1152200,
+      "resource_url": "https://api.discogs.com/artists/1152200"
+    },
+    {
+      "name": "Cold Specks",
+      "anv": "",
+      "join": "",
+      "role": "Vocals",
+      "tracks": "9",
+      "id": 2490507,
+      "resource_url": "https://api.discogs.com/artists/2490507"
+    },
+    {
+      "name": "Theo Bleckmann",
+      "anv": "",
+      "join": "",
+      "role": "Vocals",
+      "tracks": "7",
+      "id": 316500,
+      "resource_url": "https://api.discogs.com/artists/316500"
+    }
+  ],
+  "images": [
+    {
+      "type": "primary",
+      "uri": "https://i.discogs.com/DeZ5bUr-HdU_i7r4Q8IVcyagGRXzmevc_MzH1S5IN00/rs:fit/g:sm/q:90/h:607/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+      "resource_url": "https://i.discogs.com/DeZ5bUr-HdU_i7r4Q8IVcyagGRXzmevc_MzH1S5IN00/rs:fit/g:sm/q:90/h:607/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+      "uri150": "https://i.discogs.com/XWG9iNMQbEoWWKVWB9WA5KAgM_5ubwely8baedj3Ms0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+      "width": 600,
+      "height": 607
+    },
+    {
+      "type": "secondary",
+      "uri": "https://i.discogs.com/vTbgswsrpnKL9DXJOjt7GiBtC7_nSp9OeMqPJqIltUM/rs:fit/g:sm/q:90/h:473/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTUyODcyOTA4/Ny02NjMxLmpwZWc.jpeg",
+      "resource_url": "https://i.discogs.com/vTbgswsrpnKL9DXJOjt7GiBtC7_nSp9OeMqPJqIltUM/rs:fit/g:sm/q:90/h:473/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTUyODcyOTA4/Ny02NjMxLmpwZWc.jpeg",
+      "uri150": "https://i.discogs.com/YHjo7U8F08Rd1_MNNJuItfCoU4L0Tqg5XGcyVl0nICc/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTUyODcyOTA4/Ny02NjMxLmpwZWc.jpeg",
+      "width": 600,
+      "height": 473
+    },
+    {
+      "type": "secondary",
+      "uri": "https://i.discogs.com/j5kc9ZeoXRqwm07-yNVu1hLQQS_Xyl5BtQYT5JKofVM/rs:fit/g:sm/q:90/h:575/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS0zNTMwLmpwZWc.jpeg",
+      "resource_url": "https://i.discogs.com/j5kc9ZeoXRqwm07-yNVu1hLQQS_Xyl5BtQYT5JKofVM/rs:fit/g:sm/q:90/h:575/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS0zNTMwLmpwZWc.jpeg",
+      "uri150": "https://i.discogs.com/dSUBiHi3e5oWKvam1eKZi1zKqziaLHyUC2XMoZ_N4c0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS0zNTMwLmpwZWc.jpeg",
+      "width": 600,
+      "height": 575
+    },
+    {
+      "type": "secondary",
+      "uri": "https://i.discogs.com/faoLDwGcXIn10s1POjv1pP3YXIauRdYtsmlV2eecMAk/rs:fit/g:sm/q:90/h:605/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTQxNDMwMjY1/Ni0zNTA1LmpwZWc.jpeg",
+      "resource_url": "https://i.discogs.com/faoLDwGcXIn10s1POjv1pP3YXIauRdYtsmlV2eecMAk/rs:fit/g:sm/q:90/h:605/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTQxNDMwMjY1/Ni0zNTA1LmpwZWc.jpeg",
+      "uri150": "https://i.discogs.com/u2BC07EbqHbeRtA9uduPhEdID5Fb01VEFn1uag0bXYo/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTQxNDMwMjY1/Ni0zNTA1LmpwZWc.jpeg",
+      "width": 600,
+      "height": 605
+    }
+  ],
+  "thumb": "https://i.discogs.com/XWG9iNMQbEoWWKVWB9WA5KAgM_5ubwely8baedj3Ms0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+  "estimated_weight": 85,
+  "blocked_from_sale": false
+}

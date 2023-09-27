@@ -1,0 +1,61 @@
+{
+  "data": {
+    "pagination": {
+      "page": 1,
+      "pages": 1,
+      "per_page": 50,
+      "items": 1,
+      "urls": {}
+    },
+    "results": [
+      {
+        "country": "US",
+        "year": "2014",
+        "format": [
+          "CD",
+          "Album"
+        ],
+        "label": [
+          "Blue Note",
+          "Brooklyn Recording"
+        ],
+        "type": "master",
+        "genre": [
+          "Jazz"
+        ],
+        "style": [
+          "Avant-garde Jazz"
+        ],
+        "id": 733276,
+        "barcode": [
+          "6 02537 63573 3",
+          "DIDX-1045683 1 A01",
+          "IFPI L327",
+          "IFPI 50F4",
+          "FBI Anti-Piracy Warning"
+        ],
+        "user_data": {
+          "in_wantlist": false,
+          "in_collection": false
+        },
+        "master_id": 733276,
+        "master_url": "https://api.discogs.com/masters/733276",
+        "uri": "/master/733276-Ambrose-Akinmusire-The-Imagined-Savior-Is-Far-Easier-To-Paint",
+        "catno": "B001972602",
+        "title": "Ambrose Akinmusire - The Imagined Savior Is Far Easier To Paint",
+        "thumb": "https://i.discogs.com/XWG9iNMQbEoWWKVWB9WA5KAgM_5ubwely8baedj3Ms0/rs:fit/g:sm/q:40/h:150/w:150/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+        "cover_image": "https://i.discogs.com/DeZ5bUr-HdU_i7r4Q8IVcyagGRXzmevc_MzH1S5IN00/rs:fit/g:sm/q:90/h:607/w:600/czM6Ly9kaXNjb2dz/LWRhdGFiYXNlLWlt/YWdlcy9SLTYyMTY4/ODktMTU0MDkzNDYy/MS01MTkwLmpwZWc.jpeg",
+        "resource_url": "https://api.discogs.com/masters/733276",
+        "community": {
+          "want": 474,
+          "have": 465
+        }
+      }
+    ]
+  },
+  "rateLimit": {
+    "limit": 60,
+    "used": 0,
+    "remaining": 60
+  }
+}
