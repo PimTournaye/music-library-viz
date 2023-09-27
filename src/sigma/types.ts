@@ -20,3 +20,8 @@ export interface Credit {
   id:            number;
   thumbnail_url: string;
 }
+
+export interface minimalAlbum {
+  album:         string; 
+  albumArtist:   string; 
+}
