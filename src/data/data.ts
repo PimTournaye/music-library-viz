@@ -54,6 +54,14 @@ const discogs = client.database();
 const getDiscogsData = async (album: minimalAlbum) => {
   try {
     let release: { data: any; rateLimit: any; };
+    // if we have no requests left, wait for a minute and 5 seconds
+    if (discogsRatelimitRemaining === 0) {
+      console.log(`Rate limit hit, waiting for ${timeoutDuration / 1000} seconds...`);
+      await new Promise(resolve => setTimeout(resolve, timeoutDuration));
+      // Reset the counter
+      discogsRatelimitRemaining = 60 - 1;
+    }
+
     // Try a general search first
     release = await discogs.search({ query: album.album, type: 'master', artist: album.albumArtist });
     // If we get no results, try again with the 'artist', otherwise throw an error
@@ -87,13 +95,13 @@ const getDiscogsData = async (album: minimalAlbum) => {
       albumArt: main.data.images[0].uri,
     }
     // Adjust the rate limit counter
-    discogsRatelimitRemaining = main.rateLimit.remaining;
+    // discogsRatelimitRemaining = main.rateLimit.remaining;
     return data;
   } catch (error) {
     // Log the error to the console
     console.error(`Error while fetching data for album "${album.album}" by "${album.albumArtist}":`, error);
     // Add the error to the error log
-    logError(`Error while fetching data for album "${album.album}" by "${album.albumArtist}": ${error}\n`);
+    logError(`Error while fetching data for album "${album.album}" by "${album.albumArtist}"\n`);
   }
 }
 
@@ -109,28 +117,31 @@ const timer = setInterval(() => {
 
 // Finally we can get the Discogs data for each album
 let fetcher = new Promise<void>((resolve, reject) => {
+  console.log(`Fetching data for ${albums.length} albums...`);
   albums.forEach(async (album: minimalAlbum, i, arr) => {
+
+
+
     // Check how many requests we have left
     if (discogsRatelimitRemaining === 0) {
       // If we have no requests left, wait for a minute and 5 seconds
       console.log(`Rate limit hit, waiting for ${timeoutDuration / 1000} seconds...`);
       await new Promise(resolve => setTimeout(resolve, timeoutDuration));
       // Reset the counter
-      discogsRatelimitRemaining = 60;
+      discogsRatelimitRemaining = 60 - 1;
     }
     // Get the Discogs data for the album
     const discogsData = await getDiscogsData(album);
-
     // write the data to the file incrementally in case something goes wrong
     addToFile(JSON.stringify(discogsData) + ',\n');
-
     // If we get data, add it to the final data array
     if (discogsData) finalData.push(discogsData);
-
+    // If we're at the last album, resolve the promise
     if (i === arr.length - 1) resolve();
   })
 });
 
+// Once resolving the promise, do some cleanup, do the finale, and write the final data to a file
 fetcher.then(() => {
   // Stop the timer
   clearInterval(timer);
@@ -139,7 +150,7 @@ fetcher.then(() => {
   const elapsed = (endTime.getTime() - startTime.getTime()) / 1000;
   const minutes = Math.floor(elapsed / 60);
   const seconds = Math.floor(elapsed % 60);
-  console.log(`Done! It took ${minutes}:${seconds} to fetch the data.`);
+  console.log(`Done! It took ${minutes}:${seconds} to fetch the data of ${albums.length} albums.`);
   // Write the final data to a file
   Bun.write('final-data.json', JSON.stringify(finalData));
   // Close the file writers
