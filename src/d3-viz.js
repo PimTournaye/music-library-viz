@@ -1,4 +1,4 @@
-const jsonUrl = "../data/graphData.json";
+const jsonUrl = "src/old-data/graphData.json";
 import * as d3 from "d3";
 
 const margin = { top: 40, right: 30, bottom: 30, left: 40 };

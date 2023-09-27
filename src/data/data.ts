@@ -42,7 +42,7 @@ if (PRUNE_RAW_DATA) {
 // We'll use the Discogs API to do this
 // The API has a rate limit of 60 requests per minute, so we'll have to be careful
 let discogsRatelimitRemaining: number = 60; // initialize the rate limit counter
-let timeoutDuration: number = 62_000; // initialize the timeout duration
+let timeoutDuration: number = 70000; // initialize the timeout duration
 
 // Create an array to hold the final data
 let finalData: AlbumData[] = [];
@@ -51,38 +51,42 @@ let finalData: AlbumData[] = [];
 const discogs = client.database();
 
 // Create a function to get the Discogs data for an album
-const getDiscogsData = async (album: minimalAlbum) => {
+const getDiscogsData = async (album: minimalAlbum): Promise<AlbumData | void> => {
+  console.log(`Fetching data for album "${album.album}" by "${album.albumArtist}"...`);
   try {
-    let release: { data: any; rateLimit: any; };
-    // if we have no requests left, wait for a minute and 5 seconds
-    if (discogsRatelimitRemaining === 0) {
-      console.log(`Rate limit hit, waiting for ${timeoutDuration / 1000} seconds...`);
-      await new Promise(resolve => setTimeout(resolve, timeoutDuration));
-      // Reset the counter
-      discogsRatelimitRemaining = 60 - 1;
-    }
-
     // Try a general search first
-    release = await discogs.search({ query: album.album, type: 'master', artist: album.albumArtist });
+    let release = await discogs.search({ query: album.album, type: 'master', artist: album.albumArtist });
+
+    // console.log(release.data.results[0]); // this works
+
     // If we get no results, try again with the 'artist', otherwise throw an error
-    if (release.data.results.length === 0) {
+    if (release.data.results.length === 0 || !release) {
+      console.log(`No results for album "${album.album}" by "${album.albumArtist}" - trying again with the 'artist' field...`);
       release = await discogs.search({ query: album.album, type: 'master', artist: album.artist });
-      if (release.data.results.length === 0) {
+      // If we still get no results, log an error and return to move on to the next album
+      if (release.data.results.length === 0 || !release) {
         logError(`Error while fetching data for album "${album.album}" by "${album.albumArtist}"\n`);
+        console.log(`No results for album "${album.album}" by "${album.artist} using the 'artist' field - moving on to the next album..."`);
         return;
       }
     }
     // Search for the master release with the ID we got from the search
-    const masterID = release.data.results[0].master_id;
+    const masterID = release.data.results[0].master_id as number;
     const master = await discogs.getMaster(masterID);
     // Get the main release through the ID given in the master release
     const mainID = master.data.main_release;
     const main = await discogs.getRelease(mainID);
 
+    // console.log('DONE WITH SEARCHES');
+
+
     // Filter the extraartists array for the roles we want
     const credits = main.data.extraartists.filter((credit: { role: string; }) => roles.includes(credit.role));
     // Filter a second time to exclude the album artist in case they have a role listed here
     const collaborators = credits.filter((credit: { name: string; }) => credit.name !== album.albumArtist);
+
+    // console.log('DONE WITH FILTERING');
+
 
     // Aggregate the data we want
     const data = {
@@ -94,8 +98,20 @@ const getDiscogsData = async (album: minimalAlbum) => {
       collaborators: collaborators,
       albumArt: main.data.images[0].uri,
     }
+
+    // DEBUG TIME
+    // console.group('Debug');
+    // console.log(`Album: ${data}`);
+    // console.log(release.data.results[0]);
+    // console.log(master.data);
+    // console.log(main.data);
+    // console.log(`Credits: ${credits}`);
+    // console.log(`Collaborators: ${collaborators}`);
+    // console.groupEnd();
+
+
     // Adjust the rate limit counter
-    // discogsRatelimitRemaining = main.rateLimit.remaining;
+    discogsRatelimitRemaining = main.rateLimit.remaining - 3; // removing extra since we're making 3 requests per album
     return data;
   } catch (error) {
     // Log the error to the console
@@ -116,29 +132,53 @@ const timer = setInterval(() => {
 }, 60 * 1000);
 
 // Finally we can get the Discogs data for each album
-let fetcher = new Promise<void>((resolve, reject) => {
+let fetcher = new Promise<void>(async (resolve, reject) => {
   console.log(`Fetching data for ${albums.length} albums...`);
-  albums.forEach(async (album: minimalAlbum, i, arr) => {
 
+  
+  // albums.forEach(async (album: minimalAlbum, i, arr) => {
+  //   // Check how many requests we have left
+  //   if (discogsRatelimitRemaining === 0) {
+  //     // If we have no requests left, wait for a minute and 5 seconds
+  //     console.log(`Rate limit hit, waiting for ${timeoutDuration / 1000} seconds...`);
+  //     await new Promise(resolve => setTimeout(resolve, timeoutDuration));
+  //     // Reset the counter
+  //     discogsRatelimitRemaining = 60;
+  //   }
+  //   // Get the Discogs data for the album
+  //   const discogsData = await getDiscogsData(album);
+  //   // write the data to the file incrementally in case something goes wrong
+  //   addToFile(JSON.stringify(discogsData) + ',\n');
+  //   // If we get data, add it to the final data array
+  //   if (discogsData) finalData.push(discogsData);
+  //   // If we're at the last album, resolve the promise
+  //   if (i === arr.length - 1) resolve();
+  // })
 
-
+  // try to do it with a for loop instead
+  for (amountOfAlbumsDone = 0; amountOfAlbumsDone < albums.length; amountOfAlbumsDone++) {
     // Check how many requests we have left
-    if (discogsRatelimitRemaining === 0) {
+    if (discogsRatelimitRemaining <= 0) {
       // If we have no requests left, wait for a minute and 5 seconds
       console.log(`Rate limit hit, waiting for ${timeoutDuration / 1000} seconds...`);
       await new Promise(resolve => setTimeout(resolve, timeoutDuration));
-      // Reset the counter
-      discogsRatelimitRemaining = 60 - 1;
     }
     // Get the Discogs data for the album
-    const discogsData = await getDiscogsData(album);
-    // write the data to the file incrementally in case something goes wrong
-    addToFile(JSON.stringify(discogsData) + ',\n');
-    // If we get data, add it to the final data array
-    if (discogsData) finalData.push(discogsData);
+    const discogsData = await getDiscogsData(albums[amountOfAlbumsDone]);
+    // Log the progress
+    console.log(`Fetched data for ${amountOfAlbumsDone + 1} of ${albums.length} albums...`);
+    // console.log(discogsData);
+
+    if (discogsData !== undefined) {
+      // If we get data, add it to the final data array
+      finalData.push(discogsData);
+      // write the data to the file incrementally in case something goes wrong
+      addToFile(JSON.stringify(discogsData) + ',\n');
+    }
     // If we're at the last album, resolve the promise
-    if (i === arr.length - 1) resolve();
-  })
+    if (amountOfAlbumsDone === albums.length - 1) resolve();
+    console.log(amountOfAlbumsDone);
+  }
 });
 
 // Once resolving the promise, do some cleanup, do the finale, and write the final data to a file
