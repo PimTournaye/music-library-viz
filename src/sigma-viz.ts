@@ -88,15 +88,16 @@ data.forEach((album: AlbumData) => {
     if (!edgeExists) {
       graph.addEdge(source, collaborator.name, {
         size: 1,
-        color: rgb(105,179,162, alpha),
+        // color: rgb(105,179,162, alpha),
+        color: "#80808020",
       });
     } else {
       // If the edge does exist, increment the size
       const edge = graph.getEdgeAttributes(source, collaborator.name);
       graph.updateEdgeAttribute(source, collaborator.name, "size", () => edge.size + 1);
-      // Update the alpha value
-      alpha += 5;
-      graph.updateEdgeAttribute(source, collaborator.name, "color", () => rgb(128,128,128, alpha));
+      // // Update the alpha value
+      // alpha += 5;
+      // graph.updateEdgeAttribute(source, collaborator.name, "color", () => rgb(128,128,128, alpha));
     }
   });
 });
@@ -135,6 +136,8 @@ renderer.setSetting("nodeReducer", (node, data) => {
 
   if (state.hoveredNeighbors && !state.hoveredNeighbors.has(node) && state.hoveredNode !== node) {
     res.label = "";
+    // Set alpha to 0.05
+    // res.color = "";
     res.color = "";
   }
 
