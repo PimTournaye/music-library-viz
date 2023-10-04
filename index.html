@@ -1,17 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="src/style.css">
-    <title>Vite + TS</title>
-  </head>
-  <body>
-      <div id="viz"></div>
-    <!-- <script type="module" src="/src/d3-viz.js"></script> -->
-    <script type="module" src="/src/sigma-viz.ts"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="src/style.css">
+  <title>Vite + TS</title>
+</head>
+
+<body>
+  <div id="credits">
+    <h1>
+      Made by Pim Tournaye
+    </h1>
+
+    <div>
+      
+      <a class="btn bn37" href="http://pimtournaye.xyz">Website</a>
+      <a class="btn bn37" href="https://github.com/PimTournaye/music-library-viz/">Source</a>
+    </div>
+
+  </div>
+  <div id="viz"></div>
+  <!-- <script type="module" src="/src/d3-viz.js"></script> -->
+  <script type="module" src="/src/sigma-viz.ts"></script>
+</body>
+
 </html>
 
 <style>
@@ -25,4 +40,53 @@
     width: 100vw;
     height: 100vh;
   }
+
+  #credits {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 10%;
+    padding-right: 10%;
+    padding-top: 16px;
+  }
+
+  h1 {
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    font-size: 2rem;
+    color: #fff;
+    background-color: #000;
+    padding: 0.5rem;
+    z-index: 100;
+  }
+
+  .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.7rem 2rem;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  backface-visibility: hidden;
+  border: 0.3rem solid transparent;
+  border-radius: 3rem;
+}
+
+.bn37 {
+  border-color: transparent;
+  background-color: #fff;
+  color: #000;
+  transition: transform 0.2s cubic-bezier(0.235, 0, 0.05, 0.95);
+}
+  
+.bn37:hover {
+  transform: perspective(1px) scale3d(1.044, 1.044, 1) translateZ(0) !important;
+}
 </style>
