@@ -4,7 +4,10 @@ import Sigma from "sigma";
 
 import { generateArtistList } from "./utils/generateArtistList";
 import { AlbumData } from "./data/types";
-import { rgb } from "d3";
+
+//////////////////////////
+// SETTING UP THE GRAPH //
+//////////////////////////
 
 // A boolean to switch of some edges
 const showOnlyFrequentCollaborators = true;
@@ -12,49 +15,19 @@ const showOnlyFrequentCollaborators = true;
 // Import the data
 const jsonUrl = "src/data/final-data.json";
 // Read the data
-const data: AlbumData[] = await fetch(jsonUrl).then((res) => res.json());
+const fetchData = async () => await fetch(jsonUrl).then((res) => res.json());
+const data: AlbumData[] = await fetchData();
 
 // Set up the graph
 // @ts-ignore
 const container = document.getElementById("viz")!; // the ! appended to the end of the variable name tells TypeScript that we know this element exists
 const graph = new Graph();
-
 // Render the graph
 const renderer = new Sigma(graph, container);
 
-const state: State = {};
-
-// Type and declare internal state:
-interface State {
-  hoveredNode?: string;
-
-  // State derived from query:
-  selectedNode?: string;
-
-  // State derived from hovered node:
-  hoveredNeighbors?: Set<string>;
-  hoveredEdges?: Set<string>;
-}
-
-function setHoveredNode(node?: string) {
-  if (node) {
-    state.hoveredNode = node;
-    state.hoveredNeighbors = new Set(graph.neighbors(node));
-  } else {
-    state.hoveredNode = undefined;
-    state.hoveredNeighbors = undefined;
-  }
-  // Refresh rendering:
-  renderer.refresh();
-}
-
-// Bind graph interactions:
-renderer.on("enterNode", ({ node }) => {
-  setHoveredNode(node);
-});
-renderer.on("leaveNode", () => {
-  setHoveredNode(undefined);
-});
+////////////////////////////
+/// GENERATING THE GRAPH ///
+////////////////////////////
 
 // Get a unique list of all artist names so we can create nodes for them. Outputs an array of strings like ['Aaron Diehl', 'Kendrick Scott Oracle', ...]
 const artists: Set<string> = generateArtistList(data);
@@ -65,7 +38,7 @@ artists.forEach((artist) => {
   graph.addNode(artist, {
     x: Math.random(),
     y: Math.random(),
-    size: 7,
+    size: 4,
     color: "#69b3a2",
     label: artist,
   });
@@ -128,6 +101,57 @@ if (showOnlyFrequentCollaborators) {
   });
 }
 
+const sampledArtists = () => {
+  // Get a top 20 list of artists with the most collaborators/neighbours
+  const nodes = graph.nodes();
+  const sortedNodes = nodes.sort((a, b) => graph.neighbors(b).length - graph.neighbors(a).length);
+  const top20 = sortedNodes.slice(0, 20);
+  return top20;
+}
+
+// Sample four random artists from the top 20 to use as the starting nodes
+const top20 = sampledArtists();
+const startingNodes = top20.sort(() => Math.random() - Math.random()).slice(0, 4);
+
+/////////////////////////////
+// SETTING UP INTERACTIONS //
+/////////////////////////////
+
+// Type and declare internal state:
+interface State {
+  hoveredNode?: string;
+  
+  // State derived from query:
+  selectedNode?: string;
+  
+  // State derived from hovered node:
+  hoveredNeighbors?: Set<string>;
+  hoveredEdges?: Set<string>;
+}
+const state: State = {};
+
+function setHoveredNode(node?: string) {
+  if (node) {
+    state.hoveredNode = node;
+    state.hoveredNeighbors = new Set(graph.neighbors(node));
+  } else {
+    state.hoveredNode = undefined;
+    state.hoveredNeighbors = undefined;
+  }
+  // Refresh rendering:
+  renderer.refresh();
+}
+
+// 
+
+// Bind graph interactions:
+renderer.on("enterNode", ({ node }) => {
+  setHoveredNode(node);
+});
+renderer.on("leaveNode", () => {
+  setHoveredNode(undefined);
+});
+
 // Render nodes accordingly to the internal state:
 // If a node is selected, it is highlighted
 // If there is a hovered node, all non-neighbor nodes are greyed
@@ -161,7 +185,7 @@ renderer.setSetting("edgeReducer", (edge, data) => {
 // layout.start();
 
 const settings = forceAtlas2.inferSettings(graph);
-forceAtlas2.assign(graph, { settings, iterations: 3000 });
+forceAtlas2.assign(graph, { settings, iterations: 6000 });
 
 // To do:
 // Switch to web worker layout
