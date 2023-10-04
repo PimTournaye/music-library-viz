@@ -4,6 +4,7 @@ import Sigma from "sigma";
 
 import { generateArtistList } from "./utils/generateArtistList";
 import { AlbumData } from "./data/types";
+import { data } from "./final-data";
 
 //////////////////////////
 // SETTING UP THE GRAPH //
@@ -14,13 +15,13 @@ const showOnlyFrequentCollaborators = true;
 
 // Import the data
 // const jsonUrl = "src/data/final-data.json";
-const jsonUrl = "data/final-data.json";
-// Read the data
-async function fetchData() {
-  const response = await fetch(jsonUrl);
-  return response.json(); 
-}
-const data = await fetchData();
+// const jsonUrl = "data/final-data.json";
+// // Read the data
+// async function fetchData() {
+//   const response = await fetch(jsonUrl);
+//   return response.json(); 
+// }
+// const data = await fetchData();
 
 // Set up the graph
 // @ts-ignore
