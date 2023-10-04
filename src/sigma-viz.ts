@@ -15,8 +15,11 @@ const showOnlyFrequentCollaborators = true;
 // Import the data
 const jsonUrl = "src/data/final-data.json";
 // Read the data
-const fetchData = async () => await fetch(jsonUrl).then((response) => response.json());
-const data: AlbumData[] = await fetchData();
+async function fetchData() {
+  const response = await fetch(jsonUrl);
+  return response.json(); 
+}
+const data = await fetchData();
 
 // Set up the graph
 // @ts-ignore
