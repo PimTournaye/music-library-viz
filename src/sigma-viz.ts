@@ -13,7 +13,8 @@ import { AlbumData } from "./data/types";
 const showOnlyFrequentCollaborators = true;
 
 // Import the data
-const jsonUrl = "src/data/final-data.json";
+// const jsonUrl = "src/data/final-data.json";
+const jsonUrl = "data/final-data.json";
 // Read the data
 async function fetchData() {
   const response = await fetch(jsonUrl);
