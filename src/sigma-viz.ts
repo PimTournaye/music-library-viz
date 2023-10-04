@@ -84,11 +84,24 @@ graph.nodes().forEach((node) => {
 });
 
 // The more neighbors a node has, the larger it will be
+// graph.nodes().forEach((node) => {
+//   const neighbors = graph.neighbors(node);
+//   const connectedness = neighbors.length;
+  
+//   graph.updateNodeAttribute(node, "size", () => connectedness);
+// });
+
+// The more edges a node has, the larger it will be
 graph.nodes().forEach((node) => {
-  const neighbors = graph.neighbors(node);
-  const connectedness = neighbors.length;
+  const edges = graph.edges(node);
+  const connectedness = edges.length;
   graph.updateNodeAttribute(node, "size", () => connectedness);
 });
+
+// Log the edges that Wynton Marsalis has
+const wyntonEdges = graph.edges("Wynton Marsalis");
+console.log(wyntonEdges);
+
 
 // // For specific use cases
 if (showOnlyFrequentCollaborators) {
@@ -185,7 +198,7 @@ renderer.setSetting("edgeReducer", (edge, data) => {
 // layout.start();
 
 const settings = forceAtlas2.inferSettings(graph);
-forceAtlas2.assign(graph, { settings, iterations: 6000 });
+forceAtlas2.assign(graph, { settings, iterations: 3000 });
 
 // To do:
 // Switch to web worker layout
@@ -194,3 +207,5 @@ forceAtlas2.assign(graph, { settings, iterations: 6000 });
 
 // show collaborators on hover of edge
 // show albums on hover of edge
+
+console.log(graph);
