@@ -95,10 +95,18 @@ for (const album of data) {
   }
 }
 
+// ── Edge weight: full credit for first 2 shared albums, harmonic taper after ──
+// k=1 → +1, k=2 → +1, k=3 → +1/3, k=4 → +1/4, ...
+function harmonicWeight(n) {
+  let w = 0;
+  for (let k = 1; k <= n; k++) w += k <= 2 ? 1 : 1 / k;
+  return w;
+}
+
 // ── Apply threshold ───────────────────────────────────────────────────────────
 const edges = [...collabs.values()]
   .filter(c => c.albums.size >= MIN_SHARED_ALBUMS)
-  .map(c => ({ source: c.source, target: c.target, weight: c.albums.size }));
+  .map(c => ({ source: c.source, target: c.target, weight: harmonicWeight(c.albums.size) }));
 
 const connectedIds = new Set(edges.flatMap(e => [e.source, e.target]));
 
