@@ -3,11 +3,14 @@
   import * as d3 from 'd3';
   import { communityColor } from './colors.js';
 
-  let { nodes, edges, secondaryEdges, onhover } = $props();
+  let { nodes, edges, secondaryEdges, meta, onhover } = $props();
 
-  // ── Pre-compute adjacency from original IDs (before D3 mutates source/target) ──
-  // Wrapped in $derived so Svelte knows these depend on the props.
-  // In practice nodes/edges never change after mount, but this silences warnings.
+  // ── Strip Discogs disambiguation suffixes e.g. "Chris Potter (2)" → "Chris Potter" ──
+  function cleanName(name) {
+    return name.replace(/\s*\(\d+\)$/, '');
+  }
+
+  // ── Pre-compute adjacency from original IDs ────────────────────────────────
   const adjMap = $derived.by(() => {
     const map = new Map();
     for (const e of edges) {
@@ -23,29 +26,32 @@
   const maxDeg    = $derived(d3.max(nodes, n => n.degree));
   const maxWeight = $derived(d3.max(edges, e => e.weight));
 
-  const rScale     = $derived(d3.scaleSqrt().domain([0, maxDeg]).range([3.5, 18]));
-  const opacScale  = $derived(d3.scaleLinear().domain([1, maxWeight]).range([0.04, 0.48]).clamp(true));
-  const widthScale = $derived(d3.scaleLinear().domain([1, maxWeight]).range([0.4, 2.5]).clamp(true));
+  const rScale     = $derived(d3.scaleSqrt().domain([0, maxDeg]).range([4, 20]));
+  const opacScale  = $derived(d3.scaleLinear().domain([1, maxWeight]).range([0.06, 0.55]).clamp(true));
+  const widthScale = $derived(d3.scaleLinear().domain([1, maxWeight]).range([0.5, 3]).clamp(true));
 
-  // Rank lookup for label size decisions (nodes come pre-sorted by degree).
-  const rankOf     = $derived(new Map(nodes.map((n, i) => [n.id, i])));
-  const ALWAYS_LABEL = $derived(new Set(nodes.slice(0, 30).map(n => n.id)));
+  // Rank lookup (nodes arrive pre-sorted by degree descending)
+  const rankOf      = $derived(new Map(nodes.map((n, i) => [n.id, i])));
+  const ALWAYS_LABEL = $derived(new Set(nodes.slice(0, 25).map(n => n.id)));
 
-  // ── D3 simulation copies (D3 adds x, y, vx, vy to these objects) ──────────
-  // Snapshot the props once at mount time — intentionally non-reactive.
-  const simNodes = untrack(() => nodes.map(n => ({ ...n })));
-  const simEdges = untrack(() => edges.map(e => ({ ...e })));
-  // Secondary edges: D3 will resolve source/target to node objects,
-  // but they don't participate in the force layout — layout is driven by primary edges only.
+  // Community entries we want to label (top 10, must have a label)
+  const labeledCommunities = $derived(
+    Object.entries(meta.communityLabel)
+      .map(([id, name]) => Number(id))
+      .filter(id => id < 10)
+  );
+
+  // ── D3 simulation copies ───────────────────────────────────────────────────
+  const simNodes    = untrack(() => nodes.map(n => ({ ...n, displayName: cleanName(n.name) })));
+  const simEdges    = untrack(() => edges.map(e => ({ ...e })));
   const simSecondary = untrack(() => secondaryEdges.map(e => ({ ...e })));
 
   // ── Reactive state ─────────────────────────────────────────────────────────
-  let ticked      = $state(0);       // incremented each sim tick → drives re-render
-  let xform       = $state('');      // SVG group transform string (zoom/pan)
-  let hoveredId   = $state(null);
-  let pinnedId    = $state(null);
+  let ticked    = $state(0);
+  let xform     = $state('');
+  let hoveredId = $state(null);
+  let pinnedId  = $state(null);
 
-  // Which node is "active" and which IDs are in its neighbourhood
   const activeId = $derived(pinnedId ?? hoveredId);
   const neighbourhood = $derived.by(() => {
     if (activeId === null) return null;
@@ -54,7 +60,6 @@
     return s;
   });
 
-  // ── Refs ───────────────────────────────────────────────────────────────────
   let svgEl;
   let simulation;
 
@@ -63,19 +68,16 @@
     const W = window.innerWidth;
     const H = window.innerHeight;
 
-    // Initial transform
     const initialT = d3.zoomIdentity.translate(W / 2, H / 2).scale(0.65);
     xform = `translate(${initialT.x},${initialT.y}) scale(${initialT.k})`;
 
-    // Resolve secondary edge source/target to node objects (needed to read x/y on tick).
-    // They don't influence the layout — only primary edges do.
+    // Resolve secondary edges manually (not part of the force link)
     const nodeById = new Map(simNodes.map(n => [n.id, n]));
     for (const e of simSecondary) {
       e.source = nodeById.get(e.source) ?? e.source;
       e.target = nodeById.get(e.target) ?? e.target;
     }
 
-    // Force simulation
     simulation = d3.forceSimulation(simNodes)
       .force('link', d3.forceLink(simEdges)
         .id(d => d.id)
@@ -89,7 +91,6 @@
       .alphaDecay(0.013)
       .on('tick', () => { ticked++; });
 
-    // Zoom / pan
     const zoom = d3.zoom()
       .scaleExtent([0.05, 10])
       .filter(ev => !(ev.type === 'dblclick'))
@@ -106,29 +107,24 @@
     return () => simulation?.stop();
   });
 
-  // ── Drag Svelte action ─────────────────────────────────────────────────────
+  // ── Drag action ────────────────────────────────────────────────────────────
   function draggable(el, node) {
     const drag = d3.drag()
       .on('start', ev => {
         ev.sourceEvent.stopPropagation();
         if (!ev.active) simulation.alphaTarget(0.3).restart();
-        node.fx = node.x;
-        node.fy = node.y;
+        node.fx = node.x; node.fy = node.y;
       })
-      .on('drag', ev => {
-        node.fx = ev.x;
-        node.fy = ev.y;
-      })
-      .on('end', ev => {
+      .on('drag',  ev => { node.fx = ev.x; node.fy = ev.y; })
+      .on('end',   ev => {
         if (!ev.active) simulation.alphaTarget(0);
-        node.fx = null;
-        node.fy = null;
+        node.fx = null; node.fy = null;
       });
     d3.select(el).call(drag);
     return { destroy() { d3.select(el).on('.drag', null); } };
   }
 
-  // ── Position accessors (reading ticked establishes reactive dependency) ────
+  // ── Position accessors ─────────────────────────────────────────────────────
   function nx(n)  { return ticked, n.x ?? 0; }
   function ny(n)  { return ticked, n.y ?? 0; }
   function ex1(e) { return ticked, e.source?.x ?? 0; }
@@ -136,10 +132,24 @@
   function ex2(e) { return ticked, e.target?.x ?? 0; }
   function ey2(e) { return ticked, e.target?.y ?? 0; }
 
-  // ── Visual state per element ───────────────────────────────────────────────
+  // ── Community centroid (for cluster labels) ────────────────────────────────
+  function communityCenter(cId) {
+    ticked; // reactive dependency
+    const ns = simNodes.filter(n => n.community === cId);
+    if (!ns.length) return null;
+    return {
+      x: ns.reduce((s, n) => s + (n.x ?? 0), 0) / ns.length,
+      y: ns.reduce((s, n) => s + (n.y ?? 0), 0) / ns.length,
+    };
+  }
+
+  // ── Visual helpers — soft dimming (network stays readable) ─────────────────
+  // Resting opacity for non-highlighted elements is 0.3–0.4 not 0.06,
+  // so the network shape is preserved during hover.
+
   function nodeOpacity(n) {
     if (!neighbourhood) return 1;
-    return neighbourhood.has(n.id) ? 1 : 0.06;
+    return neighbourhood.has(n.id) ? 1 : 0.22;
   }
 
   function nodeGlow(n) {
@@ -153,8 +163,8 @@
     const s = e.source?.id ?? e.source;
     const t = e.target?.id ?? e.target;
     return (neighbourhood.has(s) && neighbourhood.has(t))
-      ? Math.min(base * 5, 0.85)
-      : 0.012;
+      ? Math.min(base * 4, 0.85)
+      : base * 0.18;
   }
 
   function edgeColor(e) {
@@ -168,34 +178,47 @@
     if (!neighbourhood) return 0.06;
     const s = e.source?.id ?? e.source;
     const t = e.target?.id ?? e.target;
-    return (neighbourhood.has(s) && neighbourhood.has(t)) ? 0.45 : 0.015;
+    return (neighbourhood.has(s) && neighbourhood.has(t)) ? 0.5 : 0.015;
   }
 
   function secondaryEdgeColor(e) {
-    if (!neighbourhood) return '#7a6030';
+    if (!neighbourhood) return '#5a4220';
     const s = e.source?.id ?? e.source;
     const t = e.target?.id ?? e.target;
-    return (neighbourhood.has(s) && neighbourhood.has(t)) ? '#c8a030' : '#7a6030';
+    return (neighbourhood.has(s) && neighbourhood.has(t)) ? '#c8a030' : '#5a4220';
   }
 
   function labelOpacity(n) {
     if (neighbourhood) return neighbourhood.has(n.id) ? 1 : 0;
-    return ALWAYS_LABEL.has(n.id) ? 1 : 0;
+    return ALWAYS_LABEL.has(n.id) ? 0.8 : 0;
   }
 
   function labelSize(n) {
     const rank = rankOf.get(n.id) ?? 999;
-    if (rank < 10) return 12;
-    if (rank < 25) return 10;
+    if (rank < 8)  return 12;
+    if (rank < 20) return 10;
     return 9;
   }
 
-  function nodeFill(n)   { return communityColor(n.community); }
-  function nodeStroke(n) { return d3.color(communityColor(n.community)).brighter(0.8).formatHex(); }
+  function clusterLabelOpacity(cId) {
+    if (!neighbourhood) return 1;
+    const activeNode = simNodes.find(n => n.id === activeId);
+    return activeNode?.community === cId ? 1 : 0.25;
+  }
 
-  // ── Interaction handlers ───────────────────────────────────────────────────
-  function enter(node) { if (!pinnedId) { hoveredId = node.id; onhover(node); } }
-  function leave()     { if (!pinnedId) { hoveredId = null;    onhover(null); } }
+  function nodeFill(n)   { return communityColor(n.community); }
+  function nodeStroke(n) {
+    const c = d3.color(communityColor(n.community));
+    return c ? c.brighter(1.1).formatHex() : '#ffffff';
+  }
+
+  // ── Interaction ────────────────────────────────────────────────────────────
+  function enter(node) {
+    if (!pinnedId) { hoveredId = node.id; onhover(node); }
+  }
+  function leave() {
+    if (!pinnedId) { hoveredId = null; onhover(null); }
+  }
   function click(ev, node) {
     ev.stopPropagation();
     if (pinnedId === node.id) { pinnedId = null; hoveredId = null; onhover(null); }
@@ -209,12 +232,11 @@
   height={window.innerHeight}
 >
   <defs>
-    <!-- Warm glow for hovered / active node -->
     <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur" />
+      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
       <feColorMatrix
         in="blur" type="matrix"
-        values="0 0 0 0 0.96  0 0 0 0 0.78  0 0 0 0 0.09  0 0 0 14 -4"
+        values="0 0 0 0 0.96  0 0 0 0 0.78  0 0 0 0 0.09  0 0 0 12 -3"
         result="glow"
       />
       <feMerge>
@@ -225,6 +247,26 @@
   </defs>
 
   <g transform={xform}>
+
+    <!-- ── Cluster labels (bottom layer, behind everything) ────────────────── -->
+    <g class="cluster-labels" pointer-events="none">
+      {#each labeledCommunities as cId}
+        {@const center = communityCenter(cId)}
+        {#if center}
+          <text
+            x={center.x}
+            y={center.y}
+            class="cluster-label"
+            text-anchor="middle"
+            opacity={clusterLabelOpacity(cId)}
+            fill={communityColor(cId)}
+          >
+            {meta.communityLabel[cId]}
+          </text>
+        {/if}
+      {/each}
+    </g>
+
     <!-- ── Secondary edges (ghost layer) ──────────────────────────────────── -->
     <g class="edges-secondary">
       {#each simSecondary as edge, i (i)}
@@ -235,7 +277,7 @@
           stroke-opacity={secondaryEdgeOpacity(edge)}
           stroke-width={0.5}
           stroke-linecap="round"
-          stroke-dasharray="2 3"
+          stroke-dasharray="2 4"
         />
       {/each}
     </g>
@@ -254,14 +296,14 @@
       {/each}
     </g>
 
-    <!-- ── Nodes ─────────────────────────────────────────────────────────── -->
+    <!-- ── Nodes ───────────────────────────────────────────────────────────── -->
     <g class="nodes">
       {#each simNodes as node (node.id)}
         <g
           class="node"
           role="button"
           tabindex="0"
-          aria-label={node.name}
+          aria-label={node.displayName}
           transform={`translate(${nx(node)},${ny(node)})`}
           opacity={nodeOpacity(node)}
           filter={nodeGlow(node)}
@@ -275,8 +317,8 @@
             r={rScale(node.degree)}
             fill={nodeFill(node)}
             stroke={nodeStroke(node)}
-            stroke-width={0.8}
-            stroke-opacity={0.65}
+            stroke-width={1.2}
+            stroke-opacity={0.5}
           />
           <text
             class="label"
@@ -285,11 +327,12 @@
             font-size={labelSize(node)}
             opacity={labelOpacity(node)}
           >
-            {node.name}
+            {node.displayName}
           </text>
         </g>
       {/each}
     </g>
+
   </g>
 </svg>
 
@@ -303,15 +346,23 @@
 
   .node { cursor: pointer; }
 
+  .cluster-label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    /* Painted wide and dim — geography-map style */
+  }
+
   .label {
-    fill: #e8d5a3;
+    fill: #c8b89a;
     font-family: 'Inter', system-ui, sans-serif;
     font-weight: 500;
     pointer-events: none;
-    /* Legible against any background */
     paint-order: stroke;
-    stroke: #080808;
-    stroke-width: 3px;
+    stroke: #0a0907;
+    stroke-width: 3.5px;
     stroke-linejoin: round;
   }
 </style>
