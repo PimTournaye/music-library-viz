@@ -6,20 +6,40 @@
 
   let graphData   = $state(null);
   let hoveredNode = $state(null);
+  let hoverX      = $state(0);
+  let hoverY      = $state(0);
   let modalOpen   = $state(false);
 
   onMount(async () => {
     graphData = await fetch('/graph.json').then(r => r.json());
   });
 
+  function sceneName(autoLabel) {
+    return autoLabel.replace(/\s*\(\d+\)$/, '');
+  }
+
   // Community entries sorted by size (community 0 = largest)
   const communityEntries = $derived(
     graphData
       ? Object.entries(graphData.meta.communityLabel)
           .map(([id, name]) => ({ id: Number(id), name }))
-          .slice(0, 10)
+          .slice(0, 14)
       : []
   );
+
+  // Member count per community, computed from nodes
+  const communitySizes = $derived(
+    graphData
+      ? graphData.nodes.reduce((acc, n) => {
+          acc[n.community] = (acc[n.community] || 0) + 1;
+          return acc;
+        }, {})
+      : {}
+  );
+
+  // Tooltip position — clamp to viewport so it never clips off-screen
+  const tooltipLeft = $derived(Math.min(hoverX + 20, window.innerWidth  - 230));
+  const tooltipTop  = $derived(Math.min(Math.max(hoverY - 56, 12),       window.innerHeight - 110));
 </script>
 
 <Modal bind:open={modalOpen} />
@@ -33,9 +53,8 @@
   <Graph
     nodes={graphData.nodes}
     edges={graphData.edges}
-    secondaryEdges={graphData.secondaryEdges}
     meta={graphData.meta}
-    onhover={(n) => (hoveredNode = n)}
+    onhover={(n, x, y) => { hoveredNode = n; if (n) { hoverX = x; hoverY = y; } }}
   />
 
   <!-- ── Header ─────────────────────────────────────────────────────────────── -->
@@ -49,20 +68,22 @@
     <button class="about-btn" onclick={() => (modalOpen = true)} aria-label="About this visualization">?</button>
   </header>
 
-  <!-- ── Hovered node info ──────────────────────────────────────────────────── -->
-  <div class="info" class:visible={!!hoveredNode}>
+  <!-- ── Floating node tooltip ──────────────────────────────────────────────── -->
+  <div
+    class="tooltip"
+    class:visible={!!hoveredNode}
+    style="left: {tooltipLeft}px; top: {tooltipTop}px;"
+  >
     {#if hoveredNode}
-      <p class="info-name" style="color: {communityColor(hoveredNode.community)}">
+      <p class="tooltip-name" style="color: {communityColor(hoveredNode.community)}">
         {hoveredNode.displayName}
       </p>
-      <p class="info-stats">
-        <span>{hoveredNode.degree} collaborators</span>
-        <span class="sep">&middot;</span>
-        <span>{hoveredNode.albumCount} albums</span>
+      <p class="tooltip-stats">
+        {hoveredNode.connections} collabs &middot; {hoveredNode.albumCount} albums
       </p>
       {#if graphData.meta.communityLabel[hoveredNode.community]}
-        <p class="info-community">
-          {graphData.meta.communityLabel[hoveredNode.community]} circle
+        <p class="tooltip-community">
+          {sceneName(graphData.meta.communityLabel[hoveredNode.community])}
         </p>
       {/if}
     {/if}
@@ -74,26 +95,23 @@
     {#each communityEntries as { id, name }}
       <div class="legend-row">
         <span class="legend-pip" style="background: {communityColor(id)}; box-shadow: 0 0 5px {communityColor(id)}55"></span>
-        <span class="legend-name">{name}</span>
+        <span class="legend-name">
+          {sceneName(name)}
+          <span class="legend-count">{communitySizes[id] ?? ''}</span>
+        </span>
       </div>
     {/each}
-    {#if graphData.meta.communityCount > 10}
+    {#if graphData.meta.communityCount > 14}
       <div class="legend-row legend-other">
-        <span class="legend-pip" style="background:#2e2820"></span>
-        <span class="legend-name">Other ({graphData.meta.communityCount - 10} groups)</span>
+        <span class="legend-pip" style="background:#3a3028"></span>
+        <span class="legend-name">Other ({graphData.meta.communityCount - 14} groups)</span>
       </div>
     {/if}
   </nav>
 {/if}
 
 <style>
-  :global(*, *::before, *::after) { box-sizing: border-box; margin: 0; padding: 0; }
-  :global(body)  {
-    overflow: hidden;
-    background: #0a0907;
-    background-image: radial-gradient(ellipse 90% 70% at 50% 44%, #1c1710 0%, #070604 100%);
-  }
-  :global(#app)  { width: 100dvw; height: 100dvh; }
+  :global(#app) { width: 100dvw; height: 100dvh; }
 
   /* Loading */
   .loading {
@@ -118,19 +136,19 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.8rem; font-weight: 600;
     letter-spacing: 0.16em; text-transform: uppercase;
-    color: #c8b89a;
+    color: #d4c090;
   }
   .subtitle {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.65rem; color: #3a3020;
+    font-size: 0.65rem; color: #8a7050;
     margin-top: 0.3rem; letter-spacing: 0.05em;
   }
   .about-btn {
     pointer-events: all;
     width: 22px; height: 22px; border-radius: 50%;
-    border: 1px solid #2e2518;
-    background: #18140f;
-    color: #4a3f2f;
+    border: 1px solid #6a4f28;
+    background: rgba(15, 10, 4, 0.8);
+    color: #b09060;
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.7rem; font-weight: 600;
     cursor: pointer;
@@ -141,30 +159,39 @@
   }
   .about-btn:hover { border-color: #f5c518; color: #f5c518; }
 
-  /* Info panel */
-  .info {
-    position: fixed; bottom: 2rem; left: 2rem;
+  /* Floating tooltip */
+  .tooltip {
+    position: fixed;
     pointer-events: none; user-select: none;
-    opacity: 0; transform: translateY(4px);
-    transition: opacity 0.18s ease, transform 0.18s ease;
+    opacity: 0;
+    transition: opacity 0.15s ease;
+    background: rgba(12, 9, 4, 0.9);
+    border: 1px solid #3a2810;
+    border-radius: 4px;
+    padding: 0.6rem 0.85rem;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    min-width: 140px;
+    max-width: 210px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.5);
   }
-  .info.visible { opacity: 1; transform: translateY(0); }
+  .tooltip.visible { opacity: 1; }
 
-  .info-name {
+  .tooltip-name {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 1.05rem; font-weight: 600;
-    line-height: 1.2; transition: color 0.15s;
+    font-size: 0.95rem; font-weight: 600;
+    line-height: 1.25; transition: color 0.15s;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
   }
-  .info-stats {
+  .tooltip-stats {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.72rem; color: #5a4a2a;
-    margin-top: 0.3rem; letter-spacing: 0.04em;
+    font-size: 0.7rem; color: #b09060;
+    margin-top: 0.25rem; letter-spacing: 0.03em;
   }
-  .sep { margin: 0 0.35em; }
-  .info-community {
+  .tooltip-community {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.65rem; color: #322a1a;
-    margin-top: 0.15rem; font-style: italic;
+    font-size: 0.63rem; color: #8a7050;
+    margin-top: 0.1rem; font-style: italic;
   }
 
   /* Legend */
@@ -172,10 +199,10 @@
     position: fixed; top: 2rem; right: 2rem;
     display: flex; flex-direction: column; gap: 0;
     pointer-events: none; user-select: none;
-    background: rgba(10, 9, 7, 0.55);
-    border: 1px solid #1e1a12;
+    background: rgba(12, 9, 4, 0.82);
+    border: 1px solid #3a2810;
     border-radius: 4px;
-    padding: 0.85rem 1rem;
+    padding: 0.9rem 1.1rem;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
   }
@@ -183,21 +210,25 @@
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.58rem; font-weight: 700;
     letter-spacing: 0.14em; text-transform: uppercase;
-    color: #2e2518;
-    margin-bottom: 0.6rem;
+    color: #7a6040;
+    margin-bottom: 0.65rem;
   }
   .legend-row {
-    display: flex; align-items: center; gap: 0.55rem;
-    padding: 0.22rem 0;
+    display: flex; align-items: center; gap: 0.6rem;
+    padding: 0.28rem 0;
   }
   .legend-pip {
-    width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0;
+    width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
   }
   .legend-name {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.67rem; color: #5a4a2a;
-    letter-spacing: 0.02em;
+    font-size: 0.75rem; color: #c8a870;
+    letter-spacing: 0.01em;
     white-space: nowrap;
+    display: flex; align-items: baseline; gap: 0.4em;
   }
-  .legend-other .legend-name { color: #2e2518; }
+  .legend-count {
+    font-size: 0.6rem; color: #7a6040; font-weight: 400;
+  }
+  .legend-other .legend-name { color: #7a6040; }
 </style>

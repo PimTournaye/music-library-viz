@@ -1,15 +1,19 @@
-// One distinct color per named community (top 10), rest get a dim neutral.
+// One distinct color per named community (top 14), rest get a dim neutral.
 export const COMMUNITY_COLORS = [
-  '#f5c518', // 0  gold          — Herbie Hancock circle
-  '#e8734a', // 1  burnt orange  — Miguel Zenon / modern NYC
-  '#5b9bd5', // 2  steel blue    — Maria Schneider Orchestra
-  '#72b98c', // 3  sage green    — Harish Raghavan
-  '#c47db5', // 4  mauve         — Pat Metheny Group
-  '#e8c040', // 5  amber         — Steve Coleman / M-Base
-  '#8a7cc5', // 6  violet        — European scene
-  '#e88c6a', // 7  peach         — Snarky Puppy
-  '#5cb8b2', // 8  teal          — Charlie Haden
-  '#d4956a', // 9  copper        — 10th community
+  '#f5c518', // 0  gold
+  '#e8734a', // 1  burnt orange
+  '#5b9bd5', // 2  steel blue
+  '#72b98c', // 3  sage green
+  '#c47db5', // 4  mauve
+  '#e8c040', // 5  amber
+  '#8a7cc5', // 6  violet
+  '#e88c6a', // 7  peach
+  '#5cb8b2', // 8  teal
+  '#d4956a', // 9  copper
+  '#d4607a', // 10 rose
+  '#a0c878', // 11 lime green
+  '#7ab4e0', // 12 sky blue
+  '#c890d8', // 13 lilac
 ];
 
 const DIM = '#3a3830';

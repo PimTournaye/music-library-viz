@@ -1,16 +1,21 @@
 <script>
   import { onMount, untrack } from 'svelte';
   import * as d3 from 'd3';
+  import * as PIXI from 'pixi.js';
   import { communityColor } from './colors.js';
 
-  let { nodes, edges, secondaryEdges, meta, onhover } = $props();
+  let { nodes, edges, meta, onhover } = $props();
 
-  // ── Strip Discogs disambiguation suffixes e.g. "Chris Potter (2)" → "Chris Potter" ──
-  function cleanName(name) {
-    return name.replace(/\s*\(\d+\)$/, '');
+  // ── Helpers ─────────────────────────────────────────────────────────────────
+  function cleanName(name) { return name.replace(/\s*\(\d+\)$/, ''); }
+  function hexNum(hex)      { return parseInt(hex.replace('#', ''), 16); }
+  function nodeFillNum(n)   { return hexNum(communityColor(n.community)); }
+  function nodeStrokeNum(n) {
+    const c = d3.color(communityColor(n.community));
+    return c ? hexNum(c.brighter(1.1).formatHex()) : 0xffffff;
   }
 
-  // ── Pre-compute adjacency from original IDs ────────────────────────────────
+  // ── Adjacency ───────────────────────────────────────────────────────────────
   const adjMap = $derived.by(() => {
     const map = new Map();
     for (const e of edges) {
@@ -22,33 +27,20 @@
     return map;
   });
 
-  // ── Scales ─────────────────────────────────────────────────────────────────
-  const maxDeg    = $derived(d3.max(nodes, n => n.degree));
-  const maxWeight = $derived(d3.max(edges, e => e.weight));
+  // ── Scales ──────────────────────────────────────────────────────────────────
+  // Use actual min→max so the full visual range maps to real data spread.
+  const minSize = $derived(d3.min(nodes, n => n.sizeScore ?? n.connections) ?? 1);
+  const maxSize = $derived(d3.max(nodes, n => n.sizeScore ?? n.connections) ?? 1);
+  const rScale  = $derived(d3.scaleSqrt().domain([minSize, maxSize]).range([4, 30]).clamp(true));
 
-  const rScale     = $derived(d3.scaleSqrt().domain([0, maxDeg]).range([4, 20]));
-  const opacScale  = $derived(d3.scaleLinear().domain([1, maxWeight]).range([0.06, 0.55]).clamp(true));
-  const widthScale = $derived(d3.scaleLinear().domain([1, maxWeight]).range([0.5, 3]).clamp(true));
-
-  // Rank lookup (nodes arrive pre-sorted by degree descending)
   const rankOf      = $derived(new Map(nodes.map((n, i) => [n.id, i])));
-  const ALWAYS_LABEL = $derived(new Set(nodes.slice(0, 25).map(n => n.id)));
+  const ALWAYS_LABEL = $derived(new Set(nodes.slice(0, 20).map(n => n.id)));
 
-  // Community entries we want to label (top 10, must have a label)
-  const labeledCommunities = $derived(
-    Object.entries(meta.communityLabel)
-      .map(([id, name]) => Number(id))
-      .filter(id => id < 10)
-  );
+  // ── Simulation state (untracked snapshots — D3 mutates these) ───────────────
+  const simNodes = untrack(() => nodes.map(n => ({ ...n, displayName: cleanName(n.name) })));
+  const simEdges = untrack(() => edges.map(e => ({ ...e })));
 
-  // ── D3 simulation copies ───────────────────────────────────────────────────
-  const simNodes    = untrack(() => nodes.map(n => ({ ...n, displayName: cleanName(n.name) })));
-  const simEdges    = untrack(() => edges.map(e => ({ ...e })));
-  const simSecondary = untrack(() => secondaryEdges.map(e => ({ ...e })));
-
-  // ── Reactive state ─────────────────────────────────────────────────────────
-  let ticked    = $state(0);
-  let xform     = $state('');
+  // ── Reactive interaction state ───────────────────────────────────────────────
   let hoveredId = $state(null);
   let pinnedId  = $state(null);
 
@@ -60,309 +52,337 @@
     return s;
   });
 
-  let svgEl;
+  // ── Canvas element ───────────────────────────────────────────────────────────
+  let canvasEl;
   let simulation;
 
-  // ── Mount ──────────────────────────────────────────────────────────────────
+  let drawEdgesFn   = null;
+  let updateNodesFn = null;
+  let updateGlowFn  = null;
+
+  // ── Re-render when hover state changes (sim may be idle) ─────────────────────
+  $effect(() => {
+    neighbourhood;
+    drawEdgesFn?.();
+    updateNodesFn?.();
+  });
+
+  $effect(() => {
+    activeId;
+    updateGlowFn?.();
+  });
+
+  // ── Mount ───────────────────────────────────────────────────────────────────
   onMount(() => {
     const W = window.innerWidth;
     const H = window.innerHeight;
 
-    const initialT = d3.zoomIdentity.translate(W / 2, H / 2).scale(0.65);
-    xform = `translate(${initialT.x},${initialT.y}) scale(${initialT.k})`;
+    const app = new PIXI.Application({
+      view:            canvasEl,
+      width:           W,
+      height:          H,
+      backgroundAlpha: 0,
+      antialias:       true,
+      resolution:      window.devicePixelRatio || 1,
+      autoDensity:     true,
+    });
 
-    // Resolve secondary edges manually (not part of the force link)
-    const nodeById = new Map(simNodes.map(n => [n.id, n]));
-    for (const e of simSecondary) {
-      e.source = nodeById.get(e.source) ?? e.source;
-      e.target = nodeById.get(e.target) ?? e.target;
+    const world = new PIXI.Container();
+    app.stage.addChild(world);
+
+    const initialT = d3.zoomIdentity.translate(W / 2, H / 2).scale(0.42);
+    world.position.set(initialT.x, initialT.y);
+    world.scale.set(initialT.k);
+
+    // ── Layers ────────────────────────────────────────────────────────────────
+    const edgeGfx   = new PIXI.Graphics();
+    const glowGfx   = new PIXI.Graphics();
+    const nodeLayer = new PIXI.Container();
+    const lblLayer  = new PIXI.Container();
+    world.addChild(edgeGfx, glowGfx, nodeLayer, lblLayer);
+
+    // ── Edge style buckets ────────────────────────────────────────────────────
+    const localMaxWeight = d3.max(simEdges, e => e.weight) ?? 1;
+    const NUM_BUCKETS = 6;
+
+    for (const e of simEdges) {
+      const t = Math.max(e.weight - 1, 0) / Math.max(localMaxWeight - 1, 1);
+      e.__b = Math.min(Math.floor(t * NUM_BUCKETS), NUM_BUCKETS - 1);
+    }
+    const edgeByBucket = Array.from({ length: NUM_BUCKETS }, () => []);
+    for (const e of simEdges) edgeByBucket[e.__b].push(e);
+
+    const bWidths = Array.from({ length: NUM_BUCKETS }, (_, b) =>
+      0.5 + (b + 0.5) / NUM_BUCKETS * 2.5);
+    const bAlphas = Array.from({ length: NUM_BUCKETS }, (_, b) =>
+      0.06 + (b + 0.5) / NUM_BUCKETS * 0.49);
+
+    // ── Node graphics ─────────────────────────────────────────────────────────
+    const nodeGfxMap     = new Map();
+    const nodeLblMap     = new Map();
+    const nodeById       = new Map(simNodes.map(n => [n.id, n]));
+    const nodeAlphaTarget = new Map(); // id → target alpha for smooth lerp
+    let   draggingNode   = null;
+
+    for (const n of simNodes) {
+      const r  = rScale(n.sizeScore ?? n.connections);
+      const fc = nodeFillNum(n);
+      const sc = nodeStrokeNum(n);
+
+      const gfx = new PIXI.Graphics();
+      gfx.beginFill(fc);
+      gfx.drawCircle(0, 0, r);
+      gfx.endFill();
+      gfx.lineStyle(1.2, sc, 0.5);
+      gfx.drawCircle(0, 0, r);
+
+      gfx.interactive = true;
+      gfx.buttonMode  = true;
+      gfx.hitArea     = new PIXI.Circle(0, 0, r + 4);
+
+      gfx.on('pointerover', ev => {
+        if (!pinnedId) {
+          hoveredId = n.id;
+          const ge = ev.data.originalEvent;
+          onhover(n, ge?.clientX ?? ev.data.global.x, ge?.clientY ?? ev.data.global.y);
+        }
+      });
+      gfx.on('pointerout', () => {
+        if (!pinnedId) { hoveredId = null; onhover(null, 0, 0); }
+      });
+      gfx.on('pointerdown', ev => {
+        ev.stopPropagation();
+        draggingNode = n;
+        n.__dragged  = false;
+        simulation.alphaTarget(0.3).restart();
+        n.fx = n.x; n.fy = n.y;
+      });
+      gfx.on('pointerup', ev => {
+        if (draggingNode !== n) return;
+        draggingNode = null;
+        n.fx = null; n.fy = null;
+        simulation.alphaTarget(0);
+        if (!n.__dragged) {
+          const ge = ev.data.originalEvent;
+          if (pinnedId === n.id) {
+            pinnedId = null; hoveredId = null; onhover(null, 0, 0);
+          } else {
+            pinnedId = n.id;
+            onhover(n, ge?.clientX ?? ev.data.global.x, ge?.clientY ?? ev.data.global.y);
+          }
+        }
+      });
+
+      nodeAlphaTarget.set(n.id, 1);
+      nodeGfxMap.set(n.id, gfx);
+      nodeLayer.addChild(gfx);
+
+      const rank     = rankOf.get(n.id) ?? 999;
+      const fontSize = rank < 8 ? 12 : rank < 20 ? 10 : 9;
+      const lbl = new PIXI.Text(n.displayName, {
+        fontFamily:      'Inter, system-ui, sans-serif',
+        fontSize,
+        fill:            '#c8b89a',
+        stroke:          '#0a0907',
+        strokeThickness: 3.5,
+        align:           'center',
+      });
+      lbl.anchor.set(0.5, 0);
+      lbl.alpha = 0;
+      nodeLblMap.set(n.id, lbl);
+      lblLayer.addChild(lbl);
     }
 
+    // ── Smooth alpha lerp via PIXI ticker ─────────────────────────────────────
+    // Runs every frame independently of D3 simulation, animating node fades.
+    app.ticker.add(() => {
+      for (const n of simNodes) {
+        const gfx = nodeGfxMap.get(n.id);
+        if (!gfx) continue;
+        const target = nodeAlphaTarget.get(n.id) ?? 1;
+        const diff   = target - gfx.alpha;
+        if (Math.abs(diff) > 0.004) gfx.alpha += diff * 0.16;
+        else gfx.alpha = target;
+      }
+    });
+
+    // ── Stage pointer events ──────────────────────────────────────────────────
+    app.stage.interactive = true;
+    app.stage.hitArea     = new PIXI.Rectangle(0, 0, W, H);
+
+    app.stage.on('pointermove', ev => {
+      if (!draggingNode) return;
+      draggingNode.__dragged = true;
+      const local = world.toLocal(ev.data.global);
+      draggingNode.fx = local.x;
+      draggingNode.fy = local.y;
+    });
+    app.stage.on('pointerup', () => {
+      if (!draggingNode) return;
+      draggingNode.fx = null; draggingNode.fy = null;
+      simulation.alphaTarget(0);
+      draggingNode = null;
+    });
+    app.stage.on('click', ev => {
+      if (ev.target === app.stage) {
+        pinnedId = null; hoveredId = null; onhover(null, 0, 0);
+      }
+    });
+
+    // ── Drag vs pan: intercept before D3 zoom ─────────────────────────────────
+    // D3 zoom attaches document-level listeners on pointerdown, before PIXI fires.
+    // A capture-phase hit-test sets isDraggingNode so the zoom filter can block
+    // pan gestures while a node is being dragged.
+    let isDraggingNode = false;
+
+    canvasEl.addEventListener('pointerdown', ev => {
+      const rect = canvasEl.getBoundingClientRect();
+      const wx   = (ev.clientX - rect.left - world.position.x) / world.scale.x;
+      const wy   = (ev.clientY - rect.top  - world.position.y) / world.scale.y;
+      isDraggingNode = simNodes.some(n => {
+        if (n.x == null) return false;
+        const dx = n.x - wx, dy = n.y - wy;
+        const r  = rScale(n.sizeScore ?? n.connections) + 4;
+        return dx * dx + dy * dy <= r * r;
+      });
+    }, { capture: true });
+
+    canvasEl.addEventListener('pointerup',     () => { isDraggingNode = false; }, { capture: true });
+    canvasEl.addEventListener('pointercancel', () => { isDraggingNode = false; }, { capture: true });
+
+    // ── Draw functions ────────────────────────────────────────────────────────
+    function drawEdges() {
+      edgeGfx.clear();
+      const nb = neighbourhood;
+
+      if (!nb) {
+        for (let b = 0; b < NUM_BUCKETS; b++) {
+          const bucket = edgeByBucket[b];
+          if (!bucket.length) continue;
+          edgeGfx.lineStyle(bWidths[b], 0xc8922a, bAlphas[b]);
+          for (const e of bucket) {
+            edgeGfx.moveTo(e.source.x, e.source.y);
+            edgeGfx.lineTo(e.target.x, e.target.y);
+          }
+        }
+      } else {
+        edgeGfx.lineStyle(0.8, 0xc8922a, 0.008);
+        for (const e of simEdges) {
+          const sid = e.source.id ?? e.source;
+          const tid = e.target.id ?? e.target;
+          if (nb.has(sid) && nb.has(tid)) continue;
+          edgeGfx.moveTo(e.source.x, e.source.y);
+          edgeGfx.lineTo(e.target.x, e.target.y);
+        }
+        for (let b = 0; b < NUM_BUCKETS; b++) {
+          let styleSet = false;
+          for (const e of edgeByBucket[b]) {
+            const sid = e.source.id ?? e.source;
+            const tid = e.target.id ?? e.target;
+            if (!nb.has(sid) || !nb.has(tid)) continue;
+            if (!styleSet) {
+              edgeGfx.lineStyle(bWidths[b] * 1.4, 0xf5c518, Math.min(bAlphas[b] * 4, 0.9));
+              styleSet = true;
+            }
+            edgeGfx.moveTo(e.source.x, e.source.y);
+            edgeGfx.lineTo(e.target.x, e.target.y);
+          }
+        }
+      }
+    }
+
+    function updateNodes() {
+      const nb = neighbourhood;
+      for (const n of simNodes) {
+        const gfx = nodeGfxMap.get(n.id);
+        const lbl = nodeLblMap.get(n.id);
+        if (!gfx) continue;
+
+        gfx.x = n.x ?? 0;
+        gfx.y = n.y ?? 0;
+
+        // Set alpha target — PIXI ticker will lerp toward it smoothly
+        nodeAlphaTarget.set(n.id, (!nb || nb.has(n.id)) ? 1 : 0.12);
+
+        if (lbl) {
+          lbl.x = gfx.x;
+          lbl.y = gfx.y + rScale(n.sizeScore ?? n.connections) + 5;
+          const show = nb ? nb.has(n.id) : ALWAYS_LABEL.has(n.id);
+          lbl.alpha = show ? (nb ? 1 : 0.8) : 0;
+        }
+      }
+    }
+
+    function updateGlow() {
+      glowGfx.clear();
+      const aid = activeId;
+      if (!aid) return;
+      const n = nodeById.get(aid);
+      if (!n || n.x == null) return;
+      const r = rScale(n.sizeScore ?? n.connections);
+      glowGfx.beginFill(0xf5c518, 0.22);
+      glowGfx.drawCircle(n.x, n.y, r + 3);
+      glowGfx.endFill();
+      glowGfx.beginFill(0xf5c518, 0.10);
+      glowGfx.drawCircle(n.x, n.y, r + 8);
+      glowGfx.endFill();
+      glowGfx.beginFill(0xf5c518, 0.04);
+      glowGfx.drawCircle(n.x, n.y, r + 16);
+      glowGfx.endFill();
+    }
+
+    drawEdgesFn   = drawEdges;
+    updateNodesFn = updateNodes;
+    updateGlowFn  = updateGlow;
+
+    // ── D3 force simulation ───────────────────────────────────────────────────
     simulation = d3.forceSimulation(simNodes)
       .force('link', d3.forceLink(simEdges)
         .id(d => d.id)
-        .distance(d => 55 + 75 / d.weight)
-        .strength(0.4))
+        .distance(d => 90 + 140 / d.weight)
+        .strength(0.18))
       .force('charge', d3.forceManyBody()
-        .strength(d => -110 - d.degree * 9)
-        .distanceMax(380))
-      .force('center',  d3.forceCenter(0, 0).strength(0.08))
-      .force('collide', d3.forceCollide().radius(d => rScale(d.degree) + 2.5).strength(0.7))
-      .alphaDecay(0.013)
-      .on('tick', () => { ticked++; });
+        .strength(d => -220 - d.connections * 14)
+        .distanceMax(700))
+      .force('center', d3.forceCenter(0, 0).strength(0.04))
+      .force('collide', d3.forceCollide()
+        .radius(d => rScale(d.sizeScore ?? d.connections) + 5)
+        .strength(0.8))
+      .alphaDecay(0.011)
+      .on('tick', () => {
+        drawEdges();
+        updateNodes();
+        if (activeId) updateGlow();
+      });
 
+    // ── D3 zoom → PixiJS world transform ─────────────────────────────────────
     const zoom = d3.zoom()
       .scaleExtent([0.05, 10])
-      .filter(ev => !(ev.type === 'dblclick'))
+      .filter(ev => {
+        if (ev.type === 'wheel') return true;        // always allow scroll-zoom
+        if (isDraggingNode) return false;            // block pan during node drag
+        if (ev.type === 'dblclick') return false;
+        return true;
+      })
       .on('zoom', ev => {
         const t = ev.transform;
-        xform = `translate(${t.x},${t.y}) scale(${t.k})`;
+        world.position.set(t.x, t.y);
+        world.scale.set(t.k);
       });
 
-    d3.select(svgEl)
+    d3.select(canvasEl)
       .call(zoom)
-      .call(zoom.transform, initialT)
-      .on('click.deselect', () => { pinnedId = null; hoveredId = null; onhover(null); });
+      .call(zoom.transform, initialT);
 
-    return () => simulation?.stop();
-  });
-
-  // ── Drag action ────────────────────────────────────────────────────────────
-  function draggable(el, node) {
-    const drag = d3.drag()
-      .on('start', ev => {
-        ev.sourceEvent.stopPropagation();
-        if (!ev.active) simulation.alphaTarget(0.3).restart();
-        node.fx = node.x; node.fy = node.y;
-      })
-      .on('drag',  ev => { node.fx = ev.x; node.fy = ev.y; })
-      .on('end',   ev => {
-        if (!ev.active) simulation.alphaTarget(0);
-        node.fx = null; node.fy = null;
-      });
-    d3.select(el).call(drag);
-    return { destroy() { d3.select(el).on('.drag', null); } };
-  }
-
-  // ── Position accessors ─────────────────────────────────────────────────────
-  function nx(n)  { return ticked, n.x ?? 0; }
-  function ny(n)  { return ticked, n.y ?? 0; }
-  function ex1(e) { return ticked, e.source?.x ?? 0; }
-  function ey1(e) { return ticked, e.source?.y ?? 0; }
-  function ex2(e) { return ticked, e.target?.x ?? 0; }
-  function ey2(e) { return ticked, e.target?.y ?? 0; }
-
-  // ── Community centroid (for cluster labels) ────────────────────────────────
-  function communityCenter(cId) {
-    ticked; // reactive dependency
-    const ns = simNodes.filter(n => n.community === cId);
-    if (!ns.length) return null;
-    return {
-      x: ns.reduce((s, n) => s + (n.x ?? 0), 0) / ns.length,
-      y: ns.reduce((s, n) => s + (n.y ?? 0), 0) / ns.length,
+    return () => {
+      simulation?.stop();
+      app.ticker.remove(() => {});
+      drawEdgesFn   = null;
+      updateNodesFn = null;
+      updateGlowFn  = null;
+      app.destroy(true, { children: true, texture: true });
     };
-  }
-
-  // ── Visual helpers — soft dimming (network stays readable) ─────────────────
-  // Resting opacity for non-highlighted elements is 0.3–0.4 not 0.06,
-  // so the network shape is preserved during hover.
-
-  function nodeOpacity(n) {
-    if (!neighbourhood) return 1;
-    return neighbourhood.has(n.id) ? 1 : 0.22;
-  }
-
-  function nodeGlow(n) {
-    if (!neighbourhood) return '';
-    return n.id === activeId ? 'url(#glow)' : '';
-  }
-
-  function edgeOpacity(e) {
-    const base = opacScale(e.weight);
-    if (!neighbourhood) return base;
-    const s = e.source?.id ?? e.source;
-    const t = e.target?.id ?? e.target;
-    return (neighbourhood.has(s) && neighbourhood.has(t))
-      ? Math.min(base * 4, 0.85)
-      : base * 0.18;
-  }
-
-  function edgeColor(e) {
-    if (!neighbourhood) return '#c8922a';
-    const s = e.source?.id ?? e.source;
-    const t = e.target?.id ?? e.target;
-    return (neighbourhood.has(s) && neighbourhood.has(t)) ? '#f5c518' : '#c8922a';
-  }
-
-  function secondaryEdgeOpacity(e) {
-    if (!neighbourhood) return 0.06;
-    const s = e.source?.id ?? e.source;
-    const t = e.target?.id ?? e.target;
-    return (neighbourhood.has(s) && neighbourhood.has(t)) ? 0.5 : 0.015;
-  }
-
-  function secondaryEdgeColor(e) {
-    if (!neighbourhood) return '#5a4220';
-    const s = e.source?.id ?? e.source;
-    const t = e.target?.id ?? e.target;
-    return (neighbourhood.has(s) && neighbourhood.has(t)) ? '#c8a030' : '#5a4220';
-  }
-
-  function labelOpacity(n) {
-    if (neighbourhood) return neighbourhood.has(n.id) ? 1 : 0;
-    return ALWAYS_LABEL.has(n.id) ? 0.8 : 0;
-  }
-
-  function labelSize(n) {
-    const rank = rankOf.get(n.id) ?? 999;
-    if (rank < 8)  return 12;
-    if (rank < 20) return 10;
-    return 9;
-  }
-
-  function clusterLabelOpacity(cId) {
-    if (!neighbourhood) return 1;
-    const activeNode = simNodes.find(n => n.id === activeId);
-    return activeNode?.community === cId ? 1 : 0.25;
-  }
-
-  function nodeFill(n)   { return communityColor(n.community); }
-  function nodeStroke(n) {
-    const c = d3.color(communityColor(n.community));
-    return c ? c.brighter(1.1).formatHex() : '#ffffff';
-  }
-
-  // ── Interaction ────────────────────────────────────────────────────────────
-  function enter(node) {
-    if (!pinnedId) { hoveredId = node.id; onhover(node); }
-  }
-  function leave() {
-    if (!pinnedId) { hoveredId = null; onhover(null); }
-  }
-  function click(ev, node) {
-    ev.stopPropagation();
-    if (pinnedId === node.id) { pinnedId = null; hoveredId = null; onhover(null); }
-    else                      { pinnedId = node.id; onhover(node); }
-  }
+  });
 </script>
 
-<svg
-  bind:this={svgEl}
-  width={window.innerWidth}
-  height={window.innerHeight}
->
-  <defs>
-    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
-      <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
-      <feColorMatrix
-        in="blur" type="matrix"
-        values="0 0 0 0 0.96  0 0 0 0 0.78  0 0 0 0 0.09  0 0 0 12 -3"
-        result="glow"
-      />
-      <feMerge>
-        <feMergeNode in="glow" />
-        <feMergeNode in="SourceGraphic" />
-      </feMerge>
-    </filter>
-  </defs>
-
-  <g transform={xform}>
-
-    <!-- ── Cluster labels (bottom layer, behind everything) ────────────────── -->
-    <g class="cluster-labels" pointer-events="none">
-      {#each labeledCommunities as cId}
-        {@const center = communityCenter(cId)}
-        {#if center}
-          <text
-            x={center.x}
-            y={center.y}
-            class="cluster-label"
-            text-anchor="middle"
-            opacity={clusterLabelOpacity(cId)}
-            fill={communityColor(cId)}
-          >
-            {meta.communityLabel[cId]}
-          </text>
-        {/if}
-      {/each}
-    </g>
-
-    <!-- ── Secondary edges (ghost layer) ──────────────────────────────────── -->
-    <g class="edges-secondary">
-      {#each simSecondary as edge, i (i)}
-        <line
-          x1={ex1(edge)} y1={ey1(edge)}
-          x2={ex2(edge)} y2={ey2(edge)}
-          stroke={secondaryEdgeColor(edge)}
-          stroke-opacity={secondaryEdgeOpacity(edge)}
-          stroke-width={0.5}
-          stroke-linecap="round"
-          stroke-dasharray="2 4"
-        />
-      {/each}
-    </g>
-
-    <!-- ── Primary edges ───────────────────────────────────────────────────── -->
-    <g class="edges">
-      {#each simEdges as edge, i (i)}
-        <line
-          x1={ex1(edge)} y1={ey1(edge)}
-          x2={ex2(edge)} y2={ey2(edge)}
-          stroke={edgeColor(edge)}
-          stroke-opacity={edgeOpacity(edge)}
-          stroke-width={widthScale(edge.weight)}
-          stroke-linecap="round"
-        />
-      {/each}
-    </g>
-
-    <!-- ── Nodes ───────────────────────────────────────────────────────────── -->
-    <g class="nodes">
-      {#each simNodes as node (node.id)}
-        <g
-          class="node"
-          role="button"
-          tabindex="0"
-          aria-label={node.displayName}
-          transform={`translate(${nx(node)},${ny(node)})`}
-          opacity={nodeOpacity(node)}
-          filter={nodeGlow(node)}
-          use:draggable={node}
-          onmouseenter={() => enter(node)}
-          onmouseleave={() => leave()}
-          onclick={(ev) => click(ev, node)}
-          onkeydown={(ev) => { if (ev.key === 'Enter' || ev.key === ' ') click(ev, node); }}
-        >
-          <circle
-            r={rScale(node.degree)}
-            fill={nodeFill(node)}
-            stroke={nodeStroke(node)}
-            stroke-width={1.2}
-            stroke-opacity={0.5}
-          />
-          <text
-            class="label"
-            dy={rScale(node.degree) + 5}
-            text-anchor="middle"
-            font-size={labelSize(node)}
-            opacity={labelOpacity(node)}
-          >
-            {node.displayName}
-          </text>
-        </g>
-      {/each}
-    </g>
-
-  </g>
-</svg>
-
-<style>
-  svg {
-    display: block;
-    cursor: grab;
-    user-select: none;
-  }
-  svg:active { cursor: grabbing; }
-
-  .node { cursor: pointer; }
-
-  .cluster-label {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    /* Painted wide and dim — geography-map style */
-  }
-
-  .label {
-    fill: #c8b89a;
-    font-family: 'Inter', system-ui, sans-serif;
-    font-weight: 500;
-    pointer-events: none;
-    paint-order: stroke;
-    stroke: #0a0907;
-    stroke-width: 3.5px;
-    stroke-linejoin: round;
-  }
-</style>
+<canvas bind:this={canvasEl} style="display:block; cursor:grab; width:100dvw; height:100dvh;"></canvas>

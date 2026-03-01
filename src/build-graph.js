@@ -4,9 +4,11 @@ import louvain from 'graphology-communities-louvain';
 
 const data = JSON.parse(readFileSync('data/data.json', 'utf-8'));
 
+// ── Constants ─────────────────────────────────────────────────────────────────
+const MIN_CONTEXTS    = 2;  // musician must appear under ≥N distinct primary artists
+const SMALL_GROUP_CAP = 20; // connections from albums with >N performers don't count toward sizeScore
+
 // ── Role filter ─────────────────────────────────────────────────────────────
-// Blocklist approach: anything that starts with one of these is NOT a performer.
-// We keep instruments, vocals, conductor, featuring, performer, etc.
 const BLOCKED_PREFIXES = [
   // Engineering / technical
   'recorded by', 'mixed by', 'mastered by', 'remastered by',
@@ -50,101 +52,125 @@ function isPerformer(role) {
   );
 }
 
-// ── Config ───────────────────────────────────────────────────────────────────
-const MIN_SHARED_ALBUMS = 3; // edges with fewer shared albums are dropped
+// ── Ensemble name filter ──────────────────────────────────────────────────────
+// Discogs sometimes credits a performing ensemble as a unit (e.g. "Wayne Shorter Quartet"
+// with role "Ensemble") alongside the individual members. Filter these phantom group
+// credits by checking the credit name for known ensemble-type suffixes.
+const ENSEMBLE_SUFFIXES = [
+  'orchestra', 'quartet', 'quintet', 'trio', 'sextet', 'septet', 'octet',
+  'ensemble', 'choir', 'chorus', 'big band', 'group',
+];
 
-// ── Build graph ──────────────────────────────────────────────────────────────
-const musicians = new Map(); // discogsId → { id, name, albums: Set<albumDiscogsId> }
-const collabs   = new Map(); // "idA|||idB" → { source, target, albums: Set<albumDiscogsId> }
+function isEnsembleName(name) {
+  const n = name.toLowerCase().replace(/\s*\(\d+\)$/, '').trim();
+  return ENSEMBLE_SUFFIXES.some(s => n === s || n.endsWith(' ' + s));
+}
+
+// ── Build raw graph data ──────────────────────────────────────────────────────
+const musicians        = new Map(); // id → { id, name, albums: Set }
+const collabs          = new Map(); // "idA|||idB" → { source, target, albums: Set, minSize }
+const musicianContexts = new Map(); // id → Set<album.artist>
 
 for (const album of data) {
   if (!album.discoData?.credits?.length) continue;
 
-  const albumId = album.discoData.id; // Discogs release/master ID — unique per release
+  const albumId = album.discoData.id;
 
   // Collect unique performers on this album, deduped by Discogs artist ID.
-  // If the same person appears multiple times (e.g. Piano + Producer), they
-  // count once as long as at least one of their roles passes the filter.
-  const performers = new Map(); // artistId → { id, name }
+  // Skip phantom ensemble-name credits (individual members are listed separately).
+  const performers = new Map();
   for (const credit of album.discoData.credits) {
     if (!isPerformer(credit.role)) continue;
+    if (isEnsembleName(credit.name)) continue;
     if (performers.has(credit.id)) continue;
     performers.set(credit.id, { id: credit.id, name: credit.name });
   }
 
-  const list = [...performers.values()];
+  const list     = [...performers.values()];
+  const albumSize = list.length;
 
-  // Register musicians
+  // Register musicians and track which primary artist contexts they appear under
   for (const p of list) {
     if (!musicians.has(p.id)) {
       musicians.set(p.id, { id: p.id, name: p.name, albums: new Set() });
     }
     musicians.get(p.id).albums.add(albumId);
+
+    if (!musicianContexts.has(p.id)) musicianContexts.set(p.id, new Set());
+    musicianContexts.get(p.id).add(album.artist);
   }
 
-  // Register pairwise collaborations (once per album, regardless of credit count)
+  // Register pairwise collaborations, tracking minimum album size per pair
   for (let i = 0; i < list.length; i++) {
     for (let j = i + 1; j < list.length; j++) {
       const [a, b] = [list[i].id, list[j].id].sort((x, y) => x - y);
       const key = `${a}|||${b}`;
       if (!collabs.has(key)) {
-        collabs.set(key, { source: a, target: b, albums: new Set() });
+        collabs.set(key, { source: a, target: b, albums: new Set(), minSize: Infinity });
       }
-      collabs.get(key).albums.add(albumId);
+      const c = collabs.get(key);
+      c.albums.add(albumId);
+      c.minSize = Math.min(c.minSize, albumSize);
     }
   }
 }
 
-// ── Edge weight: full credit for first 2 shared albums, harmonic taper after ──
-// k=1 → +1, k=2 → +1, k=3 → +1/3, k=4 → +1/4, ...
-function harmonicWeight(n) {
-  let w = 0;
-  for (let k = 1; k <= n; k++) w += k <= 2 ? 1 : 1 / k;
-  return w;
-}
+// ── Context filter ────────────────────────────────────────────────────────────
+// Keep only musicians who appeared on albums by ≥ MIN_CONTEXTS distinct primary
+// artists. This removes musicians whose entire discography is within one outfit
+// (e.g. a big band member who only ever recorded under that ensemble's name).
+const contextQualified = new Set(
+  [...musicianContexts.entries()]
+    .filter(([, ctx]) => ctx.size >= MIN_CONTEXTS)
+    .map(([id]) => id)
+);
 
-// ── Primary edges (≥ threshold shared albums) ─────────────────────────────────
-const edges = [...collabs.values()]
-  .filter(c => c.albums.size >= MIN_SHARED_ALBUMS)
-  .map(c => ({ source: c.source, target: c.target, weight: harmonicWeight(c.albums.size) }));
+const qualifiedCollabs = [...collabs.values()]
+  .filter(c => contextQualified.has(c.source) && contextQualified.has(c.target));
 
-const connectedIds = new Set(edges.flatMap(e => [e.source, e.target]));
+const connectedIds = new Set(qualifiedCollabs.flatMap(c => [c.source, c.target]));
 
-// ── Secondary edges (1–2 shared albums, only between already-connected nodes) ──
-// These are real collaborations that didn't cross the primary threshold.
-// Rendered as ghost lines in the viz — present but visually subordinate.
-const secondaryEdges = [...collabs.values()]
-  .filter(c =>
-    c.albums.size < MIN_SHARED_ALBUMS &&
-    connectedIds.has(c.source) &&
-    connectedIds.has(c.target)
-  )
-  .map(c => ({ source: c.source, target: c.target, weight: harmonicWeight(c.albums.size) }));
+// ── Edges ────────────────────────────────────────────────────────────────────
+const edges = qualifiedCollabs.map(c => ({
+  source: c.source,
+  target: c.target,
+  weight: c.albums.size,
+}));
 
-// Compute degree from the filtered edge set
-const degree = new Map();
-for (const e of edges) {
-  degree.set(e.source, (degree.get(e.source) || 0) + 1);
-  degree.set(e.target, (degree.get(e.target) || 0) + 1);
+// ── Node metrics ──────────────────────────────────────────────────────────────
+// connections = raw unique collaborator count (display in tooltip)
+// sizeScore   = collaborators met via ≤ SMALL_GROUP_CAP-person albums (for node sizing)
+//   This prevents large ensemble recordings (e.g. a 67-person super-session) from
+//   inflating a musician's visual prominence beyond their actual network breadth.
+const connections = new Map();
+const sizeScore   = new Map();
+
+for (const c of qualifiedCollabs) {
+  connections.set(c.source, (connections.get(c.source) || 0) + 1);
+  connections.set(c.target, (connections.get(c.target) || 0) + 1);
+  if (c.minSize <= SMALL_GROUP_CAP) {
+    sizeScore.set(c.source, (sizeScore.get(c.source) || 0) + 1);
+    sizeScore.set(c.target, (sizeScore.get(c.target) || 0) + 1);
+  }
 }
 
 const nodes = [...musicians.values()]
   .filter(m => connectedIds.has(m.id))
   .map(m => ({
-    id:         m.id,
-    name:       m.name,
-    albumCount: m.albums.size,
-    degree:     degree.get(m.id) || 0,
+    id:          m.id,
+    name:        m.name,
+    albumCount:  m.albums.size,
+    connections: connections.get(m.id) || 0,
+    sizeScore:   sizeScore.get(m.id) || 1,
   }))
-  .sort((a, b) => b.degree - a.degree);
+  .sort((a, b) => b.connections - a.connections);
 
 // ── Community detection (Louvain via Graphology) ──────────────────────────────
 const gg = new Graph({ multi: false, type: 'undirected' });
 nodes.forEach(n => gg.addNode(n.id, { name: n.name }));
 edges.forEach(e => gg.addEdge(e.source, e.target, { weight: e.weight }));
 
-// Louvain returns { nodeId: communityId }
-const rawCommunities = louvain(gg, { resolution: 0.5 });
+const rawCommunities = louvain(gg, { resolution: 1.5 });
 
 // Re-order community IDs so community 0 = largest group, etc.
 const communitySize = {};
@@ -160,44 +186,78 @@ nodes.forEach(n => {
   n.community = communityRemap.get(rawCommunities[n.id]) ?? 0;
 });
 
-// Label each community after its highest-degree member
+// ── Cross-community isolation filter ──────────────────────────────────────────
+// Secondary safeguard: remove any remaining musicians with no cross-community edges.
+// Run iteratively since removing a node may isolate others.
+let filteredNodes = [...nodes];
+let filteredEdges = [...edges];
+
+let changed = true;
+while (changed) {
+  changed = false;
+  const nodeCommMap = new Map(filteredNodes.map(n => [n.id, n.community]));
+  const hasCrossComm = new Set();
+
+  for (const e of filteredEdges) {
+    const cA = nodeCommMap.get(e.source);
+    const cB = nodeCommMap.get(e.target);
+    if (cA !== cB) {
+      hasCrossComm.add(e.source);
+      hasCrossComm.add(e.target);
+    }
+  }
+
+  const prevCount = filteredNodes.length;
+  filteredNodes = filteredNodes.filter(n => hasCrossComm.has(n.id));
+
+  if (filteredNodes.length < prevCount) {
+    changed = true;
+    const filteredIds = new Set(filteredNodes.map(n => n.id));
+    filteredEdges = filteredEdges.filter(e => filteredIds.has(e.source) && filteredIds.has(e.target));
+  }
+}
+
+// Label each community after its highest-connection member (from final node set)
 const communityLabel = {};
-[...nodes].sort((a, b) => b.degree - a.degree).forEach(n => {
+[...filteredNodes].sort((a, b) => b.connections - a.connections).forEach(n => {
   if (communityLabel[n.community] === undefined) communityLabel[n.community] = n.name;
 });
 
-const communityCount = sortedCommunities.length;
-console.log(`\nCommunities detected: ${communityCount}`);
-Object.entries(communityLabel)
-  .sort((a, b) => a[0] - b[0])
-  .forEach(([id, name]) =>
-    console.log(`  Community ${id}: ${name} (${communitySize[sortedCommunities[id]]} members)`)
-  );
+// ── Report + Write output ─────────────────────────────────────────────────────
+const filteredCommSize = {};
+filteredNodes.forEach(n => { filteredCommSize[n.community] = (filteredCommSize[n.community] || 0) + 1; });
+const filteredCommunities = [...new Set(filteredNodes.map(n => n.community))].sort((a, b) => a - b);
 
-// ── Write output ──────────────────────────────────────────────────────────────
 try { mkdirSync('public', { recursive: true }); } catch {}
 
 const graph = {
-  nodes,
-  edges,
-  secondaryEdges,
+  nodes: filteredNodes,
+  edges: filteredEdges,
   meta: {
-    threshold:          MIN_SHARED_ALBUMS,
-    nodeCount:          nodes.length,
-    edgeCount:          edges.length,
-    secondaryEdgeCount: secondaryEdges.length,
-    communityCount,
+    nodeCount:      filteredNodes.length,
+    edgeCount:      filteredEdges.length,
+    communityCount: filteredCommunities.length,
     communityLabel,
-    generated:          new Date().toISOString(),
+    generated:      new Date().toISOString(),
   },
 };
 
 writeFileSync('public/graph.json', JSON.stringify(graph));
 
-// ── Report ────────────────────────────────────────────────────────────────────
-console.log(`\nGraph built (min ${MIN_SHARED_ALBUMS} shared albums):`);
-console.log(`  ${nodes.length} musicians · ${edges.length} primary edges · ${secondaryEdges.length} secondary edges\n`);
-console.log('Top 20 by connections:');
-nodes.slice(0, 20).forEach((n, i) =>
-  console.log(`  ${String(i + 1).padStart(2)}. ${n.name.padEnd(30)} ${String(n.degree).padStart(3)} connections · ${n.albumCount} albums · community ${n.community}`)
+const removedByContext = [...musicians.values()].filter(m => !contextQualified.has(m.id)).length;
+const removedByIsolation = nodes.length - filteredNodes.length;
+
+console.log(`\nGraph built:`);
+console.log(`  ${filteredNodes.length} musicians · ${filteredEdges.length} edges`);
+console.log(`  Removed ${removedByContext} single-context (ensemble-only) musicians`);
+console.log(`  Removed ${removedByIsolation} further by cross-community isolation filter\n`);
+
+console.log(`Communities: ${filteredCommunities.length}`);
+filteredCommunities.forEach(id => {
+  console.log(`  ${id}: ${communityLabel[id]} (${filteredCommSize[id]} members)`);
+});
+
+console.log('\nTop 20 by connections:');
+filteredNodes.slice(0, 20).forEach((n, i) =>
+  console.log(`  ${String(i+1).padStart(2)}. ${n.name.padEnd(30)} ${n.connections} collabs (size ${n.sizeScore}) · ${n.albumCount} albums`)
 );
