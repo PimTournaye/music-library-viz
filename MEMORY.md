@@ -55,6 +55,68 @@ style.css          — minimal global reset only; component styles in .svelte fi
 - `pnpm build` — production build
 - `pnpm graph` — rebuild graph.json from data.json
 
+## Graph design decisions & tradeoffs
+
+### Role filtering (performer vs. non-performer)
+Blocklist approach: anything starting with known non-performer prefixes is excluded.
+Keeps instruments, vocals, conductor, featuring. Excludes engineer, producer, mastering,
+A&R, design, liner notes, arranged by, etc.
+**Tradeoff**: "Arranged By" is excluded even though jazz arrangers (e.g. Thad Jones) are
+real artistic contributors. Kept out because they may not have *played* on the record.
+"Producer" excluded even if it's a musician self-producing — they'll still appear via
+their instrument credit on the same album.
+
+### Deduplication by Discogs artist ID per album
+Same person listed twice (Guitar + Producer) counts once. Uses numeric Discogs artist ID.
+**Tradeoff**: different Discogs IDs for the same real person (rare but exists) would
+create phantom duplicates. Accepted as rare enough not to matter.
+
+### Threshold: minimum 3 shared albums for a primary edge
+Below 3 = too noisy. Above 3 = loses real connections.
+**Tradeoff**: misses some valid two-album collaborations, addressed by secondary edges.
+
+### Harmonic edge weighting
+weight = 1 + 1 + 1/3 + 1/4 + ... (full credit for first 2 albums, taper after)
+**Why**: linear counting over-rewards musicians who had the opportunity to record many
+albums with the same group (big bands, fixed ensembles). Logarithmic compression
+makes the graph show *breadth* of collaboration rather than just *repetition*.
+**Tradeoff**: slightly disadvantages musicians who worked in prolific recording scenes
+(hard bop Blue Note era) vs. those in more selective contemporary contexts.
+The "from album 3" taper is a judgment call — first two collaborations are treated
+as equally intentional, then diminishing returns kick in.
+
+### Two-tier edge system
+- **Primary edges** (≥3 shared albums): solid lines, full visual weight
+- **Secondary edges** (1–2 albums, only between nodes already in primary graph): faint
+  dashed lines, nearly invisible at rest, light up on hover
+**Why**: preserves the tight core graph while surfacing real but infrequent connections.
+Wynton–Herbie share 1 album → secondary edge. Nathan Daems–Lander Gyselinck share 2 → secondary.
+**Tradeoff**: secondary edges only appear between nodes already anchored by primary
+connections. A musician who only ever played one-off sessions with established players
+won't appear at all (no node). This is intentional — we want the established
+collaboration network, not every session player who appeared once.
+1241 secondary vs 852 primary edges. If visually too dense, drop secondary opacity
+from 0.06 → 0.03 in `secondaryEdgeOpacity()` in Graph.svelte.
+
+### Ensemble clusters (Brussels Jazz Orchestra, Maria Schneider, Snarky Puppy)
+These form tight cliques because all members appear on multiple albums together.
+Harmonic weighting compresses (but doesn't eliminate) this effect.
+Still an open problem — the ensemble IS a real collaboration but it's a different
+*kind* of collaboration than a cross-context session pairing.
+Not solved yet. Possible future approaches: cap max edge weight per album-pair,
+or add a "context diversity" score to node size.
+
+### Wynton Marsalis isolation
+Correctly reflects the library data: Wynton only shares 1 album with Herbie Hancock
+("Quartet"). Now connected via secondary edge. His primary cluster (community 10)
+is his own group (Branford, Kenny Kirkland, etc.) which is correct.
+
+### Community detection (Louvain, resolution=0.5)
+Lower resolution = fewer, larger communities. At 0.5 we get ~30 communities,
+top 10 get distinct colors, rest are dim neutral. Louvain is non-deterministic
+(slight variation between runs). Communities are relabeled by size (0 = largest).
+Community labels in UI = highest-degree node in each community (rough heuristic).
+
 ## Known issues / roadmap
 - Library data is stale (needs re-fetch from desktop when possible)
 - Duplicate albums in data.json (e.g. same album with slightly different titles from Discogs matching) — to fix properly, deduplicate by Discogs release ID not name
