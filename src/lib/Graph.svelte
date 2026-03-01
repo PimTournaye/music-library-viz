@@ -3,7 +3,7 @@
   import * as d3 from 'd3';
   import { communityColor } from './colors.js';
 
-  let { nodes, edges, onhover } = $props();
+  let { nodes, edges, secondaryEdges, onhover } = $props();
 
   // ── Pre-compute adjacency from original IDs (before D3 mutates source/target) ──
   // Wrapped in $derived so Svelte knows these depend on the props.
@@ -35,6 +35,9 @@
   // Snapshot the props once at mount time — intentionally non-reactive.
   const simNodes = untrack(() => nodes.map(n => ({ ...n })));
   const simEdges = untrack(() => edges.map(e => ({ ...e })));
+  // Secondary edges: D3 will resolve source/target to node objects,
+  // but they don't participate in the force layout — layout is driven by primary edges only.
+  const simSecondary = untrack(() => secondaryEdges.map(e => ({ ...e })));
 
   // ── Reactive state ─────────────────────────────────────────────────────────
   let ticked      = $state(0);       // incremented each sim tick → drives re-render
@@ -63,6 +66,14 @@
     // Initial transform
     const initialT = d3.zoomIdentity.translate(W / 2, H / 2).scale(0.65);
     xform = `translate(${initialT.x},${initialT.y}) scale(${initialT.k})`;
+
+    // Resolve secondary edge source/target to node objects (needed to read x/y on tick).
+    // They don't influence the layout — only primary edges do.
+    const nodeById = new Map(simNodes.map(n => [n.id, n]));
+    for (const e of simSecondary) {
+      e.source = nodeById.get(e.source) ?? e.source;
+      e.target = nodeById.get(e.target) ?? e.target;
+    }
 
     // Force simulation
     simulation = d3.forceSimulation(simNodes)
@@ -153,6 +164,20 @@
     return (neighbourhood.has(s) && neighbourhood.has(t)) ? '#f5c518' : '#c8922a';
   }
 
+  function secondaryEdgeOpacity(e) {
+    if (!neighbourhood) return 0.06;
+    const s = e.source?.id ?? e.source;
+    const t = e.target?.id ?? e.target;
+    return (neighbourhood.has(s) && neighbourhood.has(t)) ? 0.45 : 0.015;
+  }
+
+  function secondaryEdgeColor(e) {
+    if (!neighbourhood) return '#7a6030';
+    const s = e.source?.id ?? e.source;
+    const t = e.target?.id ?? e.target;
+    return (neighbourhood.has(s) && neighbourhood.has(t)) ? '#c8a030' : '#7a6030';
+  }
+
   function labelOpacity(n) {
     if (neighbourhood) return neighbourhood.has(n.id) ? 1 : 0;
     return ALWAYS_LABEL.has(n.id) ? 1 : 0;
@@ -200,7 +225,22 @@
   </defs>
 
   <g transform={xform}>
-    <!-- ── Edges ─────────────────────────────────────────────────────────── -->
+    <!-- ── Secondary edges (ghost layer) ──────────────────────────────────── -->
+    <g class="edges-secondary">
+      {#each simSecondary as edge, i (i)}
+        <line
+          x1={ex1(edge)} y1={ey1(edge)}
+          x2={ex2(edge)} y2={ey2(edge)}
+          stroke={secondaryEdgeColor(edge)}
+          stroke-opacity={secondaryEdgeOpacity(edge)}
+          stroke-width={0.5}
+          stroke-linecap="round"
+          stroke-dasharray="2 3"
+        />
+      {/each}
+    </g>
+
+    <!-- ── Primary edges ───────────────────────────────────────────────────── -->
     <g class="edges">
       {#each simEdges as edge, i (i)}
         <line

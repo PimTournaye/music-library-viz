@@ -22,6 +22,7 @@
   <Graph
     nodes={graphData.nodes}
     edges={graphData.edges}
+    secondaryEdges={graphData.secondaryEdges}
     onhover={(n) => (hoveredNode = n)}
   />
 

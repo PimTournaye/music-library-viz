@@ -103,12 +103,23 @@ function harmonicWeight(n) {
   return w;
 }
 
-// ── Apply threshold ───────────────────────────────────────────────────────────
+// ── Primary edges (≥ threshold shared albums) ─────────────────────────────────
 const edges = [...collabs.values()]
   .filter(c => c.albums.size >= MIN_SHARED_ALBUMS)
   .map(c => ({ source: c.source, target: c.target, weight: harmonicWeight(c.albums.size) }));
 
 const connectedIds = new Set(edges.flatMap(e => [e.source, e.target]));
+
+// ── Secondary edges (1–2 shared albums, only between already-connected nodes) ──
+// These are real collaborations that didn't cross the primary threshold.
+// Rendered as ghost lines in the viz — present but visually subordinate.
+const secondaryEdges = [...collabs.values()]
+  .filter(c =>
+    c.albums.size < MIN_SHARED_ALBUMS &&
+    connectedIds.has(c.source) &&
+    connectedIds.has(c.target)
+  )
+  .map(c => ({ source: c.source, target: c.target, weight: harmonicWeight(c.albums.size) }));
 
 // Compute degree from the filtered edge set
 const degree = new Map();
@@ -169,13 +180,15 @@ try { mkdirSync('public', { recursive: true }); } catch {}
 const graph = {
   nodes,
   edges,
+  secondaryEdges,
   meta: {
-    threshold:      MIN_SHARED_ALBUMS,
-    nodeCount:      nodes.length,
-    edgeCount:      edges.length,
+    threshold:          MIN_SHARED_ALBUMS,
+    nodeCount:          nodes.length,
+    edgeCount:          edges.length,
+    secondaryEdgeCount: secondaryEdges.length,
     communityCount,
     communityLabel,
-    generated:      new Date().toISOString(),
+    generated:          new Date().toISOString(),
   },
 };
 
@@ -183,7 +196,7 @@ writeFileSync('public/graph.json', JSON.stringify(graph));
 
 // ── Report ────────────────────────────────────────────────────────────────────
 console.log(`\nGraph built (min ${MIN_SHARED_ALBUMS} shared albums):`);
-console.log(`  ${nodes.length} musicians · ${edges.length} collaboration edges\n`);
+console.log(`  ${nodes.length} musicians · ${edges.length} primary edges · ${secondaryEdges.length} secondary edges\n`);
 console.log('Top 20 by connections:');
 nodes.slice(0, 20).forEach((n, i) =>
   console.log(`  ${String(i + 1).padStart(2)}. ${n.name.padEnd(30)} ${String(n.degree).padStart(3)} connections · ${n.albumCount} albums · community ${n.community}`)
