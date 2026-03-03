@@ -27,6 +27,7 @@
       <ul class="explore-list">
         <li><strong>Hover</strong> a node to highlight its direct connections</li>
         <li><strong>Click</strong> to pin a node and keep its links visible</li>
+        <li><strong>Hover an edge</strong> while a node is pinned to see shared albums</li>
         <li><strong>Scroll</strong> to zoom in and out</li>
         <li><strong>Drag</strong> to pan around the graph</li>
       </ul>

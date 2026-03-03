@@ -51,6 +51,22 @@
       <span class="legend-sub">Albums shared &mdash; <span style="color:#a08060">fewer</span> to <span style="color:#521000">more</span></span>
     </div>
   </div>
+
+  <!-- Edge interaction hint -->
+  <div class="legend-row">
+    <div class="legend-icon" aria-hidden="true">
+      <div class="edge-interact">
+        <div class="edge-interact-line"></div>
+        <svg class="edge-interact-cursor" viewBox="0 0 18 20" width="14" height="16" fill="none">
+          <path d="M2 2l12 8-5 1-2 5z" fill="#d4a860" stroke="#2a1408" stroke-width="1.2" stroke-linejoin="round"/>
+        </svg>
+      </div>
+    </div>
+    <div class="legend-text-block">
+      <span class="legend-label">Edge hover</span>
+      <span class="legend-sub">Pin a node, then hover any connection to reveal shared albums</span>
+    </div>
+  </div>
 </div>
 
 <style>
@@ -110,6 +126,50 @@
   .edge-line {
     width: 100%;
     border-radius: 2px;
+  }
+
+  /* Edge interaction hint */
+  .edge-interact {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .edge-interact-line {
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: #aa4c00;
+    opacity: 0.9;
+  }
+  .edge-interact-cursor {
+    position: absolute;
+    left: 50%;
+    top: -4px;
+    transform: translateX(-30%);
+    pointer-events: none;
+  }
+
+  /* Edge interaction hint */
+  .edge-interact {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+  .edge-interact-line {
+    width: 100%;
+    height: 3px;
+    border-radius: 2px;
+    background: #aa4c00;
+    opacity: 0.9;
+  }
+  .edge-interact-cursor {
+    position: absolute;
+    left: 50%;
+    top: -4px;
+    transform: translateX(-30%);
+    pointer-events: none;
   }
 
   .legend-text-block {

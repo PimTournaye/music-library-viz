@@ -4,7 +4,7 @@
   import * as PIXI from 'pixi.js';
   import { yearColor } from './colors.js';
 
-  let { nodes, edges, meta, onhover } = $props();
+  let { nodes, edges, meta, albumMeta = {}, onhover } = $props();
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
   function cleanName(name) { return name.replace(/\s*\(\d+\)$/, ''); }
@@ -47,8 +47,9 @@
   const simEdges = untrack(() => edges.map(e => ({ ...e })));
 
   // ── Reactive interaction state ───────────────────────────────────────────────
-  let hoveredId = $state(null);
-  let pinnedId  = $state(null);
+  let hoveredId   = $state(null);
+  let pinnedId    = $state(null);
+  let hoveredEdge = $state(null); // { edge, clientX, clientY } — only set when a node is pinned
 
   const activeId = $derived(pinnedId ?? hoveredId);
   const neighbourhood = $derived.by(() => {
@@ -274,6 +275,48 @@
     canvasEl.addEventListener('pointerup',     () => { isDraggingNode = false; }, { capture: true });
     canvasEl.addEventListener('pointercancel', () => { isDraggingNode = false; }, { capture: true });
 
+    // ── Edge hover hit-testing ──────────────────────────────────────────────
+    function pointToSegmentDist(px, py, ax, ay, bx, by) {
+      const dx = bx - ax, dy = by - ay;
+      const lenSq = dx * dx + dy * dy;
+      if (lenSq === 0) return Math.hypot(px - ax, py - ay);
+      const t = Math.max(0, Math.min(1, ((px - ax) * dx + (py - ay) * dy) / lenSq));
+      return Math.hypot(px - (ax + t * dx), py - (ay + t * dy));
+    }
+
+    function onEdgeMouseMove(ev) {
+      // Only active when a node is pinned and we're not dragging
+      if (!pinnedId || draggingNode) {
+        if (hoveredEdge !== null) hoveredEdge = null;
+        return;
+      }
+      const rect   = canvasEl.getBoundingClientRect();
+      const screenX = ev.clientX - rect.left;
+      const screenY = ev.clientY - rect.top;
+      const worldX  = (screenX - world.position.x) / world.scale.x;
+      const worldY  = (screenY - world.position.y) / world.scale.y;
+      // Hit threshold: ~8 px in screen space, converted to world units
+      const threshold = 8 / world.scale.x;
+
+      const nb = neighbourhood;
+      let found = null;
+      for (const e of simEdges) {
+        if (e.source.x == null || e.target.x == null) continue;
+        const sid = e.source.id ?? e.source;
+        const tid = e.target.id ?? e.target;
+        if (!nb?.has(sid) || !nb?.has(tid)) continue;
+        const dist = pointToSegmentDist(worldX, worldY, e.source.x, e.source.y, e.target.x, e.target.y);
+        if (dist < threshold) {
+          found = { edge: e, clientX: ev.clientX, clientY: ev.clientY };
+          break;
+        }
+      }
+      hoveredEdge = found;
+    }
+
+    canvasEl.addEventListener('mousemove', onEdgeMouseMove);
+    canvasEl.addEventListener('mouseleave', () => { hoveredEdge = null; });
+
     // ── Draw functions ────────────────────────────────────────────────────────
     function drawEdges() {
       edgeGfx.clear();
@@ -437,6 +480,8 @@
       drawEdgesFn   = null;
       updateNodesFn = null;
       updateGlowFn  = null;
+      canvasEl.removeEventListener('mousemove', onEdgeMouseMove);
+      canvasEl.removeEventListener('mouseleave', () => { hoveredEdge = null; });
       app.destroy(true, { children: true, texture: true });
     };
   });
@@ -444,6 +489,31 @@
 
 <div style="position:relative; width:100%; height:100%;">
   <canvas bind:this={canvasEl} style="display:block; cursor:grab; width:100%; height:100%;"></canvas>
+
+  <!-- ── Edge tooltip (shown when a node is pinned and cursor hovers an active edge) -->
+  {#if hoveredEdge && pinnedId}
+    {@const e  = hoveredEdge.edge}
+    {@const nA = e.source.displayName ?? e.source.name ?? ''}
+    {@const nB = e.target.displayName ?? e.target.name ?? ''}
+    {@const albums = (e.albums ?? []).map(id => albumMeta[id]).filter(Boolean)}
+    {@const shown  = albums.slice(0, 8)}
+    {@const extra  = albums.length - 8}
+    <div
+      class="edge-tooltip"
+      style="left: {Math.min(hoveredEdge.clientX + 18, window.innerWidth  - 260)}px;
+             top:  {Math.min(Math.max(hoveredEdge.clientY - 20, 8), window.innerHeight - 320)}px;"
+    >
+      <p class="edge-tooltip-header">{nA} &times; {nB}</p>
+      <ul class="edge-tooltip-list">
+        {#each shown as a}
+          <li>{a.artist} — {a.title}{a.year ? ` (${a.year})` : ''}</li>
+        {/each}
+        {#if extra > 0}
+          <li class="edge-tooltip-more">+{extra} more</li>
+        {/if}
+      </ul>
+    </div>
+  {/if}
 
   <div class="zoom-controls" role="group" aria-label="Zoom controls">
     <button class="zoom-btn" onclick={() => zoomInFn?.()} aria-label="Zoom in" title="Zoom in">
@@ -500,5 +570,53 @@
   .zoom-btn:hover {
     background: rgba(238, 228, 210, 1);
     color: #3a2008;
+  }
+
+  /* ── Edge tooltip ──────────────────────────────────────────────────────────── */
+  .edge-tooltip {
+    position: fixed;
+    pointer-events: none;
+    user-select: none;
+    z-index: 65;
+    background: rgba(12, 9, 4, 0.93);
+    border: 1px solid #5a3820;
+    border-radius: 5px;
+    padding: 0.55rem 0.8rem 0.65rem;
+    min-width: 160px;
+    max-width: 250px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .edge-tooltip-header {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #d4a860;
+    margin: 0 0 0.4rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .edge-tooltip-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.18rem;
+  }
+  .edge-tooltip-list li {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.70rem;
+    color: #c8aa80;
+    line-height: 1.35;
+    white-space: normal;
+    word-break: break-word;
+  }
+  .edge-tooltip-more {
+    color: #8a7050 !important;
+    font-style: italic;
+    margin-top: 0.1rem;
   }
 </style>

@@ -156,7 +156,23 @@ const edges = qualifiedCollabs.map(c => ({
   source: c.source,
   target: c.target,
   weight: c.albums.size,
+  albums: [...c.albums],
 }));
+
+// ── Album metadata (id → { artist, title, year }) ─────────────────────────
+const albumMeta = {};
+for (const album of data) {
+  const id = album.discoData?.id;
+  if (id) {
+      const rawYear = String(album.year || album.discoData.released || '');
+      const yearMatch = rawYear.match(/\b(19|20)\d{2}\b/);
+      albumMeta[id] = {
+        artist: album.artist,
+        title:  album.album,
+        year:   yearMatch ? yearMatch[0] : null,
+      };
+  }
+}
 
 // ── Node metrics ──────────────────────────────────────────────────────────────
 // connections = raw unique collaborator count (display in tooltip)
@@ -255,6 +271,7 @@ try { mkdirSync('public', { recursive: true }); } catch {}
 const graph = {
   nodes: filteredNodes,
   edges: filteredEdges,
+  albumMeta,
   meta: {
     nodeCount:      filteredNodes.length,
     edgeCount:      filteredEdges.length,

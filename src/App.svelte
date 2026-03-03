@@ -60,6 +60,7 @@
       nodes={graphData.nodes}
       edges={graphData.edges}
       meta={graphData.meta}
+      albumMeta={graphData.albumMeta ?? {}}
       onhover={(n, x, y) => { hoveredNode = n; if (n) { hoverX = x; hoverY = y; } }}
     />
   {:else if viewMode === 'timeline'}
