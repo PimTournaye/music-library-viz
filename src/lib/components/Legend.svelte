@@ -40,13 +40,15 @@
   <div class="legend-row">
     <div class="legend-icon" aria-hidden="true">
       <div class="edge-lines">
-        <div class="edge-line" style="height:4px; opacity:0.65;"></div>
-        <div class="edge-line" style="height:1.5px; opacity:0.35;"></div>
+        <div class="edge-line" style="height:1px;  background:#a08060; opacity:0.7;"></div>
+        <div class="edge-line" style="height:2px;  background:#c07010; opacity:0.8;"></div>
+        <div class="edge-line" style="height:4px;  background:#aa4c00; opacity:0.9;"></div>
+        <div class="edge-line" style="height:7px;  background:#521000; opacity:1.0;"></div>
       </div>
     </div>
     <div class="legend-text-block">
       <span class="legend-label">Edge weight</span>
-      <span class="legend-sub">Number of albums shared</span>
+      <span class="legend-sub">Albums shared &mdash; <span style="color:#a08060">fewer</span> to <span style="color:#521000">more</span></span>
     </div>
   </div>
 </div>
@@ -97,16 +99,16 @@
     flex-shrink: 0;
   }
 
-  /* Edge weight: two horizontal bars */
+  /* Edge weight: stacked bars thin→thick, light→dark */
   .edge-lines {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    justify-content: center;
+    gap: 4px;
     width: 100%;
   }
   .edge-line {
     width: 100%;
-    background: #9a6828;
     border-radius: 2px;
   }
 

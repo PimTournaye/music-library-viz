@@ -44,6 +44,8 @@
   let zoomStr   = $state('translate(0,0) scale(1)');
   let svgEl     = $state(null);
   let resetZoom = $state(null);
+  let zoomIn    = $state(null);
+  let zoomOut   = $state(null);
 
   onMount(() => {
     // Initialize from container
@@ -81,17 +83,27 @@
       })
       .on('end', () => { if (svgEl) svgEl.style.cursor = 'grab'; });
 
-    d3.select(svgEl).call(zoom).on('dblclick.zoom', null);
+    const zoomSel = d3.select(svgEl);
+    zoomSel.call(zoom).on('dblclick.zoom', null);
 
     resetZoom = () => {
-      d3.select(svgEl)
-        .transition().duration(600).ease(d3.easeQuadInOut)
+      zoomSel.transition().duration(600).ease(d3.easeQuadInOut)
         .call(zoom.transform, d3.zoomIdentity);
+    };
+    zoomIn = () => {
+      zoomSel.transition().duration(250).ease(d3.easeQuadInOut)
+        .call(zoom.scaleBy, 1.5);
+    };
+    zoomOut = () => {
+      zoomSel.transition().duration(250).ease(d3.easeQuadInOut)
+        .call(zoom.scaleBy, 1 / 1.5);
     };
 
     return () => {
       cancelAnimationFrame(raf);
       resetZoom = null;
+      zoomIn    = null;
+      zoomOut   = null;
       if (svgEl) d3.select(svgEl).on('.zoom', null);
     };
   });
@@ -179,7 +191,7 @@
   // Deconflicted label Y positions — greedy vertical bump to prevent overlap.
   // Sort always-labeled nodes by their computed y, then push each label down
   // if it would overlap the previous one. MIN_GAP matches the label font height.
-  const MIN_LABEL_GAP = 13; // px — approx line height at 0.68rem
+  const MIN_LABEL_GAP = 16; // px — approx line height at 0.68rem
   const labelYMap = $derived.by(() => {
     const labeled = [...alwaysLabel]
       .map(id => ({ id, pos: nodePositions.get(id) }))
@@ -207,9 +219,67 @@
     { year: 1969, label: 'Electric Miles' },
     { year: 1975, label: 'Fusion' },
     { year: 1986, label: 'Neo-bop Revival' },
-    { year: 1993, label: 'Acid Jazz' },
+    { year: 1993, label: 'Young Lions' },
     { year: 2001, label: 'Post-bop / ECM' },
-    { year: 2010, label: 'New Jazz' },
+    { year: 2010, label: 'Contemporary Scene' },
+  ];
+
+  // Personal margin notes — each note occupies an era zone (startYear → endYear).
+  // Text is centred vertically within the zone, no connecting line needed.
+  // ⚠️  MAINTENANCE: album counts below are hardcoded from data/albums.json at
+  // the time of last update (March 2026). If you add albums and rebuild graph.json,
+  // re-run: node _tmp_count.cjs (see git history) or check albums.json directly.
+  // To make this dynamic, embed decade counts in graph.json via build-graph.js.
+  const MARGIN_NOTES = [
+    {
+      startYear: 1954, endYear: 1963,
+      lines: [
+        '33 albums from the \'50s & \'60s,',
+        'vs. 89 from the \'70s & \'80s.',
+        'Bebop & hard bop remain a gap',
+        'in what I actually own.',
+      ],
+    },
+    {
+      startYear: 1970, endYear: 1983,
+      lines: [
+        'I used to be obsessed with Fusion in',
+        'middle school — Chick Corea, Return to',
+        'Forever, Scott Henderson, Mike Stern,',
+        'Brecker Brothers... Good times.',
+        'That obsession hasn\'t quite persisted.',
+      ],
+    },
+    {
+      startYear: 1983, endYear: 1993,
+      lines: [
+        'Not a whole lot here for me in this era, ',
+        'although it might be because of some of the filtering.',
+        'I have a couple of revival albums like Wynton Marsalis recordings.',
+        'But I mostly collected stuff from the mid-90s, when Joshua Redman',
+        'Nicholas Payton, and the Young Lions start taking off.',
+        'Other stuff here is Pat Metheny records, but his median skews upwards.'
+      ],
+    },
+    {
+      startYear: 2001, endYear: 2010,
+      lines: [
+        'Bulk of the albums I have here are from people like',
+        'Brad Mehldau, SFJAZZ Collective, Chris Potter, Brian Blade,',
+        'Esperanza Spalding, and too many others to name.',
+        'This is when the REALLY cool stuff starts happening, and I\'m still digging constantly.',
+      ],
+    },
+    {
+      startYear: 2010, endYear: 2022,
+      lines: [
+        'These days I follow drummers.',
+        'I find a drummer I like, then trace',
+        'every record they played on — not',
+        'just their own albums. Same method',
+        'for any musician I get obsessed with.',
+      ],
+    },
   ];
 
   // ── Arc path — control point anchored to spine, not node x ───────────────────
@@ -249,7 +319,7 @@
   width={W} height={H}
   style="display:block; cursor:grab;"
   onclick={handleBackdrop}
-  role="img"
+  role="application"
   aria-label="Arc timeline of musician collaborations"
 >
   <defs>
@@ -271,6 +341,19 @@
 
   <!-- ── DATA LAYER: zoomable + reveal mask ─────────────────────────────────── -->
   <g transform={zoomStr} mask="url(#arcReveal)">
+
+    <!-- Note zone backgrounds — rendered first so everything else sits on top -->
+    <g pointer-events="none">
+      {#each MARGIN_NOTES as { startYear, endYear }}
+        {@const yTop  = yScale(endYear)}
+        {@const yBot  = yScale(startYear)}
+        {@const zoneX = spineX}
+        {@const zoneW = W - zoneX - 16}
+        <rect x={zoneX} y={yTop} width={zoneW} height={yBot - yTop} class="note-zone-bg" />
+        <line x1={zoneX} x2={zoneX + zoneW} y1={yTop} y2={yTop} class="note-zone-border" />
+        <line x1={zoneX} x2={zoneX + zoneW} y1={yBot} y2={yBot} class="note-zone-border" />
+      {/each}
+    </g>
 
     <!-- Arcs (pointer-events:none — hit layer handles interaction) -->
     <g pointer-events="none">
@@ -348,11 +431,13 @@
         {@const pos = nodePositions.get(n.id)}
         {#if pos}
           {@const r = rScale(n.sizeScore ?? n.connections)}
-          <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
+          <!-- svelte-ignore a11y_click_events_have_key_events -->
           <circle
             cx={pos.x} cy={pos.y} r={r + 6}
             fill="transparent"
             style="cursor:pointer;"
+            role="button"
+            tabindex="0"
             onpointerover={ev => handleOver(n, ev)}
             onpointerout={handleOut}
             onclick={ev => { ev.stopPropagation(); handleClick(n, ev); }}
@@ -383,47 +468,89 @@
 
     <!-- Era endpoint labels -->
     <text x={spineX - 44} y={PAD_TOP - 18}        text-anchor="end" class="era-label">contemporary</text>
-    <text x={spineX - 44} y={H - PAD_BOTTOM + 30} text-anchor="end" class="era-label">roots</text>
+    <text x={spineX - 44} y={H - PAD_BOTTOM + 30} text-anchor="end" class="era-label">bebop</text>
 
-    <!-- Era annotations — italic labels between decade ticks with short dashed tick -->
+    <!-- Era annotations — italic labels far left with a long dashed leader to the spine -->
     {#each ERA_ANNOTATIONS as { year, label }}
       {@const yy = yScale(year)}
-      <line x1={spineX - 22} x2={spineX} y1={yy} y2={yy} class="era-ann-tick" />
-      <text x={spineX - 26} y={yy + 4} text-anchor="end" class="era-ann-label">{label}</text>
+      <line x1={spineX - 126} x2={spineX} y1={yy} y2={yy} class="era-ann-tick" />
+      <text x={spineX - 130} y={yy + 4} text-anchor="end" class="era-ann-label">{label}</text>
+    {/each}
+
+    <!-- Right-side personal margin notes — text only, floated in era zones -->
+    {#each MARGIN_NOTES as { startYear, endYear, lines }}
+      {@const yTop    = yScale(endYear)}
+      {@const yBottom = yScale(startYear)}
+      {@const yCentre = (yTop + yBottom) / 2}
+      {@const textX   = spineX + 310}
+      {@const lineH   = 15}
+      {@const blockH  = lines.length * lineH}
+      {#each lines as line, i}
+        <text
+          x={textX}
+          y={yCentre - blockH / 2 + i * lineH + 11}
+          class="margin-note-text"
+        >{line}</text>
+      {/each}
     {/each}
   </g>
 </svg>
 
-<button class="zoom-reset" onclick={() => resetZoom?.()} aria-label="Reset zoom">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-    <path d="M7 1v2.5M7 13v-2.5M1 7h2.5M13 7h-2.5M3.2 3.2l1.77 1.77M9.03 9.03l1.77 1.77M10.8 3.2L9.03 4.97M4.97 9.03L3.2 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-  </svg>
-</button>
+<div role="group" aria-label="Zoom controls" class="zoom-controls">
+  <button class="zoom-btn" onclick={() => zoomIn?.()} aria-label="Zoom in" title="Zoom in">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button class="zoom-btn zoom-btn--reset" onclick={() => resetZoom?.()} aria-label="Reset zoom" title="Reset zoom">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M7 1v2.5M7 13v-2.5M1 7h2.5M13 7h-2.5M3.2 3.2l1.77 1.77M9.03 9.03l1.77 1.77M10.8 3.2L9.03 4.97M4.97 9.03L3.2 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </button>
+  <button class="zoom-btn" onclick={() => zoomOut?.()} aria-label="Zoom out" title="Zoom out">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </button>
+</div>
 
 </div>
 
 <style>
-  .zoom-reset {
+  .zoom-controls {
     position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    border: 1px solid #9a7040;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .zoom-btn {
     width: 32px;
     height: 32px;
-    border-radius: 4px;
-    border: 1px solid #9a7040;
+    border: none;
+    border-radius: 0;
     background: rgba(238, 228, 210, 0.88);
     color: #5a3a10;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.15s, color 0.15s;
   }
-  .zoom-reset:hover {
+  .zoom-btn + .zoom-btn {
+    border-top: 1px solid rgba(154, 112, 64, 0.4);
+  }
+  .zoom-btn--reset {
+    background: rgba(228, 215, 192, 0.88);
+  }
+  .zoom-btn:hover {
     background: rgba(238, 228, 210, 1);
-    border-color: #b06800;
     color: #3a2008;
   }
 
@@ -469,6 +596,28 @@
     paint-order: stroke;
     stroke: rgba(238, 228, 210, 0.92);
     stroke-width: 3.5;
+    stroke-linejoin: round;
+  }
+
+  .note-zone-bg {
+    fill: rgba(210, 198, 172, 0.35);
+  }
+
+  .note-zone-border {
+    stroke: #b09060;
+    stroke-width: 0.75;
+    stroke-dasharray: 4 4;
+    opacity: 0.6;
+  }
+
+  .margin-note-text {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
+    font-style: italic;
+    fill: #7a5828;
+    paint-order: stroke;
+    stroke: rgba(238, 228, 210, 0.85);
+    stroke-width: 3;
     stroke-linejoin: round;
   }
 
