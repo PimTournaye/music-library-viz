@@ -87,6 +87,7 @@
   .color-circles {
     display: flex;
     align-items: center;
+    vertical-align: middle;
     gap: 4px;
   }
   .color-circle {

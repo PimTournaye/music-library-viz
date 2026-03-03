@@ -122,9 +122,9 @@
     for (const e of simEdges) edgeByBucket[e.__b].push(e);
 
     const bWidths = Array.from({ length: NUM_BUCKETS }, (_, b) =>
-      0.5 + (b + 0.5) / NUM_BUCKETS * 2.5);
+      1.0 + (b + 0.5) / NUM_BUCKETS * 3.5);
     const bAlphas = Array.from({ length: NUM_BUCKETS }, (_, b) =>
-      0.06 + (b + 0.5) / NUM_BUCKETS * 0.49);
+      0.20 + (b + 0.5) / NUM_BUCKETS * 0.55);
 
     // ── Node graphics ─────────────────────────────────────────────────────────
     const nodeGfxMap     = new Map();
@@ -197,6 +197,7 @@
         stroke:          'rgba(238,228,210,0.88)',
         strokeThickness: 3.5,
         align:           'center',
+        resolution:      window.devicePixelRatio * 2,
       });
       lbl.anchor.set(0.5, 0);
       lbl.alpha = 0;
@@ -373,6 +374,8 @@
       });
 
     // ── D3 zoom → PixiJS world transform ─────────────────────────────────────
+    let lastTextRes = window.devicePixelRatio * 2;
+
     const zoom = d3.zoom()
       .scaleExtent([0.05, 10])
       .filter(ev => {
@@ -385,6 +388,19 @@
         const t = ev.transform;
         world.position.set(t.x, t.y);
         world.scale.set(t.k);
+
+        // Keep label textures crisp at any zoom level by re-rasterizing only
+        // when the resolution tier changes (avoids per-frame GPU uploads).
+        const targetRes = Math.min(
+          Math.ceil(t.k * window.devicePixelRatio),
+          Math.ceil(10 * window.devicePixelRatio),  // max = full scaleExtent
+        );
+        if (targetRes !== lastTextRes) {
+          lastTextRes = targetRes;
+          for (const lbl of nodeLblMap.values()) {
+            lbl.resolution = targetRes;
+          }
+        }
       });
 
     d3.select(canvasEl)
