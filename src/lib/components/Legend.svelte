@@ -1,0 +1,132 @@
+<script>
+  import { yearGradientStops } from '../colors.js';
+
+  const gradientStops = $derived(yearGradientStops());
+</script>
+
+<div class="legend">
+  <!-- Node size -->
+  <div class="legend-row">
+    <div class="legend-icon" aria-hidden="true">
+      <div class="size-circles">
+        <div class="size-circle" style="width:16px; height:16px; opacity:0.5;"></div>
+        <div class="size-circle" style="width:28px; height:28px; opacity:0.65;"></div>
+        <div class="size-circle" style="width:42px; height:42px; opacity:0.8;"></div>
+      </div>
+    </div>
+    <div class="legend-text-block">
+      <span class="legend-label">Node size</span>
+      <span class="legend-sub">Number of collaborators</span>
+    </div>
+  </div>
+
+  <!-- Node colour -->
+  <div class="legend-row">
+    <div class="legend-icon" aria-hidden="true">
+      <div class="color-circles">
+        {#each gradientStops.filter((_, i) => i % 8 === 0) as stop}
+          <div class="color-circle" style="background:{stop.color};"></div>
+        {/each}
+      </div>
+    </div>
+    <div class="legend-text-block">
+      <span class="legend-label">Node colour</span>
+      <span class="legend-sub">Median album year &mdash; <span style="color:#c9942a">older</span> to <span style="color:#4a7aaa">newer</span></span>
+      <span class="legend-sub">The middle release year across all albums this musician appears on in my collection &mdash; not their full career, just what I own.</span>
+    </div>
+  </div>
+
+  <!-- Edge weight -->
+  <div class="legend-row">
+    <div class="legend-icon" aria-hidden="true">
+      <div class="edge-lines">
+        <div class="edge-line" style="height:4px; opacity:0.65;"></div>
+        <div class="edge-line" style="height:1.5px; opacity:0.35;"></div>
+      </div>
+    </div>
+    <div class="legend-text-block">
+      <span class="legend-label">Edge weight</span>
+      <span class="legend-sub">Number of albums shared</span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .legend {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    padding-top: 0.75rem;
+    border-top: 2px solid #2a1408;
+  }
+  .legend-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .legend-icon {
+    flex-shrink: 0;
+    width: 96px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Node size: three CSS circles aligned to bottom edge */
+  .size-circles {
+    display: flex;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .size-circle {
+    border-radius: 50%;
+    background: #7a6040;
+    flex-shrink: 0;
+  }
+
+  /* Node colour: row of CSS circles */
+  .color-circles {
+    display: flex;
+    align-items: center;
+    vertical-align: middle;
+    gap: 4px;
+  }
+  .color-circle {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Edge weight: two horizontal bars */
+  .edge-lines {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+  }
+  .edge-line {
+    width: 100%;
+    background: #9a6828;
+    border-radius: 2px;
+  }
+
+  .legend-text-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+  .legend-label {
+    font-family: 'Libre Franklin', system-ui, sans-serif;
+    font-size: 0.74rem;
+    font-weight: 700;
+    color: #2a1408;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  .legend-sub {
+    font-family: 'Libre Franklin', system-ui, sans-serif;
+    font-size: 0.70rem;
+    color: #7a5828;
+    line-height: 1.3;
+  }
+</style>

@@ -66,10 +66,25 @@ function isEnsembleName(name) {
   return ENSEMBLE_SUFFIXES.some(s => n === s || n.endsWith(' ' + s));
 }
 
+// ── Year helpers ──────────────────────────────────────────────────────────────
+function parseYear(released) {
+  if (!released) return null;
+  const y = parseInt(String(released).slice(0, 4), 10);
+  return (y >= 1900 && y <= 2030) ? y : null;
+}
+
+function median(arr) {
+  if (!arr.length) return null;
+  const s = [...arr].sort((a, b) => a - b);
+  const m = Math.floor(s.length / 2);
+  return s.length % 2 ? s[m] : Math.round((s[m - 1] + s[m]) / 2);
+}
+
 // ── Build raw graph data ──────────────────────────────────────────────────────
 const musicians        = new Map(); // id → { id, name, albums: Set }
 const collabs          = new Map(); // "idA|||idB" → { source, target, albums: Set, minSize }
 const musicianContexts = new Map(); // id → Set<album.artist>
+const musicianYears    = new Map(); // id → number[]
 
 for (const album of data) {
   if (!album.discoData?.credits?.length) continue;
@@ -90,6 +105,7 @@ for (const album of data) {
   const albumSize = list.length;
 
   // Register musicians and track which primary artist contexts they appear under
+  const albumYear = parseYear(album.discoData.released);
   for (const p of list) {
     if (!musicians.has(p.id)) {
       musicians.set(p.id, { id: p.id, name: p.name, albums: new Set() });
@@ -98,6 +114,11 @@ for (const album of data) {
 
     if (!musicianContexts.has(p.id)) musicianContexts.set(p.id, new Set());
     musicianContexts.get(p.id).add(album.artist);
+
+    if (albumYear !== null) {
+      if (!musicianYears.has(p.id)) musicianYears.set(p.id, []);
+      musicianYears.get(p.id).push(albumYear);
+    }
   }
 
   // Register pairwise collaborations, tracking minimum album size per pair
@@ -162,6 +183,7 @@ const nodes = [...musicians.values()]
     albumCount:  m.albums.size,
     connections: connections.get(m.id) || 0,
     sizeScore:   sizeScore.get(m.id) || 1,
+    medianYear:  median((musicianYears.get(m.id) || []).filter(Boolean)),
   }))
   .sort((a, b) => b.connections - a.connections);
 
@@ -257,7 +279,10 @@ filteredCommunities.forEach(id => {
   console.log(`  ${id}: ${communityLabel[id]} (${filteredCommSize[id]} members)`);
 });
 
+const nodesWithYear = filteredNodes.filter(n => n.medianYear != null).length;
+console.log(`\n  ${nodesWithYear} of ${filteredNodes.length} nodes have medianYear`);
+
 console.log('\nTop 20 by connections:');
 filteredNodes.slice(0, 20).forEach((n, i) =>
-  console.log(`  ${String(i+1).padStart(2)}. ${n.name.padEnd(30)} ${n.connections} collabs (size ${n.sizeScore}) · ${n.albumCount} albums`)
+  console.log(`  ${String(i+1).padStart(2)}. ${n.name.padEnd(30)} ${n.connections} collabs (size ${n.sizeScore}) · ${n.albumCount} albums · ${n.medianYear ?? '—'}`)
 );

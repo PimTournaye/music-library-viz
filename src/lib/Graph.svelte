@@ -2,17 +2,23 @@
   import { onMount, untrack } from 'svelte';
   import * as d3 from 'd3';
   import * as PIXI from 'pixi.js';
-  import { communityColor } from './colors.js';
+  import { yearColor } from './colors.js';
 
   let { nodes, edges, meta, onhover } = $props();
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
   function cleanName(name) { return name.replace(/\s*\(\d+\)$/, ''); }
-  function hexNum(hex)      { return parseInt(hex.replace('#', ''), 16); }
-  function nodeFillNum(n)   { return hexNum(communityColor(n.community)); }
+  function colorToNum(colorStr) {
+    const c = d3.color(colorStr);
+    if (!c) return 0x6b5a42;
+    return (c.r << 16) | (c.g << 8) | c.b;
+  }
+  function nodeFillNum(n)   { return colorToNum(yearColor(n.medianYear)); }
   function nodeStrokeNum(n) {
-    const c = d3.color(communityColor(n.community));
-    return c ? hexNum(c.brighter(1.1).formatHex()) : 0xffffff;
+    const c = d3.color(yearColor(n.medianYear));
+    if (!c) return 0x000000;
+    const darker = c.darker(0.5);
+    return (darker.r << 16) | (darker.g << 8) | darker.b;
   }
 
   // ── Adjacency ───────────────────────────────────────────────────────────────
@@ -59,6 +65,7 @@
   let drawEdgesFn   = null;
   let updateNodesFn = null;
   let updateGlowFn  = null;
+  let resetZoomFn   = null;
 
   // ── Re-render when hover state changes (sim may be idle) ─────────────────────
   $effect(() => {
@@ -74,17 +81,19 @@
 
   // ── Mount ───────────────────────────────────────────────────────────────────
   onMount(() => {
-    const W = window.innerWidth;
-    const H = window.innerHeight;
+    const container = canvasEl.parentElement;
+    const W = container.clientWidth;
+    const H = container.clientHeight;
 
     const app = new PIXI.Application({
       view:            canvasEl,
       width:           W,
       height:          H,
-      backgroundAlpha: 0,
-      antialias:       true,
-      resolution:      window.devicePixelRatio || 1,
-      autoDensity:     true,
+      backgroundColor:  0xeee4d2,  // warm parchment
+      backgroundAlpha:  1,
+      antialias:        true,
+      resolution:       window.devicePixelRatio || 1,
+      autoDensity:      true,
     });
 
     const world = new PIXI.Container();
@@ -113,9 +122,9 @@
     for (const e of simEdges) edgeByBucket[e.__b].push(e);
 
     const bWidths = Array.from({ length: NUM_BUCKETS }, (_, b) =>
-      0.5 + (b + 0.5) / NUM_BUCKETS * 2.5);
+      1.0 + (b + 0.5) / NUM_BUCKETS * 3.5);
     const bAlphas = Array.from({ length: NUM_BUCKETS }, (_, b) =>
-      0.06 + (b + 0.5) / NUM_BUCKETS * 0.49);
+      0.20 + (b + 0.5) / NUM_BUCKETS * 0.55);
 
     // ── Node graphics ─────────────────────────────────────────────────────────
     const nodeGfxMap     = new Map();
@@ -154,6 +163,8 @@
         ev.stopPropagation();
         draggingNode = n;
         n.__dragged  = false;
+        n.__downX    = ev.data.global.x;
+        n.__downY    = ev.data.global.y;
         simulation.alphaTarget(0.3).restart();
         n.fx = n.x; n.fy = n.y;
       });
@@ -182,10 +193,11 @@
       const lbl = new PIXI.Text(n.displayName, {
         fontFamily:      'Inter, system-ui, sans-serif',
         fontSize,
-        fill:            '#c8b89a',
-        stroke:          '#0a0907',
+        fill:            '#2a1808',
+        stroke:          'rgba(238,228,210,0.88)',
         strokeThickness: 3.5,
         align:           'center',
+        resolution:      window.devicePixelRatio * 2,
       });
       lbl.anchor.set(0.5, 0);
       lbl.alpha = 0;
@@ -210,9 +222,15 @@
     app.stage.interactive = true;
     app.stage.hitArea     = new PIXI.Rectangle(0, 0, W, H);
 
+    const DRAG_THRESHOLD = 5; // px — below this, treat as a click not a drag
     app.stage.on('pointermove', ev => {
       if (!draggingNode) return;
-      draggingNode.__dragged = true;
+      if (!draggingNode.__dragged) {
+        const dx = ev.data.global.x - (draggingNode.__downX ?? 0);
+        const dy = ev.data.global.y - (draggingNode.__downY ?? 0);
+        if (dx * dx + dy * dy < DRAG_THRESHOLD * DRAG_THRESHOLD) return;
+        draggingNode.__dragged = true;
+      }
       const local = world.toLocal(ev.data.global);
       draggingNode.fx = local.x;
       draggingNode.fy = local.y;
@@ -281,7 +299,7 @@
             const tid = e.target.id ?? e.target;
             if (!nb.has(sid) || !nb.has(tid)) continue;
             if (!styleSet) {
-              edgeGfx.lineStyle(bWidths[b] * 1.4, 0xf5c518, Math.min(bAlphas[b] * 4, 0.9));
+              edgeGfx.lineStyle(bWidths[b] * 1.4, 0xb06800, Math.min(bAlphas[b] * 4, 0.9));
               styleSet = true;
             }
             edgeGfx.moveTo(e.source.x, e.source.y);
@@ -320,13 +338,13 @@
       const n = nodeById.get(aid);
       if (!n || n.x == null) return;
       const r = rScale(n.sizeScore ?? n.connections);
-      glowGfx.beginFill(0xf5c518, 0.22);
+      glowGfx.beginFill(0xb06800, 0.28);
       glowGfx.drawCircle(n.x, n.y, r + 3);
       glowGfx.endFill();
-      glowGfx.beginFill(0xf5c518, 0.10);
+      glowGfx.beginFill(0xb06800, 0.12);
       glowGfx.drawCircle(n.x, n.y, r + 8);
       glowGfx.endFill();
-      glowGfx.beginFill(0xf5c518, 0.04);
+      glowGfx.beginFill(0xb06800, 0.05);
       glowGfx.drawCircle(n.x, n.y, r + 16);
       glowGfx.endFill();
     }
@@ -356,6 +374,8 @@
       });
 
     // ── D3 zoom → PixiJS world transform ─────────────────────────────────────
+    let lastTextRes = window.devicePixelRatio * 2;
+
     const zoom = d3.zoom()
       .scaleExtent([0.05, 10])
       .filter(ev => {
@@ -368,15 +388,36 @@
         const t = ev.transform;
         world.position.set(t.x, t.y);
         world.scale.set(t.k);
+
+        // Keep label textures crisp at any zoom level by re-rasterizing only
+        // when the resolution tier changes (avoids per-frame GPU uploads).
+        const targetRes = Math.min(
+          Math.ceil(t.k * window.devicePixelRatio),
+          Math.ceil(10 * window.devicePixelRatio),  // max = full scaleExtent
+        );
+        if (targetRes !== lastTextRes) {
+          lastTextRes = targetRes;
+          for (const lbl of nodeLblMap.values()) {
+            lbl.resolution = targetRes;
+          }
+        }
       });
 
     d3.select(canvasEl)
       .call(zoom)
       .call(zoom.transform, initialT);
 
+    // Expose reset function to Svelte template
+    resetZoomFn = () => {
+      d3.select(canvasEl)
+        .transition().duration(600).ease(d3.easeQuadInOut)
+        .call(zoom.transform, initialT);
+    };
+
     return () => {
       simulation?.stop();
       app.ticker.remove(() => {});
+      resetZoomFn   = null;
       drawEdgesFn   = null;
       updateNodesFn = null;
       updateGlowFn  = null;
@@ -385,4 +426,37 @@
   });
 </script>
 
-<canvas bind:this={canvasEl} style="display:block; cursor:grab; width:100dvw; height:100dvh;"></canvas>
+<div style="position:relative; width:100%; height:100%;">
+  <canvas bind:this={canvasEl} style="display:block; cursor:grab; width:100%; height:100%;"></canvas>
+  <button class="zoom-reset" onclick={() => resetZoomFn?.()} aria-label="Reset zoom">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+      <path d="M7 1v2.5M7 13v-2.5M1 7h2.5M13 7h-2.5M3.2 3.2l1.77 1.77M9.03 9.03l1.77 1.77M10.8 3.2L9.03 4.97M4.97 9.03L3.2 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+    </svg>
+  </button>
+</div>
+
+<style>
+  .zoom-reset {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    border: 1px solid #9a7040;
+    background: rgba(238, 228, 210, 0.88);
+    color: #5a3a10;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .zoom-reset:hover {
+    background: rgba(238, 228, 210, 1);
+    border-color: #b06800;
+    color: #3a2008;
+  }
+</style>

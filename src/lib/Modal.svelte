@@ -34,7 +34,7 @@
         </div>
         <div class="rule">
           <span class="rule-label">Colour</span>
-          <span class="rule-desc">Community — musicians who tend to cluster together</span>
+          <span class="rule-desc">Median album year — warm tones for classic era, cool tones for contemporary</span>
         </div>
       </div>
 
@@ -61,7 +61,7 @@
   .backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(5, 4, 3, 0.75);
+    background: rgba(58, 32, 8, 0.45);
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     display: flex;
@@ -73,13 +73,13 @@
 
   .modal {
     position: relative;
-    background: #221608;
-    border: 1px solid #4a3218;
+    background: #f5ede0;
+    border: 1px solid #c0a070;
     border-radius: 4px;
     padding: 2.5rem;
     max-width: 480px;
     width: 100%;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    box-shadow: 0 24px 80px rgba(58, 32, 8, 0.25);
   }
 
   .close {
@@ -90,27 +90,26 @@
     border: none;
     font-size: 1.4rem;
     line-height: 1;
-    color: #7a6040;
+    color: #9a7848;
     cursor: pointer;
     padding: 0.2rem 0.4rem;
     transition: color 0.15s;
   }
-  .close:hover { color: #c8b89a; }
+  .close:hover { color: #3a2008; }
 
   h1 {
-    font-family: 'Inter', system-ui, sans-serif;
+    font-family: Georgia, 'Times New Roman', serif;
     font-size: 1.4rem;
-    font-weight: 600;
-    color: #e8d5a3;
+    font-weight: 700;
+    color: #2a1408;
     line-height: 1.25;
     margin-bottom: 1.1rem;
-    letter-spacing: -0.01em;
   }
 
   .lead {
     font-family: 'Inter', system-ui, sans-serif;
     font-size: 0.85rem;
-    color: #b09060;
+    color: #4a3018;
     line-height: 1.65;
     margin-bottom: 1.5rem;
   }
@@ -121,9 +120,9 @@
     gap: 0.7rem;
     margin-bottom: 1.5rem;
     padding: 1rem 1.1rem;
-    background: #180f04;
+    background: #ede0cc;
     border-radius: 3px;
-    border: 1px solid #2e2010;
+    border: 1px solid #c8a870;
   }
 
   .rule {
@@ -135,9 +134,9 @@
 
   .rule-label {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.7rem;
-    font-weight: 600;
-    color: #f5c518;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #8a4e00;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     white-space: nowrap;
@@ -145,8 +144,8 @@
 
   .rule-desc {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.78rem;
-    color: #b09060;
+    font-size: 0.80rem;
+    color: #4a3018;
     line-height: 1.5;
   }
 
@@ -154,10 +153,10 @@
 
   .controls-title {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.68rem;
-    font-weight: 600;
-    color: #6a5035;
-    letter-spacing: 0.1em;
+    font-size: 0.70rem;
+    font-weight: 700;
+    color: #7a5020;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
     margin-bottom: 0.6rem;
   }
@@ -167,23 +166,23 @@
     grid-template-columns: 4rem 1fr;
     gap: 0.3rem 1rem;
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.78rem;
+    font-size: 0.80rem;
   }
 
   .control-grid span:nth-child(odd) {
-    color: #c8b89a;
-    font-weight: 500;
+    color: #2a1408;
+    font-weight: 600;
   }
   .control-grid span:nth-child(even) {
-    color: #7a6040;
+    color: #5a3a18;
   }
 
   .footnote {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.68rem;
-    color: #6a5035;
+    font-size: 0.72rem;
+    color: #7a5828;
     line-height: 1.6;
-    border-top: 1px solid #2e2010;
+    border-top: 1px solid #c8a870;
     padding-top: 1rem;
   }
 </style>
