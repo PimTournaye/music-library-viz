@@ -66,6 +66,8 @@
   let updateNodesFn = null;
   let updateGlowFn  = null;
   let resetZoomFn   = null;
+  let zoomInFn      = null;
+  let zoomOutFn     = null;
 
   // ── Re-render when hover state changes (sim may be idle) ─────────────────────
   $effect(() => {
@@ -111,20 +113,24 @@
     world.addChild(edgeGfx, glowGfx, nodeLayer, lblLayer);
 
     // ── Edge style buckets ────────────────────────────────────────────────────
+    // Use log scale: data is heavily right-skewed (73 % of edges have weight=1),
+    // so linear bucketing collapses almost everything into bucket 0.
     const localMaxWeight = d3.max(simEdges, e => e.weight) ?? 1;
+    const logMax = Math.log(Math.max(localMaxWeight, 2));
     const NUM_BUCKETS = 6;
 
     for (const e of simEdges) {
-      const t = Math.max(e.weight - 1, 0) / Math.max(localMaxWeight - 1, 1);
+      const t = Math.log(Math.max(e.weight, 1)) / logMax;
       e.__b = Math.min(Math.floor(t * NUM_BUCKETS), NUM_BUCKETS - 1);
     }
     const edgeByBucket = Array.from({ length: NUM_BUCKETS }, () => []);
     for (const e of simEdges) edgeByBucket[e.__b].push(e);
 
-    const bWidths = Array.from({ length: NUM_BUCKETS }, (_, b) =>
-      1.0 + (b + 0.5) / NUM_BUCKETS * 3.5);
-    const bAlphas = Array.from({ length: NUM_BUCKETS }, (_, b) =>
-      0.20 + (b + 0.5) / NUM_BUCKETS * 0.55);
+    // Color ramp: near-background parchment-tan → deep maroon
+    // Width + alpha also scale aggressively so strong edges really pop.
+    const bColors  = [0xa08060, 0xcaa040, 0xc07010, 0xaa4c00, 0x832800, 0x521000];
+    const bWidths  = [1.1,      1.3,      1.6,      2.8,      4.4,      6.5];
+    const bAlphas  = [0.22,     0.30,     0.38,     0.62,     0.82,     0.95];
 
     // ── Node graphics ─────────────────────────────────────────────────────────
     const nodeGfxMap     = new Map();
@@ -277,14 +283,14 @@
         for (let b = 0; b < NUM_BUCKETS; b++) {
           const bucket = edgeByBucket[b];
           if (!bucket.length) continue;
-          edgeGfx.lineStyle(bWidths[b], 0xc8922a, bAlphas[b]);
+          edgeGfx.lineStyle(bWidths[b], bColors[b], bAlphas[b]);
           for (const e of bucket) {
             edgeGfx.moveTo(e.source.x, e.source.y);
             edgeGfx.lineTo(e.target.x, e.target.y);
           }
         }
       } else {
-        edgeGfx.lineStyle(0.8, 0xc8922a, 0.008);
+        edgeGfx.lineStyle(0.5, 0xc8b898, 0.04);
         for (const e of simEdges) {
           const sid = e.source.id ?? e.source;
           const tid = e.target.id ?? e.target;
@@ -299,7 +305,7 @@
             const tid = e.target.id ?? e.target;
             if (!nb.has(sid) || !nb.has(tid)) continue;
             if (!styleSet) {
-              edgeGfx.lineStyle(bWidths[b] * 1.4, 0xb06800, Math.min(bAlphas[b] * 4, 0.9));
+              edgeGfx.lineStyle(bWidths[b] * 1.5, bColors[b], Math.min(bAlphas[b] * 1.1, 0.98));
               styleSet = true;
             }
             edgeGfx.moveTo(e.source.x, e.source.y);
@@ -407,17 +413,27 @@
       .call(zoom)
       .call(zoom.transform, initialT);
 
-    // Expose reset function to Svelte template
+    // Expose zoom controls to Svelte template
+    const zoomSel = d3.select(canvasEl);
     resetZoomFn = () => {
-      d3.select(canvasEl)
-        .transition().duration(600).ease(d3.easeQuadInOut)
+      zoomSel.transition().duration(600).ease(d3.easeQuadInOut)
         .call(zoom.transform, initialT);
+    };
+    zoomInFn = () => {
+      zoomSel.transition().duration(250).ease(d3.easeQuadInOut)
+        .call(zoom.scaleBy, 1.5);
+    };
+    zoomOutFn = () => {
+      zoomSel.transition().duration(250).ease(d3.easeQuadInOut)
+        .call(zoom.scaleBy, 1 / 1.5);
     };
 
     return () => {
       simulation?.stop();
       app.ticker.remove(() => {});
       resetZoomFn   = null;
+      zoomInFn      = null;
+      zoomOutFn     = null;
       drawEdgesFn   = null;
       updateNodesFn = null;
       updateGlowFn  = null;
@@ -428,35 +444,61 @@
 
 <div style="position:relative; width:100%; height:100%;">
   <canvas bind:this={canvasEl} style="display:block; cursor:grab; width:100%; height:100%;"></canvas>
-  <button class="zoom-reset" onclick={() => resetZoomFn?.()} aria-label="Reset zoom">
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-      <path d="M7 1v2.5M7 13v-2.5M1 7h2.5M13 7h-2.5M3.2 3.2l1.77 1.77M9.03 9.03l1.77 1.77M10.8 3.2L9.03 4.97M4.97 9.03L3.2 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
-    </svg>
-  </button>
+
+  <div class="zoom-controls" role="group" aria-label="Zoom controls">
+    <button class="zoom-btn" onclick={() => zoomInFn?.()} aria-label="Zoom in" title="Zoom in">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M7 2v10M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="zoom-btn zoom-btn--reset" onclick={() => resetZoomFn?.()} aria-label="Reset zoom" title="Reset zoom">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M7 1v2.5M7 13v-2.5M1 7h2.5M13 7h-2.5M3.2 3.2l1.77 1.77M9.03 9.03l1.77 1.77M10.8 3.2L9.03 4.97M4.97 9.03L3.2 10.8" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+    </button>
+    <button class="zoom-btn" onclick={() => zoomOutFn?.()} aria-label="Zoom out" title="Zoom out">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+        <path d="M2 7h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
 </div>
 
 <style>
-  .zoom-reset {
+  .zoom-controls {
     position: absolute;
-    bottom: 2rem;
-    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    border-radius: 6px;
+    border: 1px solid #9a7040;
+    overflow: hidden;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .zoom-btn {
     width: 32px;
     height: 32px;
-    border-radius: 4px;
-    border: 1px solid #9a7040;
+    border: none;
+    border-radius: 0;
     background: rgba(238, 228, 210, 0.88);
     color: #5a3a10;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: background 0.15s, border-color 0.15s, color 0.15s;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.15s, color 0.15s;
   }
-  .zoom-reset:hover {
+  .zoom-btn + .zoom-btn {
+    border-top: 1px solid rgba(154, 112, 64, 0.4);
+  }
+  .zoom-btn--reset {
+    background: rgba(228, 215, 192, 0.88);
+  }
+  .zoom-btn:hover {
     background: rgba(238, 228, 210, 1);
-    border-color: #b06800;
     color: #3a2008;
   }
 </style>
