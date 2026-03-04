@@ -4,7 +4,7 @@
   import { communityColor } from './colors.js';
   import { STORIES } from './stories.js';
 
-  let { nodes, edges, meta, onhover, onviewchange } = $props();
+  let { nodes, edges, meta, albumMeta = {}, onhover, onviewchange } = $props();
 
   function cleanName(n) { return n.replace(/\s*\(\d+\)$/, ''); }
   function srcId(e) { return typeof e.source === 'object' ? e.source.id : e.source; }
@@ -31,7 +31,7 @@
     { year: 1969, label: 'Electric Miles' },
     { year: 1975, label: 'Fusion' },
     { year: 1986, label: 'Neo-bop Revival' },
-    { year: 1993, label: 'Acid Jazz' },
+    { year: 1993, label: 'Young Lions' },
     { year: 2001, label: 'Post-bop / ECM' },
     { year: 2010, label: 'New Jazz' },
   ];
@@ -46,6 +46,7 @@
   let svgEl          = $state(null);
   let zoomStr        = $state('translate(0,0) scale(1)');
   let zoomInstance   = null;
+  let ariaLiveText   = $state('');
 
   // Step card elements for IntersectionObserver
   let stepCardEls = $state([]);
@@ -174,9 +175,10 @@
       .call(zoomInstance.transform, d3.zoomIdentity.translate(tx, ty).scale(k));
   }
 
-  // Watch activeStep → animate camera
+  // Watch activeStep → animate camera + update aria live text
   $effect(() => {
     const step = activeStep;
+    ariaLiveText = step.heading ?? '';
     // Small timeout so layout is computed first
     const t = setTimeout(() => animateCamera(step), 50);
     return () => clearTimeout(t);
@@ -190,14 +192,15 @@
     if (storyPaneEl) storyPaneEl.scrollTop = 0;
   }
 
-  // ── Jump to a specific step (from progress dots) ──────────────────────────────
+  // ── Jump to a specific step (from progress dots / keyboard) ────────────────────
   function jumpToStep(idx) {
     activeStepIdx = idx;
     const el = stepCardEls[idx];
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   let storyPaneEl = $state(null);
+  let storySwitcherOpen = $state(false);
 
   // ── IntersectionObserver for scroll-driven step activation ───────────────────
   $effect(() => {
@@ -205,13 +208,17 @@
     if (!cards.length) return;
 
     const obs = new IntersectionObserver(entries => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) {
-          const idx = Number(entry.target.dataset.stepIdx);
-          if (!isNaN(idx)) activeStepIdx = idx;
-        }
+      // Collect all currently intersecting cards and pick the first one
+      const intersecting = entries
+        .filter(e => e.isIntersecting)
+        .map(e => Number(e.target.dataset.stepIdx))
+        .filter(idx => !isNaN(idx))
+        .sort((a, b) => a - b);
+      
+      if (intersecting.length > 0) {
+        activeStepIdx = intersecting[0];
       }
-    }, { threshold: 0.55, root: storyPaneEl });
+    }, { threshold: 0.5, root: storyPaneEl });
 
     cards.forEach(el => { if (el) obs.observe(el); });
     return () => obs.disconnect();
@@ -234,13 +241,35 @@
     // Initial camera — slight delay for beeswarm to settle
     setTimeout(() => animateCamera(activeStep), 100);
 
+    // ── Keyboard navigation ───────────────────────────────────────────────────
+    function onKeyDown(e) {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        const next = activeStepIdx + 1;
+        if (next < activeStory.steps.length) {
+          jumpToStep(next);
+        } else if (activeStoryIdx < STORIES.length - 1) {
+          switchStory(activeStoryIdx + 1);
+        }
+      } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prev = activeStepIdx - 1;
+        if (prev >= 0) jumpToStep(prev);
+      }
+    }
+    window.addEventListener('keydown', onKeyDown);
+
     return () => {
       if (svgEl) d3.select(svgEl).on('.zoom', null);
+      window.removeEventListener('keydown', onKeyDown);
     };
   });
 </script>
 
 <svelte:window onresize={onResize} />
+
+<!-- Screen-reader live region -->
+<div aria-live="polite" aria-atomic="true" class="sr-only">{ariaLiveText}</div>
 
 <div class="narrative-wrapper">
 
@@ -248,74 +277,83 @@
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
   <div
     class="story-pane"
-    bind:this={storyPaneEl}
     role="region"
     aria-label="Story navigation"
   >
 
-    <!-- Story tabs + step progress (all sticky) -->
-    <div class="story-tabs">
-      {#each STORIES as story, i}
-        <button
-          class="story-tab"
-          class:active={i === activeStoryIdx}
-          onclick={() => switchStory(i)}
-        >
-          <span class="tab-title">{story.title}</span>
-          <span class="tab-sub">{story.subtitle}</span>
-        </button>
-      {/each}
-
-      <!-- Step progress: sticky with tabs so always visible -->
-      <div class="step-progress" role="group" aria-label="Story progress">
-        {#each activeStory.steps as _, i}
-          <button
-            class="step-dot"
-            class:active={i === activeStepIdx}
-            onclick={() => jumpToStep(i)}
-            aria-label="Go to step {i + 1}"
-          ></button>
-        {/each}
-        <span class="step-progress-label">{activeStepIdx + 1} / {activeStory.steps.length}</span>
+    <!-- Story header (sticky) -->
+    <div class="story-header">
+      <div class="story-header-main">
+        <p class="story-label">{activeStoryIdx + 1} / {STORIES.length}</p>
+        <h1 class="story-current-title">{activeStory.title}</h1>
+        <p class="story-current-sub">{activeStory.subtitle}</p>
       </div>
+      <button class="story-switch-btn" onclick={() => storySwitcherOpen = !storySwitcherOpen} aria-label="Switch story">
+        {storySwitcherOpen ? '✕' : '☰'}
+      </button>
+      {#if storySwitcherOpen}
+        <div class="story-list-overlay">
+          {#each STORIES as s, i}
+            <button class="story-list-item" class:active={i === activeStoryIdx}
+              onclick={() => { switchStory(i); storySwitcherOpen = false; }}>
+              <span class="sli-num">{String(i + 1).padStart(2, '0')}</span>
+              <div class="sli-text">
+                <span class="sli-title">{s.title}</span>
+                <span class="sli-sub">{s.subtitle}</span>
+              </div>
+            </button>
+          {/each}
+        </div>
+      {/if}
     </div>
+
+    <div class="story-body">
+      <div class="step-cards-col" bind:this={storyPaneEl}>
 
     <!-- Step cards -->
     {#each activeStory.steps as step, i}
       <div
         class="step-card"
         class:active={i === activeStepIdx}
+        class:step-card-cluster={activeStory.isClusters}
         data-step-idx={i}
         bind:this={stepCardEls[i]}
       >
         <div class="step-inner">
-          <p class="step-num">{String(i + 1).padStart(2, '0')}</p>
+          {#if !activeStory.isClusters}
+            <p class="step-num">{String(i + 1).padStart(2, '0')}</p>
+          {/if}
           <h2 class="step-heading">{step.heading}</h2>
+          {#if step.coverArt}
+            <img class="step-cover" src={step.coverArt} alt="Featured album cover" loading="lazy"
+              onerror={(e) => { e.currentTarget.style.display = 'none'; }} />
+          {/if}
           {#if step.callout}
             <p class="step-callout">{step.callout}</p>
           {/if}
-          <!-- Musician chips -->
-          <div class="musician-chips">
-            {#each step.focusIds as id}
-              {@const n = nodeById.get(id)}
-              {#if n}
-                {@const color = communityColor(n.community)}
-                <div class="musician-chip" style="border-color: {color}80; background: {color}14;">
-                  <span class="chip-dot" style="background: {color};"></span>
-                  <span class="chip-name">{n.displayName}</span>
-                  <span class="chip-collabs">{n.connections} total collabs</span>
-                </div>
-              {/if}
-            {/each}
-          </div>
-          <p class="step-body">{step.body}</p>
+          {#if step.focusIds.length <= 8}
+            <div class="musician-grid">
+              {#each step.focusIds as id}
+                {@const n = nodeById.get(id)}
+                {#if n}
+                  {@const color = communityColor(n.community)}
+                  <div class="mc">
+                    <span class="mc-bar" style="background:{color};"></span>
+                    <span class="mc-name">{n.displayName}</span>
+                    <span class="mc-stat">{n.connections}</span>
+                  </div>
+                {/if}
+              {/each}
+            </div>
+          {/if}
+          <p class="step-body">{@html step.body}</p>
         </div>
       </div>
     {/each}
 
     <!-- End-of-story navigation -->
     <div class="story-end">
-      {#if activeStoryIdx < STORIES.length - 1}
+      {#if activeStoryIdx < STORIES.length - 1 && !activeStory.isClusters}
         <p class="story-end-label">Next story</p>
         <button class="nav-btn nav-btn-primary" onclick={() => switchStory(activeStoryIdx + 1)}>
           {STORIES[activeStoryIdx + 1].title} →
@@ -327,6 +365,24 @@
       <button class="nav-btn" onclick={() => onviewchange('graph')}>Network view</button>
       <button class="nav-btn" onclick={() => onviewchange('timeline')}>Timeline view</button>
     </div>
+
+      </div><!-- end step-cards-col -->
+
+      <!-- Step rail column -->
+      <div class="step-rail-col">
+        <div class="step-rail" role="group" aria-label="Story progress">
+          {#each activeStory.steps as _, i}
+            <button
+              class="step-rail-dot"
+              class:active={i === activeStepIdx}
+              onclick={() => jumpToStep(i)}
+              aria-label="Step {i + 1}"
+            ></button>
+          {/each}
+        </div>
+      </div>
+
+    </div><!-- end story-body -->
 
   </div>
 
@@ -348,7 +404,7 @@
         <span class="story-enc-dot" style="background:#9a8878; opacity:0.18;"></span>
         <span class="story-enc-text">Rest of library</span>
       </div>
-      <p class="story-enc-hint">Scroll to advance · drag to pan</p>
+      <p class="story-enc-hint">Scroll or ↑↓ keys · drag to pan</p>
     </aside>
     <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_noninteractive_element_interactions -->
     <svg
@@ -529,7 +585,6 @@
     position: relative;
     width: 100dvw;
     height: 100dvh;
-    padding-top: 52px; /* clear the fixed header bar */
     box-sizing: border-box;
     overflow: hidden;
     display: flex;
@@ -541,101 +596,218 @@
     width: 30%;
     flex-shrink: 0;
     height: 100%;
-    overflow-y: scroll;
-    background: #f5ede0;
-    border-right: 1px solid #d4b888;
-    scroll-behavior: smooth;
-    /* hide scrollbar visually but keep functional */
-    scrollbar-width: thin;
-    scrollbar-color: #c8a870 #f5ede0;
-  }
-
-  /* Story tabs (sticky zone: story selector + step progress) */
-  .story-tabs {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: #f5ede0;
-    border-bottom: 1px solid #d4b888;
-    padding: 0.75rem 1.2rem 0.55rem;
     display: flex;
     flex-direction: column;
-    gap: 0.3rem;
+    overflow: hidden;
+    background: #f5ede0;
+    border-right: 1px solid #d4b888;
   }
 
-  .story-tab {
+  .story-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+  }
+
+  .step-cards-col {
+    flex: 1;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+    scroll-padding-top: 0;
+    scrollbar-width: none;
+  }
+  .step-cards-col::-webkit-scrollbar { display: none; }
+
+  .step-rail-col {
+    width: 44px;
+    flex-shrink: 0;
+    background: #f5ede0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 0.5rem;
+  }
+
+  /* Story header */
+  .story-header {
+    position: relative;
+    flex-shrink: 0;
+    background: #f5ede0;
+    border-bottom: 1px solid #d4b888;
+    padding: 0.75rem 1.2rem 0.65rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .story-header-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .story-label {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #8a6038;
+    margin: 0;
+  }
+
+  .story-current-title {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2a1408;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .story-current-sub {
+    font-family: 'Inter', system-ui, sans-serif;
+    font-size: 0.70rem;
+    font-style: italic;
+    color: #7a5020;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .story-switch-btn {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 4px;
+    border: 1px solid #c0a060;
+    background: rgba(176, 104, 0, 0.05);
+    font-size: 1rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #7a4a00;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+  }
+  .story-switch-btn:hover { background: rgba(176, 104, 0, 0.13); }
+
+  .story-list-overlay {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    background: #f5ede0;
+    border-bottom: 1px solid #d4b888;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .story-list-item {
     width: 100%;
     text-align: left;
-    padding: 0.45rem 0.75rem;
-    border-radius: 4px;
-    border: 1px solid transparent;
+    padding: 0.65rem 1.2rem;
+    border: none;
+    border-bottom: 1px solid rgba(212, 184, 136, 0.3);
     background: transparent;
     font-family: 'Inter', system-ui, sans-serif;
     cursor: pointer;
     display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.1rem;
-    transition: background 0.15s, border-color 0.15s;
-  }
-  .story-tab:hover { background: rgba(176, 104, 0, 0.07); }
-  .story-tab.active {
-    background: rgba(176, 104, 0, 0.12);
-    border-color: #b06800;
-  }
-
-  .tab-title {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    color: #7a5828;
-    line-height: 1.2;
-  }
-  .story-tab:hover .tab-title  { color: #5a3808; }
-  .story-tab.active .tab-title { color: #3a2008; }
-
-  .tab-sub {
-    font-size: 0.70rem;
-    font-weight: 400;
-    font-style: italic;
-    letter-spacing: 0.01em;
-    color: #7a5820;
-    line-height: 1.3;
-  }
-  .story-tab.active .tab-sub { color: #7a5020; }
-
-  /* Step progress dots (lives inside .story-tabs sticky zone) */
-  .step-progress {
-    display: flex;
     align-items: center;
-    gap: 0.45rem;
-    padding: 0.5rem 0 0;
-    border-top: 1px solid rgba(212, 184, 136, 0.45);
-    margin-top: 0.15rem;
+    gap: 0.75rem;
+    transition: background 0.13s;
+  }
+  .story-list-item:hover { background: rgba(176, 104, 0, 0.07); }
+  .story-list-item.active { background: rgba(176, 104, 0, 0.12); }
+  .story-list-item:last-child { border-bottom: none; }
+
+  .sli-num {
+    font-size: 0.70rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: #9a7038;
+    flex-shrink: 0;
   }
 
-  .step-dot {
-    width: 6px; height: 6px;
+  .sli-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+
+  .sli-title {
+    font-size: 0.80rem;
+    font-weight: 600;
+    color: #3a2008;
+  }
+
+  .sli-sub {
+    font-size: 0.68rem;
+    font-style: italic;
+    color: #7a5020;
+  }
+
+  /* Vertical step rail column */
+  .step-rail {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 0;
+  }
+  /* connecting track line */
+  .step-rail::before {
+    content: '';
+    position: absolute;
+    top: 0.5rem;
+    bottom: 0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1.5px;
+    background: rgba(176, 104, 0, 0.2);
+    border-radius: 1px;
+    z-index: 0;
+  }
+
+  .step-rail-dot {
+    position: relative;
+    z-index: 1;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
-    border: 1.5px solid #b06800;
-    background: transparent;
+    border: 2px solid #b06800;
+    background: #f5ede0;
     padding: 0;
     cursor: pointer;
     pointer-events: all;
-    transition: background 0.18s, transform 0.15s;
+    transition: background 0.18s, height 0.18s, border-radius 0.18s, box-shadow 0.18s;
     flex-shrink: 0;
   }
-  .step-dot:hover { background: rgba(176, 104, 0, 0.35); }
-  .step-dot.active { background: #b06800; transform: scale(1.35); }
+  .step-rail-dot:hover {
+    background: rgba(176, 104, 0, 0.2);
+  }
+  .step-rail-dot.active {
+    background: #b06800;
+    height: 26px;
+    border-radius: 5px;
+    box-shadow: 0 0 0 3px rgba(176, 104, 0, 0.2);
+  }
 
-  .step-progress-label {
-    font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.70rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #7a5020;
-    margin-left: 0.2rem;
+  .sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* Step cards */
@@ -646,9 +818,16 @@
     align-items: center;
     border-left: 3px solid transparent;
     transition: border-color 0.3s;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   .step-card.active {
     border-left-color: #b06800;
+  }
+  /* Compact cards for cluster snapshots */
+  .step-card-cluster {
+    min-height: 75vh;
+    scroll-snap-stop: normal;
   }
 
   .step-inner {
@@ -685,43 +864,57 @@
     line-height: 1.4;
   }
 
-  /* Musician chips */
-  .musician-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
+  /* Featured album cover */
+  .step-cover {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    border-radius: 3px;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  /* Compact musician grid */
+  .musician-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.25rem 0.5rem;
     margin-bottom: 1.2rem;
   }
 
-  .musician-chip {
+  .mc {
     display: flex;
     align-items: center;
-    gap: 0.35rem;
-    padding: 0.25rem 0.5rem 0.25rem 0.35rem;
-    border-radius: 20px;
-    border: 1px solid;
+    gap: 0.4rem;
+    min-width: 0;
+    padding: 0.15rem 0;
   }
 
-  .chip-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
+  .mc-bar {
+    width: 3px;
+    height: 1.1rem;
+    border-radius: 2px;
     flex-shrink: 0;
+    opacity: 0.85;
   }
 
-  .chip-name {
+  .mc-name {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.72rem;
+    font-size: 0.75rem;
     font-weight: 600;
     color: #2a1408;
     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    flex: 1;
+    min-width: 0;
   }
 
-  .chip-collabs {
+  .mc-stat {
     font-family: 'Inter', system-ui, sans-serif;
-    font-size: 0.70rem;
-    color: #7a5020;
-    white-space: nowrap;
+    font-size: 0.68rem;
+    color: #8a6030;
+    flex-shrink: 0;
   }
 
   .step-body {

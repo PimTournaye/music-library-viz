@@ -11,6 +11,9 @@
   let hoveredNode = $state(null);
   let hoverX      = $state(0);
   let hoverY      = $state(0);
+  let pinnedNode  = $state(null);
+  let pinnedX     = $state(0);
+  let pinnedY     = $state(0);
   let viewMode    = $state('graph'); // 'graph' | 'timeline' | 'story'
 
   async function loadData() {
@@ -37,9 +40,26 @@
   // Sidebar width (matches CSS clamp)
   const SIDEBAR_W = 340;
 
-  // Tooltip: clamp to viewport
+  // Hover tooltip: clamp to viewport
   const tooltipLeft = $derived(Math.min(hoverX + 16, window.innerWidth  - 230));
   const tooltipTop  = $derived(Math.min(Math.max(hoverY - 48, 8), window.innerHeight - 110));
+
+  // Pinned panel: offset from click position
+  const PANEL_W = 210;
+  const OFFSET_X = 160; // horizontal distance from node
+  const pinnedPanelLeft = $derived.by(() => {
+    // prefer right side; flip left if it would overflow
+    const candidate = (pinnedX ?? 0) + OFFSET_X;
+    return candidate + PANEL_W > window.innerWidth - 16
+      ? (pinnedX ?? 0) - OFFSET_X - PANEL_W
+      : candidate;
+  });
+  const pinnedPanelTop = $derived(
+    Math.min(Math.max((pinnedY ?? 0) - 44, 8), window.innerHeight - 140)
+  );
+  // Leader line anchor: midpoint of panel's left or right edge
+  const lineX2 = $derived(pinnedPanelLeft > (pinnedX ?? 0) ? pinnedPanelLeft : pinnedPanelLeft + PANEL_W);
+  const lineY2 = $derived(pinnedPanelTop + 30);
 </script>
 
 {#if loadError}
@@ -62,6 +82,7 @@
       meta={graphData.meta}
       albumMeta={graphData.albumMeta ?? {}}
       onhover={(n, x, y) => { hoveredNode = n; if (n) { hoverX = x; hoverY = y; } }}
+      onpin={(n, x, y) => { pinnedNode = n; if (n) { pinnedX = x; pinnedY = y; } }}
     />
   {:else if viewMode === 'timeline'}
     <ArcTimeline
@@ -75,6 +96,7 @@
       nodes={graphData.nodes}
       edges={graphData.edges}
       meta={graphData.meta}
+      albumMeta={graphData.albumMeta ?? {}}
       onhover={(n, x, y) => { hoveredNode = n; if (n) { hoverX = x; hoverY = y; } }}
       onviewchange={(mode) => { viewMode = mode; }}
     />
@@ -83,25 +105,52 @@
 
   <!-- ── Floating node tooltip ──────────────────────────────────────── -->
   {#if viewMode !== 'story'}
-  <div
-    class="tooltip"
-    class:visible={!!hoveredNode}
-    style="left: {tooltipLeft}px; top: {tooltipTop}px;"
-  >
-    {#if hoveredNode}
-      <p class="tooltip-name" style="color: {yearColor(hoveredNode.medianYear)}">
-        {hoveredNode.displayName}
-      </p>
-      <p class="tooltip-stats">
-        {hoveredNode.connections} collabs &middot; {hoveredNode.albumCount} albums
-      </p>
-      {#if hoveredNode.medianYear}
-        <p class="tooltip-community">
-          median year {hoveredNode.medianYear}
+    {#if pinnedNode}
+      <!-- SVG leader line from anchored panel to the node -->
+      <svg class="leader-svg" aria-hidden="true">
+        <line
+          x1={pinnedX} y1={pinnedY}
+          x2={lineX2}  y2={lineY2}
+          stroke="#c0a070" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"
+        />
+        <circle cx={pinnedX} cy={pinnedY} r="5" fill="none" stroke="#c0a070" stroke-width="1.5" opacity="0.8" />
+      </svg>
+      <!-- Anchored pinned panel -->
+      <div
+        class="tooltip tooltip-pinned visible"
+        style="left: {pinnedPanelLeft}px; top: {pinnedPanelTop}px; width: {PANEL_W}px;"
+      >
+        <p class="tooltip-pin-label">pinned</p>
+        <p class="tooltip-name" style="color: {yearColor(pinnedNode.medianYear)}">
+          {pinnedNode.displayName}
         </p>
-      {/if}
+        <p class="tooltip-stats">
+          {pinnedNode.connections} collabs &middot; {pinnedNode.albumCount} albums
+        </p>
+        {#if pinnedNode.medianYear}
+          <p class="tooltip-community">median year {pinnedNode.medianYear}</p>
+        {/if}
+      </div>
+    {:else}
+      <!-- Normal follow-cursor hover tooltip -->
+      <div
+        class="tooltip"
+        class:visible={!!hoveredNode}
+        style="left: {tooltipLeft}px; top: {tooltipTop}px;"
+      >
+        {#if hoveredNode}
+          <p class="tooltip-name" style="color: {yearColor(hoveredNode.medianYear)}">
+            {hoveredNode.displayName}
+          </p>
+          <p class="tooltip-stats">
+            {hoveredNode.connections} collabs &middot; {hoveredNode.albumCount} albums
+          </p>
+          {#if hoveredNode.medianYear}
+            <p class="tooltip-community">median year {hoveredNode.medianYear}</p>
+          {/if}
+        {/if}
+      </div>
     {/if}
-  </div>
   {/if}
 {/if}
 
@@ -147,6 +196,16 @@
     bottom: 0;
   }
 
+  /* ── Leader line SVG overlay ──────────────────────────────────────────────── */
+  .leader-svg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 59;
+  }
+
   /* ── Floating tooltip ─────────────────────────────────────────────────────── */
   .tooltip {
     position: fixed;
@@ -164,6 +223,22 @@
     z-index: 60;
   }
   .tooltip.visible { opacity: 1; }
+
+  /* Pinned variant — anchored to right edge */
+  .tooltip-pinned {
+    left: unset;
+    border-color: #c0a070;
+    box-shadow: 0 0 0 1px rgba(192,160,112,0.25), 0 8px 32px rgba(0,0,0,0.5);
+  }
+  .tooltip-pin-label {
+    font-family: 'Libre Franklin', system-ui, sans-serif;
+    font-size: 0.60rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #c0a070;
+    margin: 0 0 0.3rem;
+  }
 
   .tooltip-name {
     font-family: 'Inter', system-ui, sans-serif;

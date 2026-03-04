@@ -4,7 +4,7 @@
   import * as PIXI from 'pixi.js';
   import { yearColor } from './colors.js';
 
-  let { nodes, edges, meta, albumMeta = {}, onhover } = $props();
+  let { nodes, edges, meta, albumMeta = {}, onhover, onpin = () => {} } = $props();
 
   // ── Helpers ─────────────────────────────────────────────────────────────────
   function cleanName(name) { return name.replace(/\s*\(\d+\)$/, ''); }
@@ -183,10 +183,13 @@
         if (!n.__dragged) {
           const ge = ev.data.originalEvent;
           if (pinnedId === n.id) {
-            pinnedId = null; hoveredId = null; onhover(null, 0, 0);
+            pinnedId = null; hoveredId = null; onhover(null, 0, 0); onpin(null, 0, 0);
           } else {
             pinnedId = n.id;
-            onhover(n, ge?.clientX ?? ev.data.global.x, ge?.clientY ?? ev.data.global.y);
+            const sx = ge?.clientX ?? ev.data.global.x;
+            const sy = ge?.clientY ?? ev.data.global.y;
+            onhover(n, sx, sy);
+            onpin(n, sx, sy);
           }
         }
       });
@@ -250,7 +253,7 @@
     });
     app.stage.on('click', ev => {
       if (ev.target === app.stage) {
-        pinnedId = null; hoveredId = null; onhover(null, 0, 0);
+        pinnedId = null; hoveredId = null; onhover(null, 0, 0); onpin(null, 0, 0);
       }
     });
 
@@ -304,7 +307,7 @@
         if (e.source.x == null || e.target.x == null) continue;
         const sid = e.source.id ?? e.source;
         const tid = e.target.id ?? e.target;
-        if (!nb?.has(sid) || !nb?.has(tid)) continue;
+        if (sid !== pinnedId && tid !== pinnedId) continue;
         const dist = pointToSegmentDist(worldX, worldY, e.source.x, e.source.y, e.target.x, e.target.y);
         if (dist < threshold) {
           found = { edge: e, clientX: ev.clientX, clientY: ev.clientY };
@@ -333,11 +336,18 @@
           }
         }
       } else {
+        // When a node is pinned, only highlight edges directly on that node.
+        // When merely hovering, highlight all edges within the neighbourhood.
+        const pid = pinnedId;
+        const isHighlighted = pid
+          ? (sid, tid) => sid === pid || tid === pid
+          : (sid, tid) => nb.has(sid) && nb.has(tid);
+
         edgeGfx.lineStyle(0.5, 0xc8b898, 0.04);
         for (const e of simEdges) {
           const sid = e.source.id ?? e.source;
           const tid = e.target.id ?? e.target;
-          if (nb.has(sid) && nb.has(tid)) continue;
+          if (isHighlighted(sid, tid)) continue;
           edgeGfx.moveTo(e.source.x, e.source.y);
           edgeGfx.lineTo(e.target.x, e.target.y);
         }
@@ -346,7 +356,7 @@
           for (const e of edgeByBucket[b]) {
             const sid = e.source.id ?? e.source;
             const tid = e.target.id ?? e.target;
-            if (!nb.has(sid) || !nb.has(tid)) continue;
+            if (!isHighlighted(sid, tid)) continue;
             if (!styleSet) {
               edgeGfx.lineStyle(bWidths[b] * 1.5, bColors[b], Math.min(bAlphas[b] * 1.1, 0.98));
               styleSet = true;
