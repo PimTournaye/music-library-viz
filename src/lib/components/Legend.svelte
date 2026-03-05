@@ -48,7 +48,7 @@
     </div>
     <div class="legend-text-block">
       <span class="legend-label">Edge weight</span>
-      <span class="legend-sub">Albums shared &mdash; <span style="color:#a08060">fewer</span> to <span style="color:#521000">more</span></span>
+      <span class="legend-sub">Albums shared between musicians &mdash; <span style="color:#a08060">fewer</span> to <span style="color:#521000">more</span></span>
     </div>
   </div>
 

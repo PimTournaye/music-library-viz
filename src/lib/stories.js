@@ -98,7 +98,7 @@ export const STORIES = [
 
   {
     id: 'invisible',
-    title: 'The Invisible Hand',
+    title: 'Hidden connections',
     subtitle: 'The musicians who are everywhere but on no poster',
     steps: [
       {
