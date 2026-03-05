@@ -6,6 +6,7 @@ Visualization of a personal music library as a collaboration network graph. Jazz
 ## Stack
 - **Svelte 5** (runes) + **Vite 7** for the frontend
 - **D3 v7** for force simulation, zoom/pan, scales
+- **PixiJS v7** (WebGL renderer) replaces SVG — `pixi.js@7` + `pixi-filters@5` (GlowFilter)
 - **Graphology** + `graphology-communities-louvain` for community detection (Louvain, resolution 0.5)
 - Data sourced from **Discogs API** (`extraartists` credits field)
 
@@ -23,15 +24,26 @@ Visualization of a personal music library as a collaboration network graph. Jazz
 - **Threshold**: MIN_SHARED_ALBUMS = 3 (configurable in build-graph.js)
 - **Wynton Marsalis**: was incorrectly the biggest node; now correctly degree 6 after fixes
 
-## Graph output stats (threshold=3)
-- 313 musicians, 852 edges
-- Top nodes: Herbie Hancock (23), Keith O'Quinn/Maria Schneider Orchestra cluster (21), Pat Metheny (16)
-- 31 communities detected; top 10 get distinct colors, rest are dim neutral (#3a3830)
+## Graph output stats (current)
+- 435 musicians, 3394 edges (all qualified collabs, no min-shared-album threshold)
+- node.connections = raw collaborator count (tooltip); node.sizeScore = connections from ≤20-person albums (node size)
+- Top nodes: Wayne Shorter (65), Ron Carter (63), Herbie Hancock (62), Chris Potter (59), Marcus Gilmore (57)
+- 14 communities; all 14 colored; Louvain resolution=1.5
+
+## Edge classification (build-graph.js)
+Simple: edge weight = number of shared albums between two qualified musicians.
+No minimum threshold — all pairs with ≥1 shared album get an edge.
+In Graph.svelte, edges pre-bucketed into 6 weight buckets for rendering (one lineStyle call per bucket).
+
+## Artist name normalisation (build-graph.js)
+allPrimaryArtists sorted shortest-first; for each album artist, use shortest known name that is a prefix.
+"Maria Schneider Orchestra" → "Maria Schneider", "Miles Davis Quintet" → "Miles Davis", etc.
 
 ## Community colors (colors.js)
 0 gold #f5c518, 1 burnt orange #e8734a, 2 steel blue #5b9bd5, 3 sage #72b98c,
 4 mauve #c47db5, 5 amber #e8c040, 6 violet #8a7cc5, 7 peach #e88c6a,
-8 teal #5cb8b2, 9 copper #d4956a
+8 teal #5cb8b2, 9 copper #d4956a, 10 rose #d4607a, 11 lime #a0c878,
+12 sky #7ab4e0, 13 lilac #c890d8
 
 ## Frontend structure
 ```
@@ -85,18 +97,10 @@ makes the graph show *breadth* of collaboration rather than just *repetition*.
 The "from album 3" taper is a judgment call — first two collaborations are treated
 as equally intentional, then diminishing returns kick in.
 
-### Two-tier edge system
-- **Primary edges** (≥3 shared albums): solid lines, full visual weight
-- **Secondary edges** (1–2 albums, only between nodes already in primary graph): faint
-  dashed lines, nearly invisible at rest, light up on hover
-**Why**: preserves the tight core graph while surfacing real but infrequent connections.
-Wynton–Herbie share 1 album → secondary edge. Nathan Daems–Lander Gyselinck share 2 → secondary.
-**Tradeoff**: secondary edges only appear between nodes already anchored by primary
-connections. A musician who only ever played one-off sessions with established players
-won't appear at all (no node). This is intentional — we want the established
-collaboration network, not every session player who appeared once.
-1241 secondary vs 852 primary edges. If visually too dense, drop secondary opacity
-from 0.06 → 0.03 in `secondaryEdgeOpacity()` in Graph.svelte.
+### Edge rendering (Graph.svelte)
+All edges are single-tier — weight = shared album count, rendered with 6 buckets.
+Lower-weight edges are thinner/more transparent; higher-weight edges thicker/brighter.
+On hover: non-neighbourhood edges near-invisible (0.008 alpha), neighbourhood edges highlighted gold.
 
 ### Ensemble clusters (Brussels Jazz Orchestra, Maria Schneider, Snarky Puppy)
 These form tight cliques because all members appear on multiple albums together.
