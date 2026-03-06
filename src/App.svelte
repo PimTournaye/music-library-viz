@@ -34,8 +34,9 @@
   onMount(loadData);
 
   // Live stats for tagline
-  const nodeCount = $derived(graphData ? graphData.nodes.length : 0);
-  const edgeCount = $derived(graphData ? graphData.edges.length : 0);
+  const nodeCount  = $derived(graphData ? graphData.nodes.length : 0);
+  const edgeCount  = $derived(graphData ? graphData.edges.length : 0);
+  const albumCount = $derived(graphData ? Object.keys(graphData.albumMeta ?? {}).length : 0);
 
   // Sidebar width (matches CSS clamp)
   const SIDEBAR_W = 340;
@@ -72,7 +73,7 @@
     <span class="dot"></span><span class="dot"></span><span class="dot"></span>
   </div>
 {:else}
-  <Sidebar bind:viewMode {nodeCount} {edgeCount} />
+  <Sidebar bind:viewMode {nodeCount} {edgeCount} {albumCount} />
 
   <main class="main-area">
   {#if viewMode === 'graph'}

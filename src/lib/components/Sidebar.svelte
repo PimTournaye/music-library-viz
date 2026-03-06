@@ -2,8 +2,9 @@
   import { YEAR_MIN, YEAR_MAX } from '../colors.js';
   import Legend from './Legend.svelte';
   import ModeSwitcher from './ModeSwitcher.svelte';
+  import FAQ from './FAQ.svelte';
 
-  let { viewMode = $bindable('graph'), nodeCount = 0, edgeCount = 0 } = $props();
+  let { viewMode = $bindable('graph'), nodeCount = 0, edgeCount = 0, albumCount = 0 } = $props();
 </script>
 
 <aside class="sidebar">
@@ -35,6 +36,9 @@
 
     <!-- Mode switcher -->
     <ModeSwitcher bind:viewMode />
+
+    <!-- FAQ -->
+    <FAQ {albumCount} />
   </div>
 </aside>
 
@@ -53,7 +57,8 @@
   .sidebar-scroll {
     height: 100%;
     overflow-y: auto;
-    padding: 2rem 2rem 2rem 2rem;
+    scrollbar-gutter: stable;
+    padding: 2rem 2rem 3rem 2rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
